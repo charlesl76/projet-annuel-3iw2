@@ -3,7 +3,6 @@ namespace App;
 
 require "conf.inc.php";
 
-
 function myAutoloader($class){
     //$class = App\Core\CleanWords
     $class = str_ireplace("App\\", "", $class);
