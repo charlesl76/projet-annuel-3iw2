@@ -31,7 +31,7 @@ class Register extends BaseSQL
             $mail = new PHPMailer(true);
 
             $mail->isSMTP();                                        // Set mailer to use SMTP
-            $mail->SMTPDebug = SMTP::DEBUG_CLIENT;                  // Enable verbose debug output
+            $mail->SMTPDebug = SMTP::DEBUG_OFF;                  // Enable verbose debug output
             $mail->SMTPAuth = true;                                 // Enable SMTP authentication
             $mail->Port = 587;                                      // TCP port to connect to
             $mail->Host = 'pro1.mail.ovh.net';                      // Specify main and backup SMTP servers
@@ -44,7 +44,7 @@ class Register extends BaseSQL
             $mail->addAddress($email);                              // Add a recipient
             $mail->isHTML(true);                                    // Set email format to HTML
             $mail->Subject = 'Your email registration link';
-            $mail->Body = "Thanks for registring with us. To activate your account click <a href='http://localhost/verify.php?email=$email&verification_code=$verification_code'>here</a>";
+            $mail->Body = "Thanks for registring with us. To activate your account click <a href='http://localhost/verify?email=$email&verification_code=$verification_code'>here</a>";
 
             $result = $mail->send();
         } catch (Exception $e) {

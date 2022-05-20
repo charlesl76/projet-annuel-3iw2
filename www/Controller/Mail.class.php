@@ -22,8 +22,8 @@ class Mail
 
         $view->assign("titleSeo", "Test mail");
 
-        $token = "abcde";
-        $email = "mail@adress.com";
-        $registration->sendMail($email, $token);
+        $token = "abcde";                           // Set the token after registration of the user
+        $email = "mail@adress.com";                 // Set the email after registration of the user
+        $registration->sendMail($email, $token);    // Send the email
     }
 }
