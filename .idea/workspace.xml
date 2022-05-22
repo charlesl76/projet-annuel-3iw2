@@ -1,33 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:feature" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="e1b74f4b-12cd-41ff-82cf-e97e2f74f8f9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.htaccess" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/Controller/Admin.class.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/Controller/General.class.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/Controller/User.class.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/Core/CleanWords.class.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/Core/Validator.class.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/Core/View.class.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/View/Partial/form.partial.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/View/back.tpl.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/View/contact.view.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/View/dashboard.view.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/View/front.tpl.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/View/login.view.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/View/register.view.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/index.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/routes.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www/View/Partial/formUpdate.partial.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www/View/update.view.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db_data/ib_logfile0" beforeDir="false" afterPath="$PROJECT_DIR$/db_data/ib_logfile0" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db_data/ibdata1" beforeDir="false" afterPath="$PROJECT_DIR$/db_data/ibdata1" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db_data/ibtmp1" beforeDir="false" afterPath="$PROJECT_DIR$/db_data/ibtmp1" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db_data/mysql/innodb_index_stats.ibd" beforeDir="false" afterPath="$PROJECT_DIR$/db_data/mysql/innodb_index_stats.ibd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db_data/mysql/innodb_table_stats.ibd" beforeDir="false" afterPath="$PROJECT_DIR$/db_data/mysql/innodb_table_stats.ibd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db_data/sported/user.frm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/db_data/sported/user.ibd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/Controller/Admin.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/www/Controller/Admin.class.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/Controller/User.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/www/Controller/User.class.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/Core/BaseSQL.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/www/Core/BaseSQL.class.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/www/Model/User.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/www/Model/User.class.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/conf.inc.php" beforeDir="false" afterPath="$PROJECT_DIR$/www/conf.inc.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/routes.yml" beforeDir="false" afterPath="$PROJECT_DIR$/www/routes.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,10 +68,15 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/www/Core" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/www/Controller" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/www/Core" />
       <recent name="$PROJECT_DIR$/www/View" />
@@ -87,10 +97,55 @@
       <workItem from="1643895583552" duration="2000" />
       <workItem from="1643895603729" duration="35000" />
       <workItem from="1643895647469" duration="1422000" />
+      <workItem from="1652989565579" duration="53106000" />
+      <workItem from="1653212952942" duration="16496000" />
+      <workItem from="1653235308830" duration="8252000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="713" y="421" width="555" height="279" key="#Updates" timestamp="1653234418591">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="713" y="421" width="555" height="279" key="#Updates/72.27.1848.1053@72.27.1848.1053" timestamp="1653234418591" />
+    <state x="729" y="311" width="524" height="491" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1653226156846">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="729" y="311" width="524" height="491" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1653226156846" />
+    <state x="722" y="273" width="585" height="568" key="NewPhpClassDialog" timestamp="1653127645233">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="722" y="273" width="585" height="568" key="NewPhpClassDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1653127645233" />
+    <state x="791" y="479" width="399" height="156" key="NewPhpFileDialog" timestamp="1653231813221">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="791" y="479" width="399" height="156" key="NewPhpFileDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1653231813221" />
+    <state x="485" y="188" width="1022" height="737" key="SettingsEditor" timestamp="1653213035638">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="485" y="188" width="1022" height="737" key="SettingsEditor/72.27.1848.1053@72.27.1848.1053" timestamp="1653213035638" />
+    <state x="777" y="468" width="438" height="177" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1653143734754">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="777" y="468" width="438" height="177" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/72.27.1848.1053@72.27.1848.1053" timestamp="1653143734754" />
+    <state x="660" y="252" key="run.anything.popup" timestamp="1653056036771">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="660" y="252" key="run.anything.popup/72.27.1848.1053@72.27.1848.1053" timestamp="1653056036771" />
   </component>
 </project>

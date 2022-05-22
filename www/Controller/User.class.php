@@ -39,4 +39,17 @@ class User{
         $view->assign("user",$user);
     }
 
+    public function updateUser()
+    {
+        $user = new UserModel();
+        print_r($_POST);
+
+        if( !empty($_POST)){
+            $result = Validator::run($user->getFormUpdate(), $_POST);
+            print_r($result);
+        }
+        $view = new View("update");
+        $view->assign("user",$user);
+    }
+
 }

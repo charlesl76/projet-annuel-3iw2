@@ -2,6 +2,7 @@
 
 namespace App\Core;
 
+use PDO;
 
 abstract class BaseSQL
 {
@@ -29,7 +30,7 @@ abstract class BaseSQL
     /**
      * @param mixed $id
      */
-    public function setId($id): object
+    public function setId($id)
     {
         $sql = "SELECT * FROM ".$this->table. " WHERE id=:id ";
         $queryPrepared = $this->pdo->prepare($sql);
@@ -60,8 +61,71 @@ abstract class BaseSQL
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute( $columns );
 
+    }
 
+    protected function findAllUsers()
+    {
+        $sql = "SELECT `id`,`username`,`first_name`,`last_name`,`role` FROM `".DBPREFIXE."user`";
+
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute();
+
+        $users = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+
+        return $users;
 
     }
 
+    protected function findUser()
+    {
+
+        if(isset($_GET['id']) && !empty($_GET['id'])) {
+
+            $id = strip_tags($_GET['id']);
+
+            $sql = "SELECT `id`,`username`,`first_name`,`last_name`,`role` FROM `" .DBPREFIXE."user` WHERE `id`=:id";
+
+            $queryPrepared = $this->pdo->prepare($sql);
+            $queryPrepared->bindValue(':id', $id, PDO::PARAM_INT);
+            $queryPrepared->execute(['id' => $id]);
+
+            $queryPrepared->fetch();
+        }
+    }
+
+//    protected function updateUser()
+//    {
+//        if (isset($_GET['id']) && !empty($_GET['id'])) {
+//
+//            $id = strip_tags($_GET['id']);
+//
+//            $sql = "UPDATE `".DBPREFIXE."user` SET `username`=:username, `first_name`=:firstname, `last_name`=:lastname WHERE `id`=:id";
+//
+//            $queryPrepared = $this->pdo->prepare($sql);
+//
+//            $queryPrepared->bindValue(':username', $username, PDO::PARAM_STR);
+//            $queryPrepared->bindValue(':firstname', $firstname, PDO::PARAM_STR);
+//            $queryPrepared->bindValue(':nombre', $nombre, PDO::PARAM_INT);
+//            $queryPrepared->bindValue(':id', $id, PDO::PARAM_INT);
+//
+//        }
+//    }
+
+    protected function deleteUser()
+    {
+        if(isset($_GET['id']) && !empty($_GET['id'])){
+
+            $id = strip_tags($_GET['id']);
+
+            $sql = "DELETE FROM `".DBPREFIXE."user` WHERE `id`=:id";
+
+            $queryPrepared = $this->pdo->prepare($sql);
+
+            $queryPrepared->bindValue(':id', $id, PDO::PARAM_INT);
+            $queryPrepared->execute(['id' => $id]);
+
+            header('Location: /users');
+        }
+
+    }
 }

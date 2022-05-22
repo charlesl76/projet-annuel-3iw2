@@ -22,3 +22,15 @@
 /dashboard:
   controller: admin
   action: dashboard
+
+/users:
+  controller: admin
+  action: getuserslist
+
+/user/delete/12:
+  controller: admin
+  action: deleteUserById
+
+/user/update?id=33:
+  controller: admin
+  action: updateUserById

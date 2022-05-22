@@ -182,7 +182,7 @@ class User extends BaseSQL
                     "required"=>true,
                     "error"=>"Email incorrect",
                     "unicity"=>true,
-                    "errorUnicity"=>"Email existe déjà en bdd"
+                    "errorUnicity"=>"Email existe déjà en bdd",
                 ],
                 "password"=>[
                     "type"=>"password",
@@ -255,6 +255,46 @@ class User extends BaseSQL
                 ]
             ]
 
+        ];
+    }
+
+    public function getFormUpdate(): array
+    {
+        $user = $this->findUser();
+
+        return [
+            "config"=>[
+                "method"=>"POST",
+                "action"=>"",
+                "submit"=>"Update"
+            ],
+            "inputs"=>[
+                "username"=>[
+                    "type"=>"text",
+                    "id"=>"usernameUpdate",
+                    "min"=>2,
+                    "max"=>50,
+                    "unicity"=>true,
+                    "required"=>true,
+                    "value"=>$user['username']
+                ],
+                "firstname"=>[
+                    "type"=>"text",
+                    "id"=>"firstnameUpdate",
+                    "min"=>2,
+                    "max"=>50,
+                    "required"=>true,
+                    "value"=>$user['firstname']
+                ],
+                "lastname"=>[
+                    "type"=>"text",
+                    "id"=>"lastnameUpdate",
+                    "min"=>2,
+                    "max"=>100,
+                    "required"=>true,
+                    "value"=>$user['lastname']
+                ],
+            ]
         ];
     }
 
