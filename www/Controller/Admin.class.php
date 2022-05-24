@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Core\Validator;
 use App\Core\View;
 use App\Core\BaseSQL;
+use App\Model\User as UserModel;
 
 class Admin extends BaseSQL
 {
@@ -36,6 +38,20 @@ class Admin extends BaseSQL
 
 
     public function updateUserById()
+    {
+        $user = new UserModel();
+        print_r($user);
+
+        if( !empty($_POST)){
+            $result = Validator::run($user->getFormUpdate(), $_POST);
+//            print_r($result);
+        }
+        $view = new View("update", "back");
+        $view->assign("user",$user);
+    }
+
+
+    public function updateUser()
     {
         $user = parent::findUser();
 //        $updateUser = parent::updateUser();

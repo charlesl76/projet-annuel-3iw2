@@ -89,7 +89,7 @@ abstract class BaseSQL
             $queryPrepared->bindValue(':id', $id, PDO::PARAM_INT);
             $queryPrepared->execute(['id' => $id]);
 
-            $queryPrepared->fetch();
+            $queryPrepared->fetchAll();
         }
     }
 

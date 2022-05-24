@@ -272,6 +272,7 @@ class User extends BaseSQL
                 "username"=>[
                     "type"=>"text",
                     "id"=>"usernameUpdate",
+                    "class"=>"usernameUpdate",
                     "min"=>2,
                     "max"=>50,
                     "unicity"=>true,
@@ -281,6 +282,7 @@ class User extends BaseSQL
                 "firstname"=>[
                     "type"=>"text",
                     "id"=>"firstnameUpdate",
+                    "firstname"=>"firstnameUpdate",
                     "min"=>2,
                     "max"=>50,
                     "required"=>true,
@@ -289,6 +291,7 @@ class User extends BaseSQL
                 "lastname"=>[
                     "type"=>"text",
                     "id"=>"lastnameUpdate",
+                    "firstname"=>"lastnameUpdate",
                     "min"=>2,
                     "max"=>100,
                     "required"=>true,

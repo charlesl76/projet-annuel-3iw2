@@ -3,14 +3,13 @@ Création du formulaire d'update
 
     <?php foreach ($config["inputs"] as $name=>$input):?>
 
-
             <input name="<?=$name?>"
                    id="<?=$input["id"]?>"
                    type="<?=$input["type"]?>"
                    class="<?=$input["class"]?>"
-                   placeholder="<?=$input["placeholder"]?>"
+                   value="<?=$input["value"]?>"
                 <?= (!empty($input["required"]))?'required="required"':'' ?>
-            >
+            />
             <br>
         <?php endforeach;?>
 
