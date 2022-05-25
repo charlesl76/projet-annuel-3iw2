@@ -2,8 +2,32 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e1b74f4b-12cd-41ff-82cf-e97e2f74f8f9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.htaccess" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www/Controller/Admin.class.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www/Controller/General.class.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www/Controller/User.class.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www/Core/CleanWords.class.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www/Core/Validator.class.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www/Core/View.class.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www/View/Partial/form.partial.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www/View/back.tpl.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www/View/contact.view.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www/View/dashboard.view.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www/View/front.tpl.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www/View/login.view.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www/View/register.view.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www/index.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/www/routes.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db_data/ib_logfile0" beforeDir="false" afterPath="$PROJECT_DIR$/db_data/ib_logfile0" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db_data/ibdata1" beforeDir="false" afterPath="$PROJECT_DIR$/db_data/ibdata1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db_data/ibtmp1" beforeDir="false" afterPath="$PROJECT_DIR$/db_data/ibtmp1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db_data/mysql/innodb_index_stats.ibd" beforeDir="false" afterPath="$PROJECT_DIR$/db_data/mysql/innodb_index_stats.ibd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db_data/mysql/innodb_table_stats.ibd" beforeDir="false" afterPath="$PROJECT_DIR$/db_data/mysql/innodb_table_stats.ibd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db_data/sported/user.frm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db_data/sported/user.ibd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/Model/User.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/www/Model/User.class.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/conf.inc.php" beforeDir="false" afterPath="$PROJECT_DIR$/www/conf.inc.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +51,9 @@
     <setting file="file://$PROJECT_DIR$/www/index.html" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="23F7ng7q1ZuJLKEF8mpvkZRHcvt" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -37,8 +63,14 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/www/Core" />
     <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/www/Core" />
+      <recent name="$PROJECT_DIR$/www/View" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -51,6 +83,10 @@
       <workItem from="1641318151686" duration="959000" />
       <workItem from="1641552771921" duration="29000" />
       <workItem from="1643706923676" duration="1560000" />
+      <workItem from="1643895563738" duration="15000" />
+      <workItem from="1643895583552" duration="2000" />
+      <workItem from="1643895603729" duration="35000" />
+      <workItem from="1643895647469" duration="1422000" />
     </task>
     <servers />
   </component>
