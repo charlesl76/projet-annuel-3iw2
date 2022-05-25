@@ -31,6 +31,6 @@
   controller: admin
   action: deleteUserById
 
-/user/update?id=2:
+/user/update:
   controller: admin
   action: updateUserById
