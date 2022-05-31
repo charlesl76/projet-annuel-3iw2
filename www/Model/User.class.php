@@ -30,14 +30,6 @@ class User extends BaseSQL
     }
 
     /**
-     * @param null $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @return mixed
      */
     public function getEmail()
