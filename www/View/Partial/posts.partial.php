@@ -1,5 +1,5 @@
 <form action="pages" method="POST">
-        <input type="text" value="1" name="action" hidden>
+        <input type="text" value="create" name="action" hidden>
         <input type="submit" value="Create">
     </form>
 

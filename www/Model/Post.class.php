@@ -21,9 +21,6 @@ class Post extends BaseSQL
     protected $post_parent;
     protected $post_type;
     protected $comment_count;
-    protected $article;
-    protected $category;
-    protected $pages;
 
     /**
      * Get the value of id
@@ -46,10 +43,28 @@ class Post extends BaseSQL
         return [
             "config" => [
                 "method" => "POST",
-                "action" => "pages",
+                "action" => "post-check",
                 "submit" => "Create and publish",
             ],
             "inputs" => [
+                "input" => [
+                    "type" => "text",
+                    "id" => "input",
+                    "class" => "form-control",
+                    "name" => "input",
+                    "placeholder" => "input",
+                    "value" => "page",
+                    "hidden" => true,
+                ],
+                "type" => [
+                    "type" => "text",
+                    "id" => "type",
+                    "class" => "form-control",
+                    "name" => "add",
+                    "placeholder" => "add",
+                    "value" => "add",
+                    "hidden" => true,
+                ],
                 "author" => [
                     "type" => "text",
                     "placeholder" => "Author name",
@@ -97,6 +112,27 @@ class Post extends BaseSQL
             ]
 
         ];
+    }
+
+    public function createPage($data)
+    {
+
+        $this->author = 1;
+        $this->title = $data["title"];
+        $this->excerpt = $this->setExcerpt($data["title"]);
+        $this->content = $data["content"];
+        $this->comment_status = $data["comment_status"];
+        $this->date = $this->setDate(time());
+        $this->date_gmt = $this->setDate_gmt(time());
+        $this->status = 1;
+        $this->post_parent = 0;
+        $this->post_type = "page";
+        $this->comment_count = 0;
+
+        echo '<pre>';
+        var_dump($this);
+        echo '</pre>';
+        
     }
 
     /**
@@ -221,6 +257,10 @@ class Post extends BaseSQL
     public function setExcerpt($excerpt)
     {
         $this->excerpt = $excerpt;
+
+        $excerpt = explode(" ", $excerpt);
+        // lowercase and add union between words
+        $excerpt = strtolower(implode("-", $excerpt));
 
         return $this;
     }

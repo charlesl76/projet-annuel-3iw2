@@ -25,3 +25,7 @@
 /pages:
   controller: post
   action: pages
+
+/post-check:
+  controller: post
+  action: postCheck

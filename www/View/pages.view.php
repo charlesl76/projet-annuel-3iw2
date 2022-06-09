@@ -4,11 +4,12 @@
 
 if (isset($_POST['action']) && $_POST['action'] !== null) :
     switch ($_POST['action']):
-        case 0:
-            $view->includePartial("posts", $page->getAllPages());
-            break;
-        case 1:
+        case 'create':
             $view->includePartial("form", $page->getFormPages());
+            break;
+        case 'update':
+            break;
+        case 'delete':
             break;
     endswitch;
 else :

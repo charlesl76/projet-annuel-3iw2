@@ -29,7 +29,7 @@
 </script>
 <?php
             else : ?>
-    <input name="<?= $name ?>" id="<?= $input["id"] ?>" type="<?= $input["type"] ?>" class="<?= $input["class"] ?>" placeholder="<?= $input["placeholder"] ?>" <?= (!empty($input["required"])) ? 'required="required"' : '' ?>>
+    <input name="<?= $name ?>" id="<?= $input["id"] ?>" type="<?= $input["type"] ?>" class="<?= $input["class"] ?>" <?= !empty($input["value"]) ? " value=\"". $input["value"] . "\" " : " " ?> placeholder="<?= $input["placeholder"] ?>" <?= (!empty($input["hidden"])) ? 'hidden="hidden"' : '' ?> <?= (!empty($input["required"])) ? 'required="required"' : '' ?>>
     <br>
 <?php endif;
         endforeach; ?>
