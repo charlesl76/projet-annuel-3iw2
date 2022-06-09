@@ -27,10 +27,11 @@
   controller: admin
   action: getuserslist
 
-/user/delete?id=3:
+/user/delete:
   controller: admin
   action: deleteUserById
 
 /user/update:
   controller: admin
-  action: updateUserById
+  action: updateUserForm
+

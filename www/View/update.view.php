@@ -1,7 +1,5 @@
+<h1>S'inscrire</h1>
 
-<?php $this->includePartial("formUpdate", $user->getFormUpdate());
+<?php $this->includePartial("form", $form);?>
 
-$user_id = $_POST['id'];
-echo $user_id;
 
-?>

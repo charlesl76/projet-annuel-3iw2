@@ -2,12 +2,10 @@
 
 namespace App\Controller;
 
-use App\Core\Validator;
 use App\Core\View;
-use App\Core\BaseSQL;
 use App\Model\User as UserModel;
 
-class Admin extends BaseSQL
+class Admin
 {
     public function dashboard()
     {
@@ -22,45 +20,40 @@ class Admin extends BaseSQL
 
     public function getUsersList()
     {
-        $users = parent::findAllUsers();
+        $users = new UserModel();
+
+        $usersList = $users->findAll();
 
         $view = new View("users", "back");
-        $view->assign("users", $users);
+        $view->assign("users", $usersList);
 
     }
 
 
     public function deleteUserById()
     {
-        parent::deleteUser();
+        $user =new UserModel();
 
+        $user->deleteOne();
+
+        header("Location: /users");
     }
 
 
-    public function updateUserById()
+    public function updateUserForm()
     {
         $user = new UserModel();
-        print_r($user);
+        $userById = $user->setId($_POST['id']);
 
-        if( !empty($_POST)){
-            $result = Validator::run($user->getFormUpdate(), $_POST);
-//            print_r($result);
+        if(!empty($userById)){
+           $form = $user->getFormUpdate($userById);
+        }else {
+            //redirect
+            header("Location: /users");
         }
         $view = new View("update", "back");
-        $view->assign("user",$user);
+        $view->assign("form",$form);
     }
 
-
-    public function updateUser()
-    {
-        $user = parent::findUser();
-//        $updateUser = parent::updateUser();
-
-        var_dump($user);
-        $view = new View("update", "back");
-        $view->assign("user", $user);
-//        $view->assign("update", $updateUser);
-
-    }
 
 }

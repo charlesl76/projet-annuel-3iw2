@@ -9,8 +9,10 @@ class User extends BaseSQL
     protected $id = null;
     protected $email;
     protected $password;
+    protected $username;
     protected $first_name;
     protected $last_name;
+    protected $role;
     protected $status = null;
     protected $token = null;
     protected $birth;
@@ -29,13 +31,6 @@ class User extends BaseSQL
         return $this->id;
     }
 
-    /**
-     * @param null $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
 
     /**
      * @return mixed
@@ -72,6 +67,22 @@ class User extends BaseSQL
     /**
      * @return mixed
      */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param mixed $username
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getFirstName()
     {
         return $this->first_name;
@@ -99,6 +110,22 @@ class User extends BaseSQL
     public function setLastName($last_name)
     {
         $this->last_name = $last_name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * @param mixed $role
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
     }
 
     /**
@@ -258,10 +285,8 @@ class User extends BaseSQL
         ];
     }
 
-    public function getFormUpdate(): array
+    public function getFormUpdate(User $user): array
     {
-        $user = $this->findUser();
-
         return [
             "config"=>[
                 "method"=>"POST",
@@ -277,7 +302,7 @@ class User extends BaseSQL
                     "max"=>50,
                     "unicity"=>true,
                     "required"=>true,
-                    "value"=>$user['username']
+                    "value"=>$user->getFirstName()
                 ],
                 "firstname"=>[
                     "type"=>"text",
@@ -286,7 +311,7 @@ class User extends BaseSQL
                     "min"=>2,
                     "max"=>50,
                     "required"=>true,
-                    "value"=>$user['firstname']
+                    "value"=>$user->getUsername()
                 ],
                 "lastname"=>[
                     "type"=>"text",
@@ -295,8 +320,31 @@ class User extends BaseSQL
                     "min"=>2,
                     "max"=>100,
                     "required"=>true,
-                    "value"=>$user['lastname']
+                    "value"=>$user->getLastName()
                 ],
+                "select"=>[
+                    "type"=>"select",
+                    "name"=>"roles",
+                    "id"=>"roleUpdate",
+                    "class"=>"roleUpdate",
+                    "roles"=>[
+                        0=>[
+                            "name"=>"user",
+                            "id"=>"user",
+                            "value"=>"user"
+                        ],
+                        1=>[
+                            "name"=>"admin",
+                            "id"=>"admin",
+                            "value"=>"admin"
+                        ],
+                        2=>[
+                            "name"=>"editor",
+                            "id"=>"editor",
+                            "value"=>"editor"
+                        ],
+                    ],
+                ]
             ]
         ];
     }
