@@ -18,11 +18,10 @@
   controller: user
   action: register
 
-
 /dashboard:
   controller: admin
   action: dashboard
 
 /pages:
-  controller: posts
+  controller: post
   action: pages
