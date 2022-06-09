@@ -18,7 +18,22 @@
   controller: user
   action: register
 
-
 /dashboard:
   controller: admin
   action: dashboard
+
+/users:
+  controller: admin
+  action: getUserList
+
+/users/{id}:
+  controller: user
+  action: show
+
+/users/{id}/delete:
+  controller: user
+  action: delete
+
+/users/{id}/update:
+  controller: user
+  action: update
