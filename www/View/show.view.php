@@ -1,4 +1,4 @@
-<h1>S'inscrire</h1>
+<h1>Modifier l'utilisateur</h1>
 
 <?php $this->includePartial("form", $form);?>
 

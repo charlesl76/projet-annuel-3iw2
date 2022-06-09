@@ -54,7 +54,7 @@ abstract class BaseSQL
            }
            $sql = "UPDATE ".$this->table." SET ".implode(",",$setUpdate)." WHERE id=".$this->getId();
        }else{
-            $sql = "INSERT INTO ".$this->table." (".implode(",", array_keys($columns)).")
+           $sql = "INSERT INTO ".$this->table." (".implode(",", array_keys($columns)).")
             VALUES (:".implode(",:", array_keys($columns)).")";
        }
 
@@ -88,28 +88,6 @@ abstract class BaseSQL
        return $queryPrepared->fetch(PDO::FETCH_ASSOC);
     }
 
-//    public function updateUser()
-//    {
-//        if (isset($_GET['id']) && !empty($_GET['id'])) {
-//
-//            $id = strip_tags($_GET['id']);
-//
-//            $username = $_GET['username'];
-//            $firstname = $_GET['firstname'];
-//            $lastname = $_GET['lastname'];
-//
-//
-//            $sql = "UPDATE `".DBPREFIXE."user` SET `username`=:username, `first_name`=:firstname, `last_name`=:lastname WHERE `id`=:id";
-//
-//            $queryPrepared = $this->pdo->prepare($sql);
-//
-//            $queryPrepared->bindValue(':username', $username, PDO::PARAM_STR);
-//            $queryPrepared->bindValue(':firstname', $firstname, PDO::PARAM_STR);
-//            $queryPrepared->bindValue(':lasname', $lastname, PDO::PARAM_INT);
-//            $queryPrepared->bindValue(':id', $id, PDO::PARAM_INT);
-//
-//        }
-//    }
 
     public function deleteOne()
     {

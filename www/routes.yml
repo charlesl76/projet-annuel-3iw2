@@ -18,20 +18,22 @@
   controller: user
   action: register
 
-
 /dashboard:
   controller: admin
   action: dashboard
 
 /users:
   controller: admin
-  action: getuserslist
+  action: getUserList
 
-/user/delete:
-  controller: admin
-  action: deleteUserById
+/users/{id}:
+  controller: user
+  action: show
 
-/user/update:
-  controller: admin
-  action: updateUserForm
+/users/{id}/delete:
+  controller: user
+  action: delete
 
+/users/{id}/update:
+  controller: user
+  action: update

@@ -290,43 +290,53 @@ class User extends BaseSQL
         return [
             "config"=>[
                 "method"=>"POST",
-                "action"=>"",
+                "action"=>"/users/".$user->getId()."/update",
                 "submit"=>"Update"
             ],
             "inputs"=>[
+                "id"=>[
+                    "type"=>"hidden",
+                    "id"=>"id",
+                    "class"=>"id",
+                    "value"=>$user->getId()
+                ],
                 "username"=>[
                     "type"=>"text",
-                    "id"=>"usernameUpdate",
-                    "class"=>"usernameUpdate",
+                    "placeholder"=>"Nom d'utilisateur",
+                    "id"=>"username",
+                    "class"=>"username",
                     "min"=>2,
                     "max"=>50,
                     "unicity"=>true,
                     "required"=>true,
-                    "value"=>$user->getFirstName()
+                    "value"=>$user->getUsername()
                 ],
                 "firstname"=>[
                     "type"=>"text",
-                    "id"=>"firstnameUpdate",
-                    "firstname"=>"firstnameUpdate",
+                    "placeholder"=>"Prénom",
+                    "id"=>"firstname",
+                    "class"=>"firstname",
                     "min"=>2,
                     "max"=>50,
                     "required"=>true,
-                    "value"=>$user->getUsername()
+                    "value"=>$user->getFirstName()
                 ],
                 "lastname"=>[
                     "type"=>"text",
-                    "id"=>"lastnameUpdate",
-                    "firstname"=>"lastnameUpdate",
+                    "placeholder"=>"Nom",
+                    "id"=>"lastname",
+                    "class"=>"firstname",
                     "min"=>2,
                     "max"=>100,
                     "required"=>true,
                     "value"=>$user->getLastName()
                 ],
-                "select"=>[
+                "role"=>[
                     "type"=>"select",
+                    "placeholder"=>"Rôle",
                     "name"=>"roles",
-                    "id"=>"roleUpdate",
-                    "class"=>"roleUpdate",
+                    "id"=>"role",
+                    "class"=>"role",
                     "roles"=>[
                         0=>[
                             "name"=>"user",
@@ -347,6 +357,11 @@ class User extends BaseSQL
                 ]
             ]
         ];
+    }
+
+    public function save()
+    {
+        parent::save();
     }
 
 }

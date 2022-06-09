@@ -14,12 +14,10 @@
                 <td><?php echo $user['last_name']; ?> </td>
                 <td><?php echo $user['role']; ?> </td>
                 <td>
-                    <form action="/user/update" method="post">
-                        <input type="hidden" name="id" value="<?= $user['id']?>">
-                        <input type="submit" value="Update">
-                    </form>
+                    <a href="/users/<?= $user['id'] ?>">Update</a>
                 </td>
-                <td><form action="/user/delete" method="post">
+                <td>
+                    <form action="/users/<?= $user['id']?>/delete" method="post">
                         <input type="hidden" name="id" value="<?= $user['id']?>">
                         <input type="submit" value="Delete">
                     </form>

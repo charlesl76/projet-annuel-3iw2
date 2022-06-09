@@ -18,7 +18,7 @@ class Admin
 
     }
 
-    public function getUsersList()
+    public function getUserList()
     {
         $users = new UserModel();
 
@@ -28,32 +28,5 @@ class Admin
         $view->assign("users", $usersList);
 
     }
-
-
-    public function deleteUserById()
-    {
-        $user =new UserModel();
-
-        $user->deleteOne();
-
-        header("Location: /users");
-    }
-
-
-    public function updateUserForm()
-    {
-        $user = new UserModel();
-        $userById = $user->setId($_POST['id']);
-
-        if(!empty($userById)){
-           $form = $user->getFormUpdate($userById);
-        }else {
-            //redirect
-            header("Location: /users");
-        }
-        $view = new View("update", "back");
-        $view->assign("form",$form);
-    }
-
 
 }
