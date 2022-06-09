@@ -2,3 +2,5 @@
 .vscode
 .DS_Store
 db_data
+/db_data
+/db_data/*

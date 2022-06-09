@@ -22,3 +22,16 @@
 /dashboard:
   controller: admin
   action: dashboard
+
+/users:
+  controller: admin
+  action: getuserslist
+
+/user/delete:
+  controller: admin
+  action: deleteUserById
+
+/user/update:
+  controller: admin
+  action: updateUserForm
+
