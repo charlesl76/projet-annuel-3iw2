@@ -2,12 +2,13 @@
 
 namespace App\Model;
 
+use FFI\Exception;
 use App\Core\BaseSQL;
+use DateTime;
 
 class Post extends BaseSQL
 {
 
-    protected $id;
     protected $author;
     protected $date;
     protected $date_gmt;
@@ -122,18 +123,17 @@ class Post extends BaseSQL
         $this->excerpt = $this->setExcerpt($data["title"]);
         $this->content = $data["content"];
         $this->comment_status = $data["comment_status"];
-        $this->date = $this->setDate(time());
-        $this->date_gmt = $this->setDate_gmt(time());
+        $this->date = $this->setDate();
+        $this->date_gmt = $this->setDate_gmt();
         $this->status = 1;
         $this->post_parent = 0;
         $this->post_type = "page";
         $this->comment_count = 0;
 
-        echo '<pre>';
-        var_dump($this);
-        echo '</pre>';
+        $this->save();
         
     }
+
 
     /**
      * Get the value of author
@@ -174,11 +174,11 @@ class Post extends BaseSQL
      *
      * @return  self
      */
-    public function setDate($date)
+    public function setDate()
     {
-        $this->date = $date;
+        $this->date = date("Y-m-d H:i:s");
 
-        return $this;
+        return $this->date;
     }
 
     /**
@@ -194,11 +194,11 @@ class Post extends BaseSQL
      *
      * @return  self
      */
-    public function setDate_gmt($date_gmt)
+    public function setDate_gmt()
     {
-        $this->date_gmt = $date_gmt;
+        $this->date_gmt = date("Y-m-d H:i:s");
 
-        return $this;
+        return $this->date_gmt;
     }
 
     /**
@@ -254,15 +254,16 @@ class Post extends BaseSQL
      *
      * @return  self
      */
-    public function setExcerpt($excerpt)
+    public function setExcerpt()
     {
-        $this->excerpt = $excerpt;
+
+        $excerpt = $this->title;
 
         $excerpt = explode(" ", $excerpt);
         // lowercase and add union between words
         $excerpt = strtolower(implode("-", $excerpt));
 
-        return $this;
+        return $excerpt;
     }
 
     /**

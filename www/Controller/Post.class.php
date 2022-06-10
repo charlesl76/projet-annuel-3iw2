@@ -28,12 +28,15 @@ class Post
 
         $validator = new Validator();
 
-        if( !empty($_POST) && $_POST['input'] == "page"){
+        if (!empty($_POST) && $_POST['input'] == "page") {
             $result = $validator::checkPost($page->getFormPages(), $_POST);
-            
-            if(empty($result)){
-                if($_POST["type"] == "add"){
+
+            if (empty($result)) {
+                if ($_POST["type"] == "add") {
                     $page->createPage($_POST);
+
+                    unset($_POST);
+                    header('location: pages');
                 }
             } else {
                 print_r($result);

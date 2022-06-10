@@ -60,7 +60,6 @@ abstract class BaseSQL
 
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute( $columns );
-
     }
 
     public function findAll()

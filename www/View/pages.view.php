@@ -5,6 +5,7 @@
 if (isset($_POST['action']) && $_POST['action'] !== null) :
     switch ($_POST['action']):
         case 'create':
+            $view->create = 'create';
             $view->includePartial("form", $page->getFormPages());
             break;
         case 'update':

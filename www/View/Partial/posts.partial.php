@@ -3,8 +3,6 @@
         <input type="submit" value="Create">
     </form>
 
-    <?php var_dump($_POST); ?>
-
     <table id="myTable" class="display">
         <thead>
             <tr>
