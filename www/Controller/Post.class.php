@@ -22,6 +22,21 @@ class Post
         return $page;
     }
 
+    public function showPage(array $params)
+    {
+        $post = new PostModel();
+        $postById = $post->setId($params['id']);
+        $action = "update";
+
+        if (!empty($postById)) {
+                $view = new View("pages", "back");
+                $view->assign("action", $action);
+                $view->assign("postById", $postById);
+                $view->assign("page", $post);
+                $view->assign("view", $view);
+        } else header("Location: /pages");
+    }
+
     public function postCheck()
     {
         $page = new PostModel();

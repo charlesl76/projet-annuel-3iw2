@@ -115,6 +115,76 @@ class Post extends BaseSQL
         ];
     }
 
+    public function getFormUpdatePages(Post $post)
+    {
+        return [
+            "config" => [
+                "method" => "POST",
+                "action" => "/pages/" . $post->getId() . "/update",
+                "submit" => "Update",
+            ],
+            "inputs" => [
+                "id" => [
+                    "type" => "hidden",
+                    "id" => "id",
+                    "class" => "id",
+                    "placeholder" => "id",
+                    "value" => $post->getId(),
+                ],
+                "author" => [
+                    "type" => "text",
+                    "placeholder" => "Author name",
+                    "id" => "author",
+                    "class" => "inputAuthor",
+                    "required" => true,
+                    "error" => "Author name is required",
+                    "unicity" => false,
+                    "required" => true,
+                    "value" => $post->getAuthor(),
+                ],
+                "title" => [
+                    "type" => "text",
+                    "placeholder" => "Title",
+                    "id" => "title",
+                    "class" => "inputTitle",
+                    "required" => true,
+                    "error" => "Title is required",
+                    "value" => $post->getTitle(),
+                ],
+                "comment_status" => [
+                    "type" => "select",
+                    "placeholder" => "Comment status",
+                    "id" => "comment_status",
+                    "class" => "inputCommentStatus",
+                    // Voir comment faire un selected:selected pour le getStatus()
+                    "status" => [
+                        -1 => [
+                            "id" => "-1",
+                            "name" => "Blocked",
+                        ],
+                        0 => [
+                            "id" => "0",
+                            "name" => "On approbation"
+                        ],
+                        1 => [
+                            "id" => "1",
+                            "name" => "Open"
+                        ]
+                    ],
+                ],
+                "content" => [
+                    "type" => "textarea",
+                    "id" => "textPage",
+                    "class" => "inputText",
+                    "required" => true,
+                    "error" => "Content is required",
+                    "value" => $post->getContent(),
+                ],
+            ]
+
+        ];
+    }
+
     public function createPage($data)
     {
 
@@ -131,7 +201,6 @@ class Post extends BaseSQL
         $this->comment_count = 0;
 
         $this->save();
-        
     }
 
 
@@ -383,7 +452,7 @@ class Post extends BaseSQL
     {
         $this->post_type = $post_type;
 
-        return $this;
+        return $this->post_type;
     }
 
     /**

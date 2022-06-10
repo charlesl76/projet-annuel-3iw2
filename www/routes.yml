@@ -26,6 +26,10 @@
   controller: post
   action: pages
 
+/pages/{id}:
+  controller: post
+  action: showPage
+
 /post-check:
   controller: post
   action: postCheck

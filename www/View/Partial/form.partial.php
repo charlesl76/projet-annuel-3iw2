@@ -21,15 +21,37 @@
             elseif ($input["type"] == "textarea") : ?>
 <textarea name="<?= $name ?>" id="<?= $input["id"] ?>" class="<?= $input["class"] ?? "" ?>"></textarea>
 <script>
+
     tinymce.init({
         selector: 'textarea',
         plugins: 'advlist autolink lists link image charmap preview anchor pagebreak',
         toolbar_mode: 'floating',
+        <?php
+                if ($input["type"] == "textarea") :
+                    if (strpos($config["config"]["action"], 'update') !== false) :
+        ?>
+                init_instance_callback: "insert_contents",
+                // Problème ici avec le insert_contents, comment mettre une valeur par défaut au textarea ?
+        <?php endif;
+                endif;
+        ?>
     });
+
+    <?php
+                if ($input["type"] == "textarea") :
+                    if (strpos($config["config"]["action"], 'update') !== false) :
+    ?>
+
+            function insert_contents(inst) {
+                tinymce.activeEditor.setContent('<strong>Some contents</strong>');
+            }
+    <?php endif;
+                endif;
+    ?>
 </script>
 <?php
             else : ?>
-    <input name="<?= $name ?>" id="<?= $input["id"] ?>" type="<?= $input["type"] ?>" class="<?= $input["class"] ?>" <?= !empty($input["value"]) ? " value=\"". $input["value"] . "\" " : " " ?> placeholder="<?= $input["placeholder"] ?>" <?= (!empty($input["hidden"])) ? 'hidden="hidden"' : '' ?> <?= (!empty($input["required"])) ? 'required="required"' : '' ?>>
+    <input name="<?= $name ?>" id="<?= $input["id"] ?>" type="<?= $input["type"] ?>" class="<?= $input["class"] ?>" <?= !empty($input["value"]) ? " value=\"" . $input["value"] . "\" " : " " ?> placeholder="<?= $input["placeholder"] ?>" <?= (!empty($input["hidden"])) ? 'hidden="hidden"' : '' ?> <?= (!empty($input["required"])) ? 'required="required"' : '' ?>>
     <br>
 <?php endif;
         endforeach; ?>
