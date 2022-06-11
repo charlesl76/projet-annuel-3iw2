@@ -21,7 +21,6 @@
             elseif ($input["type"] == "textarea") : ?>
 <textarea name="<?= $name ?>" id="<?= $input["id"] ?>" class="<?= $input["class"] ?? "" ?>"></textarea>
 <script>
-
     tinymce.init({
         selector: 'textarea',
         plugins: 'advlist autolink lists link image charmap preview anchor pagebreak',
@@ -29,25 +28,20 @@
         <?php
                 if ($input["type"] == "textarea") :
                     if (strpos($config["config"]["action"], 'update') !== false) :
-        ?>
-                init_instance_callback: "insert_contents",
-                // Problème ici avec le insert_contents, comment mettre une valeur par défaut au textarea ?
+    ?>
+        setup: function(editor) {
+            editor.on('init', function(e) {
+                let content = `<?= utf8_encode($input["value"]) ?>`;
+                editor.setContent(content);
+            });
+        },
         <?php endif;
                 endif;
-        ?>
+    ?>
     });
 
-    <?php
-                if ($input["type"] == "textarea") :
-                    if (strpos($config["config"]["action"], 'update') !== false) :
-    ?>
+    
 
-            function insert_contents(inst) {
-                tinymce.activeEditor.setContent('<strong>Some contents</strong>');
-            }
-    <?php endif;
-                endif;
-    ?>
 </script>
 <?php
             else : ?>

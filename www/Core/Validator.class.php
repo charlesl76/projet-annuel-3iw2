@@ -42,16 +42,34 @@ class Validator
     {
         $result = [];
 
-        if (!empty($data["input"]) && $data["input"] == "page" && $data["type"] == "add") {
-            if (!isset($data["author"]) || empty($data["author"])) {
-                $result["input"] = "Do not forget to fill the author in the form";
-            }
-            if (!isset($data["title"]) || empty($data["title"])) {
-                $result["input"] = "Do not forget to fill the title in the form";
-            }
-            if (!isset($data["content"]) || empty($data["content"])) {
-                $result["input"] = "Do not forget to fill the content in the form";
-            }
+        if (!empty($data["input"]) && $data["input"] == "page") {
+            switch ($data["type"]):
+                case "add":
+                    if (!isset($data["author"]) || empty($data["author"])) {
+                        $result["input"] = "Do not forget to fill the author in the form";
+                    }
+                    if (!isset($data["title"]) || empty($data["title"])) {
+                        $result["input"] = "Do not forget to fill the title in the form";
+                    }
+                    if (!isset($data["content"]) || empty($data["content"])) {
+                        $result["input"] = "Do not forget to fill the content in the form";
+                    }
+                    break;
+                case "update":
+                    if (!isset($data["author"]) || empty($data["author"])) {
+                        $result["input"] = "Do not forget to fill the author in the form";
+                    }
+                    if (!isset($data["title"]) || empty($data["title"])) {
+                        $result["input"] = "Do not forget to fill the title in the form";
+                    }
+                    if (!isset($data["content"]) || empty($data["content"])) {
+                        $result["input"] = "Do not forget to fill the content in the form";
+                    }
+                    break;
+                case "delete":
+                    return $result;
+                    break;
+            endswitch;
         } else {
             $result[] = "Fatal error, no input specified in the form";
         }

@@ -29,11 +29,11 @@ class Post
         $action = "update";
 
         if (!empty($postById)) {
-                $view = new View("pages", "back");
-                $view->assign("action", $action);
-                $view->assign("postById", $postById);
-                $view->assign("page", $post);
-                $view->assign("view", $view);
+            $view = new View("pages", "back");
+            $view->assign("action", $action);
+            $view->assign("postById", $postById);
+            $view->assign("page", $post);
+            $view->assign("view", $view);
         } else header("Location: /pages");
     }
 
@@ -43,16 +43,29 @@ class Post
 
         $validator = new Validator();
 
+        var_dump($_POST);
+
         if (!empty($_POST) && $_POST['input'] == "page") {
             $result = $validator::checkPost($page->getFormPages(), $_POST);
 
             if (empty($result)) {
-                if ($_POST["type"] == "add") {
-                    $page->createPage($_POST);
-
-                    unset($_POST);
-                    header('location: pages');
-                }
+                switch ($_POST["type"]):
+                    case "add":
+                        $page->createPage($_POST);
+                        unset($_POST);
+                        header('location: /pages');
+                        break;
+                    case "update":
+                        $page->updatePage($_POST);
+                        unset($_POST);
+                        header('location: /pages');
+                        break;
+                    case "delete":
+                        $page->deletePage();
+                        unset($_POST);
+                        header('location: /pages');
+                        break;
+                endswitch;
             } else {
                 print_r($result);
             }

@@ -30,6 +30,14 @@
   controller: post
   action: showPage
 
+/pages/{id}/update:
+  controller: post
+  action: postCheck
+
+/pages/{id}/delete:
+  controller: post
+  action: postCheck
+
 /post-check:
   controller: post
   action: postCheck

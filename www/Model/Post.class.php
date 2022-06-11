@@ -124,6 +124,24 @@ class Post extends BaseSQL
                 "submit" => "Update",
             ],
             "inputs" => [
+                "input" => [
+                    "type" => "text",
+                    "id" => "input",
+                    "class" => "form-control",
+                    "name" => "input",
+                    "placeholder" => "input",
+                    "value" => "page",
+                    "hidden" => true,
+                ],
+                "type" => [
+                    "type" => "text",
+                    "id" => "type",
+                    "class" => "form-control",
+                    "name" => "update",
+                    "placeholder" => "update",
+                    "value" => "update",
+                    "hidden" => true,
+                ],
                 "id" => [
                     "type" => "hidden",
                     "id" => "id",
@@ -201,6 +219,27 @@ class Post extends BaseSQL
         $this->comment_count = 0;
 
         $this->save();
+    }
+
+    public function updatePage($data)
+    {
+        $this->id = $data["id"];
+        $this->author = 1;
+        $this->title = $data["title"];
+        $this->excerpt = $this->setExcerpt($data["title"]);
+        $this->content = $data["content"];
+        $this->comment_status = $data["comment_status"];
+        $this->status = 1;
+        $this->post_parent = 0;
+        $this->post_type = "page";
+        $this->comment_count = 0;
+
+        $this->save();
+    }
+
+    public function deletePage()
+    {
+        $this->deleteOne();
     }
 
 
@@ -370,8 +409,13 @@ class Post extends BaseSQL
      */
     public function setComment_status($comment_status)
     {
-        $this->comment_status = $comment_status;
 
+        if($comment_status == 0){
+            $this->comment_status = (int) 0;
+        } else {
+            $this->comment_status = $comment_status;
+        }
+        
         return $this;
     }
 

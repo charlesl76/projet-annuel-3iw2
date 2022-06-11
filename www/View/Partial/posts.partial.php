@@ -3,8 +3,6 @@
     <input type="submit" value="Create">
 </form>
 
-<?php var_dump($_POST); ?>
-
 <table id="myTable" class="display">
     <thead>
         <tr>
@@ -26,14 +24,19 @@
                     <td><span class="material-symbols-outlined">
                             check_box_outline_blank
                         </span></td>
-                    <td><?= $entry["title"] ?></td>
+                    <td><a href="/pages/<?= $entry['id'] ?>"><?= $entry["title"] ?></a></td>
                     <td><?= $entry["author"] ?></td>
                     <td><?= $entry["comment_count"] ?></td>
                     <td>
                         <span><?= $entry["status"] ?></span>
                         <span><?= $entry["date"] ?></span>
                     </td>
-                    <td><a href="/pages/<?= $entry['id'] ?>">Update</a></td>
+                    <td><form action="/pages/<?= $entry['id']?>/delete" method="post" onsubmit="return confirm('Are you sure you want to delete this post, this action is unreversible?');">
+                        <input type="hidden" name="id" value="<?= $entry['id']?>">
+                        <input type="hidden" name="type" value="delete">
+                        <input type="hidden" name="input" value="page">
+                        <input type="submit" value="Delete">
+                    </form></td>
                 </tr>
         <?php
         endforeach;
@@ -46,7 +49,6 @@
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
 
 <script>
-    tinymce.activeEditor.setContent("<p>Hello world!</p>");
     $(document).ready(function() {
         $('#myTable').DataTable({
             "paging": false,
