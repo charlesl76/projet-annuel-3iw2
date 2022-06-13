@@ -39,7 +39,12 @@
                 endif;
     ?>
     });
-        <?php if($input["type"] == "select"):?>
+
+    
+
+</script>
+
+<?php if($input["type"] == "select"):?>
         <select name="<?=$name?>" id="<?=$input["id"]?>">
             <?php if ($input['countries']): ?>
                 <?php for($i = 0; $i < count($input["countries"]); $i++): ?>
@@ -56,23 +61,9 @@
                         </select>
                     <?php endif;
                     endfor; ?>
-            <?php endif ?>
+            <?php endif; ?>
 
-            <?php else: ?>
-                <input name="<?=$name?>"
-                       id="<?=$input["id"]??""?>"
-                       type="<?=$input["type"]??"text" ?>"
-                       class="<?=$input["class"]??""?>"
-                       placeholder="<?=$input["placeholder"]??""?>"
-                       value="<?=$input["value"]??""?>"
-                    <?= (!empty($input["required"]))?'required="required"':'' ?>
-                >
-                <br>
-        <?php endif; endforeach;?>
-
-    
-
-</script>
+        <?php endif;?>
 <?php
             else : ?>
     <input name="<?= $name ?>" id="<?= $input["id"] ?>" type="<?= $input["type"] ?>" class="<?= $input["class"] ?>" <?= !empty($input["value"]) ? " value=\"" . $input["value"] . "\" " : " " ?> placeholder="<?= $input["placeholder"] ?>" <?= (!empty($input["hidden"])) ? 'hidden="hidden"' : '' ?> <?= (!empty($input["required"])) ? 'required="required"' : '' ?>>

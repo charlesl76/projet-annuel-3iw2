@@ -237,9 +237,9 @@ class Post extends BaseSQL
         $this->save();
     }
 
-    public function deletePage()
+    public function deletePage($params)
     {
-        $this->deleteOne();
+        $this->deleteOne($params);
     }
 
 
