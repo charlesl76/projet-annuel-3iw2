@@ -22,6 +22,26 @@
   controller: admin
   action: dashboard
 
+/pages:
+  controller: post
+  action: pages
+
+/pages/{id}:
+  controller: post
+  action: showPage
+
+/pages/{id}/update:
+  controller: post
+  action: postCheck
+
+/pages/{id}/delete:
+  controller: post
+  action: postCheck
+
+/post-check:
+  controller: post
+  action: postCheck
+  
 /users:
   controller: admin
   action: getUserList

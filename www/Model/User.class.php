@@ -31,7 +31,6 @@ class User extends BaseSQL
         return $this->id;
     }
 
-
     /**
      * @return mixed
      */
