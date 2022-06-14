@@ -13,11 +13,12 @@ class Post
     {
 
         $page = new PostModel();
-
+        $active = "pages";
         $view = new View("pages", "back");
 
         $view->assign("page", $page);
         $view->assign("view", $view);
+        $view->assign("active", $active);
 
         return $page;
     }
@@ -40,14 +41,15 @@ class Post
     public function articles()
     {
 
-        $page = new PostModel();
+        $article = new PostModel();
+        $active = "articles";
+        $view = new View("articles", "back");
 
-        $view = new View("pages", "back");
-
-        $view->assign("page", $page);
+        $view->assign("article", $article);
         $view->assign("view", $view);
+        $view->assign("active", $active);
 
-        return $page;
+        return $article;
     }
 
     public function showArticles(array $params)

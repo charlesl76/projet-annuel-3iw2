@@ -33,10 +33,20 @@ class Post extends BaseSQL
 
     public function getAllPages()
     {
-        $this->pages = parent::findAll();
+        $params["post_type"] = "page";
+        $this->pages = parent::findAllBy($params);
         json_encode($this->pages);
 
         return $this->pages;
+    }
+
+    public function getAllArticles()
+    {
+        $params["post_type"] = "article";
+        $this->articles = parent::findAllBy($params);
+        json_encode($this->articles);
+
+        return $this->articles;
     }
 
     public function getFormPages()

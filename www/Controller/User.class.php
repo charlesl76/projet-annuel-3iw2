@@ -46,6 +46,7 @@ class User{
 
         if(!empty($userById)) {
             $form = $user->getFormUpdate($userById);
+            
             $view = new View("show", "back");
             $view->assign("form", $form);
         } else header("Location: /users");
