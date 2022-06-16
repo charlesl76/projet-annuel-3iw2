@@ -1,21 +1,3 @@
-<?php
-
-  $initial_url = $_SERVER['REQUEST_URI'];
-  $slashes_count = substr_count($initial_url, "/");
-  $final_url = "";
-
-  if ($slashes_count > 1) {
-    for ($i = 0; $i < $slashes_count; $i++) {
-      $final_url .= "../";
-    }
-
-    if (strstr($final_url, "//") != false) {
-      $final_url = str_replace("//", "/", $final_url);
-    }
-  }
-
-  ?>
-
 <!DOCTYPE html>
 <html lang="en">
 

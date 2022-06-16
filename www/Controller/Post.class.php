@@ -15,10 +15,12 @@ class Post
         $page = new PostModel();
         $active = "pages";
         $view = new View("pages", "back");
+        $final_url = $view->dynamicNav();   
 
         $view->assign("page", $page);
         $view->assign("view", $view);
         $view->assign("active", $active);
+        $view->assign("final_url", $final_url);
 
         return $page;
     }
@@ -27,6 +29,7 @@ class Post
     {
         $post = new PostModel();
         $postById = $post->setId($params['id']);
+        $active = "pages";
         $action = "update";
 
         if (!empty($postById)) {
@@ -35,6 +38,7 @@ class Post
             $view->assign("postById", $postById);
             $view->assign("page", $post);
             $view->assign("view", $view);
+            $view->assign("active", $active);
         } else header("Location: /pages");
     }
 
@@ -52,28 +56,29 @@ class Post
         return $article;
     }
 
-    public function showArticles(array $params)
+    public function showArticle(array $params)
     {
         $post = new PostModel();
         $postById = $post->setId($params['id']);
         $action = "update";
+        $active = "articles";
 
         if (!empty($postById)) {
-            $view = new View("pages", "back");
+            $view = new View("articles", "back");
             $view->assign("action", $action);
             $view->assign("postById", $postById);
-            $view->assign("page", $post);
+            $view->assign("article", $post);
             $view->assign("view", $view);
-        } else header("Location: /pages");
+            $view->assign("active", $active);
+        } else header("Location: /articles");
     }
 
     public function postCheck()
     {
         $page = new PostModel();
+        $article = new PostModel();
 
         $validator = new Validator();
-
-        var_dump($_POST);
 
         if (!empty($_POST) && $_POST['input'] == "page") {
             $result = $validator::checkPost($page->getFormPages(), $_POST);
@@ -94,6 +99,29 @@ class Post
                         $page->deletePage($page);
                         unset($_POST);
                         header('location: /pages');
+                        break;
+                endswitch;
+            } else {
+                print_r($result);
+            }
+        } elseif (!empty($_POST) && $_POST['input'] == "article") {
+            $result = $validator::checkPost($article->getFormArticles(), $_POST);
+            if (empty($result)) {
+                switch ($_POST["type"]):
+                    case "add":
+                        $article->createArticle($_POST);
+                        unset($_POST);
+                        header('location: /articles');
+                        break;
+                    case "update":
+                        $article->updateArticle($_POST);
+                        unset($_POST);
+                        header('location: /articles');
+                        break;
+                    case "delete":
+                        $article->deleteArticle($article);
+                        unset($_POST);
+                        header('location: /articles');
                         break;
                 endswitch;
             } else {
