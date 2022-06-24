@@ -61,7 +61,8 @@ class User{
                         //$session->set("error",$verification[0] );
                         $user->setFirstname($_POST["firstname"]);
 					    $user->setLastname($_POST["lastname"]);
-					    $user->setPassword(md5($_POST["password"]));
+                        $user->setPassword((password_hash($_POST["password"], PASSWORD_DEFAULT)));
+					    //$user->setPassword(($_POST["password"]));
 					    $user->setEmail($_POST["email"]);
                         $user->setRegistered_at(date('Y-m-d H:i:s'));
 					    $user->setUpdatedAt(date('Y-m-d H:i:s'));

@@ -4,6 +4,3 @@
 <?php
 $this->includePartial("form", $configFormRegister);
 ?>
-
-
-

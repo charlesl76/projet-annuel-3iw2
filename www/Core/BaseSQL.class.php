@@ -53,8 +53,25 @@ abstract class BaseSQL
             return false;
         }
     }
+<<<<<<< HEAD
 
     public function __set($attr, $value)
+=======
+
+    public function __set($attr, $value)
+    {
+        if (method_exists($this, 'customSet')) {
+            $this->data[$attr] = $this->customSet($attr, $value);
+        } else {
+            $this->data[$attr] = $value;
+        }
+
+        return $this;
+    }
+
+
+    public function save()
+>>>>>>> :wrench: Update User-Login
     {
         if (method_exists($this, 'customSet')) {
             $this->data[$attr] = $this->customSet($attr, $value);
@@ -210,7 +227,35 @@ abstract class BaseSQL
     {
         return $this->table;
     }
+
 }
+
+    public function verifieMailUnique() {
+		$column = array_diff_key(
+			get_object_vars($this),
+			get_class_vars(get_class())
+		);
+		$sql = $this->pdo->prepare("SELECT count(email) as nb FROM " . $this->table . " WHERE email = :email");
+
+		if ($sql->execute(['email' => $column["email"]])) {
+			$obj = $sql->fetch();
+			return $obj["nb"];
+		}
+
+		return false;
+	}
+
+
+    public function getTable(): string
+    {
+        return $this->table;
+    }
+
+   
+    public function setTable(string $table): void
+    {
+        $this->table = $table;
+    }
 
     public function login($data)
     {
@@ -232,13 +277,7 @@ abstract class BaseSQL
         $donnees1 = $reponse1->fetch();
          //var_dump($donnees1);
 
-
-        if (password_verify($_POST["password"], $donnees1[0])) {
-            $session = new Session();
-            $userManager = new UserModel();
-            $user = $user->getBy("email", $value);
-            $user->setId($donnees['id']);
-            $session->set("user", $donnees);
+        if(password_verify($_POST["password"], $donnees1[0])) {
             echo 'Password is valid!';
         } else {
             echo 'Invalid password.';
@@ -249,6 +288,7 @@ abstract class BaseSQL
 
     }
 
+<<<<<<< HEAD
    
     public function setTable(string $table): void
     {
@@ -261,3 +301,9 @@ abstract class BaseSQL
     }
 >>>>>>> :rocket: New structure for sitemap, to move to Controller? Replaced BaseSQL outdated request
 }
+=======
+    
+
+
+}
+>>>>>>> :wrench: Update User-Login
