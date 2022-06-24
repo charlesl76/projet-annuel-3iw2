@@ -407,6 +407,8 @@ class User extends BaseSQL
         ];
     }
 
+    
+
     public function save()
     {
         parent::save();
