@@ -1,13 +1,18 @@
 <?php
 
 namespace App\Core;
+use App\Core\BaseSQL;
 
 class Validator
 {
 
-    public static function run($config, $data): array
+    public static function checkForm($config, $data): array
     {
         $result = [];
+        //Le nb de inputs envoyés ?
+        $images = array_filter($config['inputs'], function($input) {
+            return $input["type"] === "file";
+        });
 
         if (count($data) != count($config["inputs"])) {
             $result[] = "Formulaire modifié par user";
@@ -75,17 +80,23 @@ class Validator
         }
 
         return $result;
+
     }
 
-    public static function checkPassword($pwd): bool
-    {
-        return strlen($pwd) >= 8 && strlen($pwd) <= 16
-            && preg_match("/[a-z]/i", $pwd, $result)
-            && preg_match("/[0-9]/", $pwd, $result);
-    }
 
     public static function checkEmail($email): bool
     {
-        return filter_var($email, FILTER_VALIDATE_EMAIL);
+       return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
+
+
+    public static function checkPassword($password): bool
+    {
+
+        return strlen($password)>=8
+            && preg_match("/[0-9]/", $password, $match)
+            && preg_match("/[a-z]/", $password, $match)
+            && preg_match("/[A-Z]/", $password, $match);
+    }
+    
 }

@@ -5,14 +5,26 @@ namespace App\Controller;
 use App\Core\BaseSQL;
 use App\Core\Validator;
 use App\Core\View;
+use App\Core\FormBuilder;
 use App\Model\User as UserModel;
 
 class User{
 
     public function login()
     {
-        $view = new View("Login");
-        $view->assign("titleSeo","Se connecter au site");
+        $user = new UserModel();
+
+        if (!empty($_POST)) {
+
+            $user->setEmail(htmlspecialchars($_POST["email"]));
+            $user->setPassword(htmlspecialchars($_POST["password"]));
+            $user->login(["email" => $_POST['email']]);
+
+        }
+
+        $view = new View("login");
+        $form = FormBuilder::render($user->getLoginForm());
+        $view->assign("form", $form);
     }
 
     public function logout()
