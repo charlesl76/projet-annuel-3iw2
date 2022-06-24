@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Core;
+use App\Model\User;
+use App\Model\User as UserModel;
 
 use PDO;
 
@@ -8,6 +10,8 @@ abstract class BaseSQL
 {
     private $pdo;
     private $table;
+    private $data = [];
+   
 
 
     public function __construct()
@@ -37,7 +41,32 @@ abstract class BaseSQL
         return $queryPrepared->fetchObject(get_called_class());
     }
 
-    protected function save()
+    public function __get($attr)
+    {
+        if (isset($this->data[$attr])) {
+            if (method_exists($this, 'customGet')) {
+                return $this->customGet($attr, $this->data[$attr]);
+            } else {
+                return $this->data[$attr];
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public function __set($attr, $value)
+    {
+        if (method_exists($this, 'customSet')) {
+            $this->data[$attr] = $this->customSet($attr, $value);
+        } else {
+            $this->data[$attr] = $value;
+        }
+
+        return $this;
+    }
+
+
+    public function save()
     {
 
         $columns = get_object_vars($this);
@@ -96,18 +125,6 @@ abstract class BaseSQL
         return $data;
     }
 
-    public function findAllBy(array $params): array
-    {
-        foreach ($params as $key => $value) {
-            $where[] = $key . "=:" . $key;
-        }
-        $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
-        // echo $sql;
-        // return true;
-        $queryPrepared = $this->pdo->prepare($sql);
-        $queryPrepared->execute($params);
-        return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
-    }
 
     public function findByColumn(array $columns, array $params): array
     {
@@ -127,13 +144,8 @@ abstract class BaseSQL
         return $data;
     }
 
-<<<<<<< HEAD
-    public function deleteOne()
-    {   
-=======
     public function deleteOne(array $params)
     {
->>>>>>> :rocket: New structure for sitemap, to move to Controller? Replaced BaseSQL outdated request
         if (isset($_POST['id']) && !empty($_POST['id'])) {
 
             $id = strip_tags($_POST['id']);
@@ -149,4 +161,34 @@ abstract class BaseSQL
             return $queryPrepared->fetch(PDO::FETCH_ASSOC);
         }
     }
+
+    public function verifieMailUnique() {
+		$column = array_diff_key(
+			get_object_vars($this),
+			get_class_vars(get_class())
+		);
+		$sql = $this->pdo->prepare("SELECT count(email) as nb FROM " . $this->table . " WHERE email = :email");
+
+		if ($sql->execute(['email' => $column["email"]])) {
+			$obj = $sql->fetch();
+			return $obj["nb"];
+		}
+
+		return false;
+	}
+
+
+    public function getTable(): string
+    {
+        return $this->table;
+    }
+
+   
+    public function setTable(string $table): void
+    {
+        $this->table = $table;
+    }
+    
+
+
 }

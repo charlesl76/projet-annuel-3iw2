@@ -71,4 +71,8 @@ class View
         extract($this->data);
         include "View/" . $this->template . ".tpl.php";
     }
+
+
+    
+
 }

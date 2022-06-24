@@ -30,5 +30,4 @@ class Admin
         $view->assign("active", $active);
 
     }
-
 }
