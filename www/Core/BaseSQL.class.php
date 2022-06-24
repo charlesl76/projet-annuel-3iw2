@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Core;
+use App\Model\User;
+use App\Model\User as UserModel;
 
 use PDO;
 
@@ -8,6 +10,8 @@ abstract class BaseSQL
 {
     private $pdo;
     private $table;
+    private $data = [];
+   
 
 
     public function __construct()
@@ -37,8 +41,32 @@ abstract class BaseSQL
         return $queryPrepared->fetchObject(get_called_class());
     }
 
+    public function __get($attr)
+    {
+        if (isset($this->data[$attr])) {
+            if (method_exists($this, 'customGet')) {
+                return $this->customGet($attr, $this->data[$attr]);
+            } else {
+                return $this->data[$attr];
+            }
+        } else {
+            return false;
+        }
+    }
 
-    protected function save()
+    public function __set($attr, $value)
+    {
+        if (method_exists($this, 'customSet')) {
+            $this->data[$attr] = $this->customSet($attr, $value);
+        } else {
+            $this->data[$attr] = $value;
+        }
+
+        return $this;
+    }
+
+
+    public function save()
     {
 
         $columns  = get_object_vars($this);
@@ -100,5 +128,36 @@ abstract class BaseSQL
         $queryPrepared->execute($params);
        return $queryPrepared->fetch(PDO::FETCH_ASSOC);
     }
+
+}
+
+    public function verifieMailUnique() {
+		$column = array_diff_key(
+			get_object_vars($this),
+			get_class_vars(get_class())
+		);
+		$sql = $this->pdo->prepare("SELECT count(email) as nb FROM " . $this->table . " WHERE email = :email");
+
+		if ($sql->execute(['email' => $column["email"]])) {
+			$obj = $sql->fetch();
+			return $obj["nb"];
+		}
+
+		return false;
+	}
+
+
+    public function getTable(): string
+    {
+        return $this->table;
+    }
+
+   
+    public function setTable(string $table): void
+    {
+        $this->table = $table;
+    }
+    
+
 
 }

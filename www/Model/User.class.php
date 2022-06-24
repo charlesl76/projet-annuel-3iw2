@@ -2,6 +2,7 @@
 namespace App\Model;
 
 use App\Core\BaseSQL;
+use App\Core\Routing;
 
 class User extends BaseSQL
 {
@@ -9,12 +10,17 @@ class User extends BaseSQL
     protected $id = null;
     protected $email;
     protected $password;
+    protected $username;
     protected $first_name;
     protected $last_name;
+    protected $role;
     protected $status = null;
     protected $token = null;
     protected $birth;
     protected $gender;
+    protected $registered_at;
+	protected $updated_at;
+	protected $activated;
 
     public function __construct()
     {
@@ -27,14 +33,6 @@ class User extends BaseSQL
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param null $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**
@@ -53,6 +51,8 @@ class User extends BaseSQL
         $this->email = $email;
     }
 
+    
+
     /**
      * @return mixed
      */
@@ -67,6 +67,22 @@ class User extends BaseSQL
     public function setPassword($password)
     {
         $this->password = $password;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param mixed $username
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
     }
 
     /**
@@ -99,6 +115,22 @@ class User extends BaseSQL
     public function setLastName($last_name)
     {
         $this->last_name = $last_name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * @param mixed $role
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
     }
 
     /**
@@ -165,6 +197,44 @@ class User extends BaseSQL
         $this->gender = $gender;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getRegistered_at()
+    {
+        return $this->registered_at;
+    }
+
+    /**
+     * @param mixed $registered_at
+     */
+    public function setRegistered_at($registered_at)
+    {
+        $this->registered_at = $registered_at;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updated_at;
+    }
+
+    /**
+     * @param mixed $updated_at
+     */
+    public function setUpdatedAt($updated_at)
+    {
+        $this->updated_at = $updated_at;
+    }
+
+    public function generateToken(): void
+    {
+        $bytes = random_bytes(128);
+        $this->token = substr(str_shuffle(bin2hex($bytes)), 0, 255);
+    }
+
     public function getFormRegister(): array
     {
         return [
@@ -174,38 +244,12 @@ class User extends BaseSQL
                 "submit"=>"S'inscrire"
             ],
             "inputs"=>[
-                "email"=>[
-                    "type"=>"email",
-                    "placeholder"=>"Votre email ...",
-                    "id"=>"emailRegister",
-                    "class"=>"inputRegister",
-                    "required"=>true,
-                    "error"=>"Email incorrect",
-                    "unicity"=>true,
-                    "errorUnicity"=>"Email existe déjà en bdd"
-                ],
-                "password"=>[
-                    "type"=>"password",
-                    "placeholder"=>"Votre mot de passe ...",
-                    "id"=>"pwdRegister",
-                    "class"=>"inputRegister",
-                    "required"=>true,
-                    "error"=>"Votre mot de passe doit faire entre 8 et 16 et contenir des chiffres et des lettres",
-                ],
-                "passwordConfirm"=>[
-                    "type"=>"password",
-                    "placeholder"=>"Confirmation ...",
-                    "id"=>"pwdConfirmRegister",
-                    "class"=>"inputRegister",
-                    "required"=>true,
-                    "confirm"=>"password",
-                    "error"=>"Votre mot de passe de confirmation ne correspond pas",
-                ],
                 "firstname"=>[
                     "type"=>"text",
                     "placeholder"=>"Prénom ...",
                     "id"=>"firstnameRegister",
                     "class"=>"inputRegister",
+                    "name" => "firstname",
                     "min"=>2,
                     "max"=>50,
                     "error"=>"Votre prénom n'est pas correct",
@@ -215,9 +259,40 @@ class User extends BaseSQL
                     "placeholder"=>"Nom ...",
                     "id"=>"lastnameRegister",
                     "class"=>"inputRegister",
+                    "name" => "lastname",
                     "min"=>2,
                     "max"=>100,
                     "error"=>"Votre nom n'est pas correct",
+                ],
+                "email"=>[
+                    "type"=>"email",
+                    "placeholder"=>"Votre email ...",
+                    "id"=>"emailRegister",
+                    "class"=>"inputRegister",
+                    "name" => "email",
+                    "required"=>true,
+                    "error"=>"Email incorrect",
+                    "unicity"=>true,
+                    "errorUnicity"=>"Email existe déjà en bdd",
+                ],
+                "password"=>[
+                    "type"=>"password",
+                    "placeholder"=>"Votre mot de passe ...",
+                    "id"=>"pwdRegister",
+                    "class"=>"inputRegister",
+                    "name" => "password",
+                    "required"=>true,
+                    "error"=>"Votre mot de passe doit faire entre 8 et 16 et contenir des chiffres et des lettres",
+                ],
+                "passwordConfirm"=>[
+                    "type"=>"password",
+                    "placeholder"=>"Veuillez confirmer votre nouveau mot de passe",
+                    "id"=>"pwdConfirmRegister",
+                    "class"=>"inputRegister",
+                    "name" => "passwordConfirm",
+                    "required"=>true,
+                    "confirm"=>"password",
+                    "error"=>"Votre mot de passe de confirmation ne correspond pas",
                 ],
                 "cgu"=>[
                     "type"=>"checkbox",
@@ -256,6 +331,85 @@ class User extends BaseSQL
             ]
 
         ];
+    }
+
+    public function getFormUpdate(User $user): array
+    {
+        return [
+            "config"=>[
+                "method"=>"POST",
+                "action"=>"/users/".$user->getId()."/update",
+                "submit"=>"Update"
+            ],
+            "inputs"=>[
+                "id"=>[
+                    "type"=>"hidden",
+                    "id"=>"id",
+                    "class"=>"id",
+                    "value"=>$user->getId()
+                ],
+                "username"=>[
+                    "type"=>"text",
+                    "placeholder"=>"Nom d'utilisateur",
+                    "id"=>"username",
+                    "class"=>"username",
+                    "min"=>2,
+                    "max"=>50,
+                    "unicity"=>true,
+                    "required"=>true,
+                    "value"=>$user->getUsername()
+                ],
+                "firstname"=>[
+                    "type"=>"text",
+                    "placeholder"=>"Prénom",
+                    "id"=>"firstname",
+                    "class"=>"firstname",
+                    "min"=>2,
+                    "max"=>50,
+                    "required"=>true,
+                    "value"=>$user->getFirstName()
+                ],
+                "lastname"=>[
+                    "type"=>"text",
+                    "placeholder"=>"Nom",
+                    "id"=>"lastname",
+                    "class"=>"firstname",
+                    "min"=>2,
+                    "max"=>100,
+                    "required"=>true,
+                    "value"=>$user->getLastName()
+                ],
+                "role"=>[
+                    "type"=>"select",
+                    "placeholder"=>"Rôle",
+                    "name"=>"roles",
+                    "id"=>"role",
+                    "class"=>"role",
+                    "roles"=>[
+                        0=>[
+                            "name"=>"user",
+                            "id"=>"user",
+                            "value"=>"user"
+                        ],
+                        1=>[
+                            "name"=>"admin",
+                            "id"=>"admin",
+                            "value"=>"admin"
+                        ],
+                        2=>[
+                            "name"=>"editor",
+                            "id"=>"editor",
+                            "value"=>"editor"
+                        ],
+                    ],
+                ]
+            ]
+        ];
+    }
+
+    public function save()
+    {
+        parent::save();
     }
 
 }

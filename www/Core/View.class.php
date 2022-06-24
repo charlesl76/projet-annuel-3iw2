@@ -49,4 +49,7 @@ class View
         include "View/".$this->template.".tpl.php";
     }
 
+
+    
+
 }

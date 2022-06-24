@@ -57,3 +57,7 @@
 /users/{id}/update:
   controller: user
   action: update
+
+/forgetPassword:
+  controller: user
+  action: forgetPassword

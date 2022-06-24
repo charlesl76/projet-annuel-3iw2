@@ -28,5 +28,4 @@ class Admin
         $view->assign("users", $usersList);
 
     }
-
 }
