@@ -6,5 +6,4 @@ $this->includePartial("form", $configFormRegister);
 ?>
 
 
-<!--todo-->
-<?php //$this->includePartial("form", $user->getFormLogin()) ?>
+
