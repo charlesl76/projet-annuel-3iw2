@@ -39,7 +39,8 @@ abstract class BaseSQL
 
     protected function save()
     {
-        $columns  = get_object_vars($this);
+
+        $columns = get_object_vars($this);
         $varsToExclude = get_class_vars(get_class());
         $columns = array_diff_key($columns, $varsToExclude);
         $columns = array_filter($columns);
@@ -84,6 +85,8 @@ abstract class BaseSQL
 
     public function findOneBy(array $params): array
     {
+        var_dump($params);
+
         foreach ($params as $key => $value) {
             $where[] = $key . "=:" . $key;
         }
@@ -95,24 +98,16 @@ abstract class BaseSQL
         return $queryPrepared->fetch(PDO::FETCH_ASSOC);
     }
 
-    //    public function updateUser()
-    //    {
-    //        if (isset($_GET['id']) && !empty($_GET['id'])) {
-    //
-    //            $id = strip_tags($_GET['id']);
-    //
-    //            $sql = "UPDATE `".DBPREFIXE."user` SET `username`=:username, `first_name`=:firstname, `last_name`=:lastname WHERE `id`=:id";
-    //
-    //            $queryPrepared = $this->pdo->prepare($sql);
-    //
-    //            $queryPrepared->bindValue(':username', $username, PDO::PARAM_STR);
-    //            $queryPrepared->bindValue(':firstname', $firstname, PDO::PARAM_STR);
-    //            $queryPrepared->bindValue(':nombre', $nombre, PDO::PARAM_INT);
-    //            $queryPrepared->bindValue(':id', $id, PDO::PARAM_INT);
-    //
-    //        }
-    //    }
-
+    public function findExcerpt(array $params): array
+    {
+        foreach ($params as $key => $value){
+            $where[] = $key . "=:" . $key;
+        }
+        $sql = "SELECT `excerpt` FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute($params);
+        return $queryPrepared->fetch(PDO::FETCH_ASSOC);
+    }
 
     public function deleteOne()
     {   
@@ -122,12 +117,16 @@ abstract class BaseSQL
 
             $sql = "DELETE FROM `" . $this->table . "` WHERE `id`=:id";
 
+            foreach ($params as $key => $value) {
+                $where[] = $key . "=:" . $key;
+            }
+            $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
             $queryPrepared = $this->pdo->prepare($sql);
-
-            $queryPrepared->bindValue(':id', $id, PDO::PARAM_INT);
-            $queryPrepared->execute(['id' => $id]);
-
-            return true;
+            $queryPrepared->execute($params);
+            return $queryPrepared->fetch(PDO::FETCH_ASSOC);
         }
+
     }
+
+
 }
