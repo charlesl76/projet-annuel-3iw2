@@ -1,7 +1,14 @@
-<form action="pages" method="POST">
+<form action="<?= $_SERVER['REQUEST_URI'] ?>" method="POST">
     <input type="text" value="create" name="action" hidden>
     <input type="submit" value="Create">
 </form>
+
+<?php
+// search in server uri for string after first slash
+$uri = $_SERVER['REQUEST_URI'];
+$uri = explode("/", $uri);
+$type = $uri[1];
+?>
 
 <table id="myTable" class="display">
     <thead>
@@ -9,35 +16,39 @@
             <th></th>
             <th>Title</th>
             <th>Author</th>
+            <?= $type == "articles" ? "<th>Tag</th>" : "" ?>
             <th>Comments</th>
             <th>Date</th>
             <th>Action</th>
         </tr>
     </thead>
     <tbody>
+
         <?php
         foreach ($config as $entry) :
             // var_dump($entry);
         ?>
-                <input type="text" value="<?= $entry["id"] ?>" name="update" hidden>
-                <tr>
-                    <td><span class="material-symbols-outlined">
-                            check_box_outline_blank
-                        </span></td>
-                    <td><a href="/pages/<?= $entry['id'] ?>"><?= $entry["title"] ?></a></td>
+            <input type="text" value="<?= $entry["id"] ?>" name="update" hidden>
+            <tr>
+                <td><span class="material-symbols-outlined">
+                        check_box_outline_blank
+                    </span></td>
+                <td><a href="<?= $entry['post_type'] . 's/' . $entry['id'] . '">' . $entry["title"] ?></a></td>
                     <td><?= $entry["author"] ?></td>
-                    <td><?= $entry["comment_count"] ?></td>
+                    <td><?= $entry["post_parent"] ?></td>
+                    <?= $entry['post_type'] == "article" ? "<td>" . $entry["comment_count"] . "</td>" : "" ?>
                     <td>
                         <span><?= $entry["status"] ?></span>
                         <span><?= $entry["date"] ?></span>
                     </td>
-                    <td><form action="/pages/<?= $entry['id']?>/delete" method="post" onsubmit="return confirm('Are you sure you want to delete this post, this action is unreversible?');">
-                        <input type="hidden" name="id" value="<?= $entry['id']?>">
+                    <td><form action=" <?= $entry['post_type'] ?>s/<?= $entry['id'] ?>/delete" method="post" onsubmit="return confirm('Are you sure you want to delete this post, this action is unreversible?');">
+                        <input type="hidden" name="id" value="<?= $entry['id'] ?>">
                         <input type="hidden" name="type" value="delete">
-                        <input type="hidden" name="input" value="page">
+                        <input type="hidden" name="input" value="<?= $entry['post_type'] ?>">
                         <input type="submit" value="Delete">
-                    </form></td>
-                </tr>
+                        </form>
+                </td>
+            </tr>
         <?php
         endforeach;
         ?>

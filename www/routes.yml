@@ -22,6 +22,8 @@
   controller: admin
   action: dashboard
 
+# Posts
+## Pages
 /pages:
   controller: post
   action: pages
@@ -35,6 +37,23 @@
   action: postCheck
 
 /pages/{id}/delete:
+  controller: post
+  action: postCheck
+
+## Articles
+/articles:
+  controller: post
+  action: articles
+
+/articles/{id}:
+  controller: post
+  action: showArticle
+
+/articles/{id}/update:
+  controller: post
+  action: postCheck
+
+/articles/{id}/delete:
   controller: post
   action: postCheck
 
