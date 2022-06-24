@@ -12,6 +12,7 @@ Looking to build your own sport-themed website? Sported is made for you! This in
 
 - [@charlesl76](https://www.github.com/charlesl76)
 - [@twiney94](https://www.github.com/twiney94)
+- [@douniaharag](https://www.github.com/douniaharag)
 - [@ayafgaier23](https://www.github.com/ayafgaier23)
 - [@linalexis](https://www.github.com/linalexis)
 
