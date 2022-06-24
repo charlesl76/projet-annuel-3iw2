@@ -31,6 +31,15 @@ class Post extends BaseSQL
         return $this->id;
     }
 
+    public function getAllPagesExcerpt()
+    {
+        $params['post_type'] = "page";
+        $this->pages = parent::findExcerpt($params);
+        json_encode($this->pages);
+
+        return $this;
+    }
+
     public function getAllPages()
     {
         $this->pages = parent::findAll();

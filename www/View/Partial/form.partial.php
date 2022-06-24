@@ -68,7 +68,7 @@
                     <?= (!empty($input["required"]))?'required="required"':'' ?>
                 >
                 <br>
-        <?php endif; endforeach;?>
+        <?php endif;?>
 
     
 

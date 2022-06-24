@@ -41,7 +41,7 @@ abstract class BaseSQL
     protected function save()
     {
 
-        $columns  = get_object_vars($this);
+        $columns = get_object_vars($this);
         $varsToExclude = get_class_vars(get_class());
         $columns = array_diff_key($columns, $varsToExclude);
         $columns = array_filter($columns);
@@ -60,10 +60,10 @@ abstract class BaseSQL
         $queryPrepared->execute($columns);
     }
 
-  
+
     public function findAll()
     {
-        $sql = "SELECT * FROM ".$this->table;
+        $sql = "SELECT * FROM " . $this->table;
 
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute();
@@ -74,11 +74,22 @@ abstract class BaseSQL
     public function findOneBy(array $params): array
     {
         var_dump($params);
-      
+
         foreach ($params as $key => $value) {
             $where[] = $key . "=:" . $key;
         }
         $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute($params);
+        return $queryPrepared->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function findExcerpt(array $params): array
+    {
+        foreach ($params as $key => $value){
+            $where[] = $key . "=:" . $key;
+        }
+        $sql = "SELECT `excerpt` FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
         return $queryPrepared->fetch(PDO::FETCH_ASSOC);
@@ -91,14 +102,17 @@ abstract class BaseSQL
             $id = strip_tags($_POST['id']);
 
             $sql = "DELETE FROM `" . $this->table . "` WHERE `id`=:id";
-          
-        foreach ($params as $key=>$value){
-            $where[] = $key."=:".$key;
+
+            foreach ($params as $key => $value) {
+                $where[] = $key . "=:" . $key;
+            }
+            $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+            $queryPrepared = $this->pdo->prepare($sql);
+            $queryPrepared->execute($params);
+            return $queryPrepared->fetch(PDO::FETCH_ASSOC);
         }
-        $sql = "SELECT * FROM ".$this->table." WHERE ".(implode(" AND ", $where));
-        $queryPrepared = $this->pdo->prepare($sql);
-        $queryPrepared->execute($params);
-       return $queryPrepared->fetch(PDO::FETCH_ASSOC);
+
     }
+
 
 }
