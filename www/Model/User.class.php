@@ -360,13 +360,12 @@ class User extends BaseSQL
 
     public function getUserByCredentials($user_cred)
     {
-        $user = $this->findByColumn(["email", "username"], ["email"=>$user_cred]);
-        if ($user) {
-            var_dump($user);
+        $user = $this->findByColumn(["email"], ["email"=>$user_cred]);
+        if (isset($user["email"])) {
             return $user;
         } else {
-            $user = $this->findOneBy(["username"=>$user_cred]);
-            if($user) {
+            $user = $this->findByColumn(["username"], ["username"=>$user_cred]);
+            if(isset($user["username"])) {
                 return $user;
             } else {
                 return false;
@@ -378,10 +377,13 @@ class User extends BaseSQL
     {
         if(isset($user_cred) && !empty($user_cred)){
             $user = $this->getUserByCredentials($user_cred);
-            if($user){
-                
+            if($user !== false){
+                // Il faut maintenant traiter l'envoi de mail
+                // var_dump($user);
                 return $user;
             } else {
+                echo "non";
+                // Renvoyer une erreur en cas de non trouvation
                 return "ça marche pas";
             }
         }
