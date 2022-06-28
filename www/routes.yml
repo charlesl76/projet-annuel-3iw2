@@ -22,6 +22,11 @@
   controller: admin
   action: dashboard
 
+
+/testmail:
+  controller: mail
+  action: mail
+
 # Posts
 ## Pages
 /pages:
@@ -76,3 +81,4 @@
 /users/{id}/update:
   controller: user
   action: update
+
