@@ -358,6 +358,53 @@ class User extends BaseSQL
         ];
     }
 
+    public function getUserByCredentials($user_cred)
+    {
+        $user = $this->findByColumn(["email", "username"], ["email"=>$user_cred]);
+        if ($user) {
+            var_dump($user);
+            return $user;
+        } else {
+            $user = $this->findOneBy(["username"=>$user_cred]);
+            if($user) {
+                return $user;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public function forgotPassword($user_cred)
+    {
+        if(isset($user_cred) && !empty($user_cred)){
+            $user = $this->getUserByCredentials($user_cred);
+            if($user){
+                
+                return $user;
+            } else {
+                return "ça marche pas";
+            }
+        }
+
+        if (isset($_POST['forgot'])) {
+            $email = $this->input->post('email');
+            $que = $this->db->query("select email,pass from user_data where email='$email'");
+            $row = $que->row();
+            $user_email = $row->email;
+            if ((!strcmp($email, $user_email))) {
+                $pass = $row->pass;
+                /*Mail Code*/
+                $to = $user_email;
+                $subject = "Password";
+                $txt = "Your password is $pass .";
+                $headers = "From: password@example.com" . "\r\n" .
+                    "CC: ifany@example.com";
+                mail($to, $subject, $txt, $headers);
+            }
+        }
+        $this->view->render('hello/forgot_pass');
+    }
+
     public function save()
     {
         parent::save();
