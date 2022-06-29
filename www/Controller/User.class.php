@@ -6,6 +6,7 @@ use App\Core\BaseSQL;
 use App\Core\Validator;
 use App\Core\View;
 use App\Model\User as UserModel;
+use App\Controller\Mail;
 
 class User
 {
@@ -19,11 +20,53 @@ class User
     public function forgotPassword()
     {
         $user = new UserModel();
+        $mail = new Mail();
 
         if (isset($_POST['user_cred']) && !empty($_POST['user_cred'])) {
 
-            $user->forgotPassword($_POST['user_cred']);
+            $data = $user->forgotPassword($_POST['user_cred']);
+            $body = "
+            <div class=\"container\">
+                <h1>Reset your password</h1>
+                <p>Hello " . $data["username"] . ", to reset your password, click the link below.</p>
+                <p><a href=\"http://" . $_SERVER['SERVER_NAME'] . "/r/" . $data['token'] . "\">Reset your password</a></p>
+                
+                <p>If you did not request a password reset, please ignore this email.</p>
+                <p class=\"signature\">Sitename.</p>      
+            </div>
 
+            <style>
+            .container {
+                border: 1px solid #d4d4d4;
+                border-radius: 5px;
+                padding: 10px;
+                margin: 0 auto;
+                width: 50%;
+                margin-top: 20px;
+                font: normal 14px/23px 'Helvetica', Arial, sans-serif;
+            }
+
+            h1 {
+                font-size: 18px;
+                font-weight: bold;
+                margin: 1em 0;
+            }
+
+            p {
+                margin: 0;
+            }
+
+            .signature {
+                font-size: 12px;
+                color: #999;
+                margin-top: 1em;
+            }
+            </style>
+
+            ";
+            echo $body;
+            $mail = $mail->sendMail($data["email"], "[Sitename] Reset password request", $body);
+            header("location: /forgot-password/1");
         } else {
 
             $view = new View("forgotpassword", "front");
@@ -31,6 +74,15 @@ class User
             $view->assign("titleSeo", "Forgot Password");
             $view->assign("final_url", $final_url);
         }
+    }
+
+    public function mailSent(array $params)
+    {
+        $view = new View("forgotpassword", "front");
+        $final_url = $view->dynamicNav();
+        $view->assign("success", $params["success"]);
+        $view->assign("titleSeo", "Forgot Password");
+        $view->assign("final_url", $final_url);
     }
 
     public function logout()

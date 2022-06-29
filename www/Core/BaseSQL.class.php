@@ -73,8 +73,6 @@ abstract class BaseSQL
 
     public function findOneBy(array $params): array
     {
-        var_dump($params);
-
         foreach ($params as $key => $value) {
             $where[] = $key . "=:" . $key;
         }

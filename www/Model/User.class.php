@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model;
 
 use App\Core\BaseSQL;
@@ -156,6 +157,7 @@ class User extends BaseSQL
      */
     public function setToken($token)
     {
+        $token = urlencode(base64_encode(openssl_random_pseudo_bytes(32)));
         $this->token = $token;
     }
 
@@ -194,88 +196,88 @@ class User extends BaseSQL
     public function getFormRegister(): array
     {
         return [
-            "config"=>[
-                "method"=>"POST",
-                "action"=>"",
-                "submit"=>"S'inscrire"
+            "config" => [
+                "method" => "POST",
+                "action" => "",
+                "submit" => "S'inscrire"
             ],
-            "inputs"=>[
-                "email"=>[
-                    "type"=>"email",
-                    "placeholder"=>"Votre email ...",
-                    "id"=>"emailRegister",
-                    "class"=>"inputRegister",
-                    "required"=>true,
-                    "error"=>"Email incorrect",
-                    "unicity"=>true,
-                    "errorUnicity"=>"Email existe déjà en bdd",
+            "inputs" => [
+                "email" => [
+                    "type" => "email",
+                    "placeholder" => "Votre email ...",
+                    "id" => "emailRegister",
+                    "class" => "inputRegister",
+                    "required" => true,
+                    "error" => "Email incorrect",
+                    "unicity" => true,
+                    "errorUnicity" => "Email existe déjà en bdd",
                 ],
-                "password"=>[
-                    "type"=>"password",
-                    "placeholder"=>"Votre mot de passe ...",
-                    "id"=>"pwdRegister",
-                    "class"=>"inputRegister",
-                    "required"=>true,
-                    "error"=>"Votre mot de passe doit faire entre 8 et 16 et contenir des chiffres et des lettres",
+                "password" => [
+                    "type" => "password",
+                    "placeholder" => "Votre mot de passe ...",
+                    "id" => "pwdRegister",
+                    "class" => "inputRegister",
+                    "required" => true,
+                    "error" => "Votre mot de passe doit faire entre 8 et 16 et contenir des chiffres et des lettres",
                 ],
-                "passwordConfirm"=>[
-                    "type"=>"password",
-                    "placeholder"=>"Confirmation ...",
-                    "id"=>"pwdConfirmRegister",
-                    "class"=>"inputRegister",
-                    "required"=>true,
-                    "confirm"=>"password",
-                    "error"=>"Votre mot de passe de confirmation ne correspond pas",
+                "passwordConfirm" => [
+                    "type" => "password",
+                    "placeholder" => "Confirmation ...",
+                    "id" => "pwdConfirmRegister",
+                    "class" => "inputRegister",
+                    "required" => true,
+                    "confirm" => "password",
+                    "error" => "Votre mot de passe de confirmation ne correspond pas",
                 ],
-                "firstname"=>[
-                    "type"=>"text",
-                    "placeholder"=>"Prénom ...",
-                    "id"=>"firstnameRegister",
-                    "class"=>"inputRegister",
-                    "min"=>2,
-                    "max"=>50,
-                    "error"=>"Votre prénom n'est pas correct",
+                "firstname" => [
+                    "type" => "text",
+                    "placeholder" => "Prénom ...",
+                    "id" => "firstnameRegister",
+                    "class" => "inputRegister",
+                    "min" => 2,
+                    "max" => 50,
+                    "error" => "Votre prénom n'est pas correct",
                 ],
-                "lastname"=>[
-                    "type"=>"text",
-                    "placeholder"=>"Nom ...",
-                    "id"=>"lastnameRegister",
-                    "class"=>"inputRegister",
-                    "min"=>2,
-                    "max"=>100,
-                    "error"=>"Votre nom n'est pas correct",
+                "lastname" => [
+                    "type" => "text",
+                    "placeholder" => "Nom ...",
+                    "id" => "lastnameRegister",
+                    "class" => "inputRegister",
+                    "min" => 2,
+                    "max" => 100,
+                    "error" => "Votre nom n'est pas correct",
                 ],
-                "cgu"=>[
-                    "type"=>"checkbox",
-                    "placeholder"=>"Acceptez-vous les CGU",
-                    "name"=>"cgu",
-                    "id"=>"cgu",
-                    "class"=>"cgu",
-                    "required"=>"true",
-                    "error"=>"Merci d'accepter les CGU afin de continuer",
+                "cgu" => [
+                    "type" => "checkbox",
+                    "placeholder" => "Acceptez-vous les CGU",
+                    "name" => "cgu",
+                    "id" => "cgu",
+                    "class" => "cgu",
+                    "required" => "true",
+                    "error" => "Merci d'accepter les CGU afin de continuer",
                 ],
-                "select"=>[
-                    "type"=>"select",
-                    "placeholder"=>"Sélectionnez votre pays",
-                    "name"=>"country",
-                    "id"=>"countryRegister",
-                    "class"=>"countryRegister",
-                    "countries"=>[
-                        0=>[
-                            "name"=>"France",
-                            "id"=>"fr"
+                "select" => [
+                    "type" => "select",
+                    "placeholder" => "Sélectionnez votre pays",
+                    "name" => "country",
+                    "id" => "countryRegister",
+                    "class" => "countryRegister",
+                    "countries" => [
+                        0 => [
+                            "name" => "France",
+                            "id" => "fr"
                         ],
-                        1=>[
-                            "name"=>"United Kingdom",
-                            "id"=>"uk"
+                        1 => [
+                            "name" => "United Kingdom",
+                            "id" => "uk"
                         ],
-                        2=>[
-                            "name"=>"Brazil",
-                            "id"=>"br"
+                        2 => [
+                            "name" => "Brazil",
+                            "id" => "br"
                         ],
-                        3=>[
-                            "name"=>"United States of America",
-                            "id"=>"usa"
+                        3 => [
+                            "name" => "United States of America",
+                            "id" => "usa"
                         ],
                     ],
                 ]
@@ -287,70 +289,70 @@ class User extends BaseSQL
     public function getFormUpdate(User $user): array
     {
         return [
-            "config"=>[
-                "method"=>"POST",
-                "action"=>"/users/".$user->getId()."/update",
-                "submit"=>"Update"
+            "config" => [
+                "method" => "POST",
+                "action" => "/users/" . $user->getId() . "/update",
+                "submit" => "Update"
             ],
-            "inputs"=>[
-                "id"=>[
-                    "type"=>"hidden",
-                    "id"=>"id",
-                    "class"=>"id",
-                    "value"=>$user->getId()
+            "inputs" => [
+                "id" => [
+                    "type" => "hidden",
+                    "id" => "id",
+                    "class" => "id",
+                    "value" => $user->getId()
                 ],
-                "username"=>[
-                    "type"=>"text",
-                    "placeholder"=>"Nom d'utilisateur",
-                    "id"=>"username",
-                    "class"=>"username",
-                    "min"=>2,
-                    "max"=>50,
-                    "unicity"=>true,
-                    "required"=>true,
-                    "value"=>$user->getUsername()
+                "username" => [
+                    "type" => "text",
+                    "placeholder" => "Nom d'utilisateur",
+                    "id" => "username",
+                    "class" => "username",
+                    "min" => 2,
+                    "max" => 50,
+                    "unicity" => true,
+                    "required" => true,
+                    "value" => $user->getUsername()
                 ],
-                "firstname"=>[
-                    "type"=>"text",
-                    "placeholder"=>"Prénom",
-                    "id"=>"firstname",
-                    "class"=>"firstname",
-                    "min"=>2,
-                    "max"=>50,
-                    "required"=>true,
-                    "value"=>$user->getFirstName()
+                "firstname" => [
+                    "type" => "text",
+                    "placeholder" => "Prénom",
+                    "id" => "firstname",
+                    "class" => "firstname",
+                    "min" => 2,
+                    "max" => 50,
+                    "required" => true,
+                    "value" => $user->getFirstName()
                 ],
-                "lastname"=>[
-                    "type"=>"text",
-                    "placeholder"=>"Nom",
-                    "id"=>"lastname",
-                    "class"=>"firstname",
-                    "min"=>2,
-                    "max"=>100,
-                    "required"=>true,
-                    "value"=>$user->getLastName()
+                "lastname" => [
+                    "type" => "text",
+                    "placeholder" => "Nom",
+                    "id" => "lastname",
+                    "class" => "firstname",
+                    "min" => 2,
+                    "max" => 100,
+                    "required" => true,
+                    "value" => $user->getLastName()
                 ],
-                "role"=>[
-                    "type"=>"select",
-                    "placeholder"=>"Rôle",
-                    "name"=>"roles",
-                    "id"=>"role",
-                    "class"=>"role",
-                    "roles"=>[
-                        0=>[
-                            "name"=>"user",
-                            "id"=>"user",
-                            "value"=>"user"
+                "role" => [
+                    "type" => "select",
+                    "placeholder" => "Rôle",
+                    "name" => "roles",
+                    "id" => "role",
+                    "class" => "role",
+                    "roles" => [
+                        0 => [
+                            "name" => "user",
+                            "id" => "user",
+                            "value" => "user"
                         ],
-                        1=>[
-                            "name"=>"admin",
-                            "id"=>"admin",
-                            "value"=>"admin"
+                        1 => [
+                            "name" => "admin",
+                            "id" => "admin",
+                            "value" => "admin"
                         ],
-                        2=>[
-                            "name"=>"editor",
-                            "id"=>"editor",
-                            "value"=>"editor"
+                        2 => [
+                            "name" => "editor",
+                            "id" => "editor",
+                            "value" => "editor"
                         ],
                     ],
                 ]
@@ -360,12 +362,12 @@ class User extends BaseSQL
 
     public function getUserByCredentials($user_cred)
     {
-        $user = $this->findByColumn(["email"], ["email"=>$user_cred]);
+        $user = $this->findByColumn(["email"], ["email" => $user_cred]);
         if (isset($user["email"])) {
             return $user;
         } else {
-            $user = $this->findByColumn(["username"], ["username"=>$user_cred]);
-            if(isset($user["username"])) {
+            $user = $this->findByColumn(["username"], ["username" => $user_cred]);
+            if (isset($user["username"])) {
                 return $user;
             } else {
                 return false;
@@ -373,13 +375,39 @@ class User extends BaseSQL
         }
     }
 
+    protected function forgotPasswordProcess(array $user)
+    {
+
+        if (isset($user["email"])) {
+            $user = $this->findByColumn(["id", "username", "activated", "blocked", "email"], ["email" => $user["email"]]);
+            if($user["activated"] == 1 && $user["blocked"] == 0){
+                $user_cred = new User;
+                $user_cred->id = $user["id"];
+                $user_cred->getId();
+                $token = null;
+                $user_cred->setToken($token);
+                $user_cred->save();
+                $data["email"] = $user["email"];
+                $data["username"] = $user["username"];
+                $data["token"] = $user_cred->getToken();
+                return $data;
+            }
+            return $user;
+        } elseif (isset($user["username"])) {
+            $user = $this->findByColumn(["id", "activated", "blocked"], ["username" => $user["username"]]);
+            return $user;
+        } else {
+            return false;
+        }
+    }
+
     public function forgotPassword($user_cred)
     {
-        if(isset($user_cred) && !empty($user_cred)){
+        if (isset($user_cred) && !empty($user_cred)) {
             $user = $this->getUserByCredentials($user_cred);
-            if($user !== false){
+            if ($user !== false) {
                 // Il faut maintenant traiter l'envoi de mail
-                // var_dump($user);
+                $user = $this->forgotPasswordProcess($user);
                 return $user;
             } else {
                 echo "non";
@@ -387,29 +415,10 @@ class User extends BaseSQL
                 return "ça marche pas";
             }
         }
-
-        if (isset($_POST['forgot'])) {
-            $email = $this->input->post('email');
-            $que = $this->db->query("select email,pass from user_data where email='$email'");
-            $row = $que->row();
-            $user_email = $row->email;
-            if ((!strcmp($email, $user_email))) {
-                $pass = $row->pass;
-                /*Mail Code*/
-                $to = $user_email;
-                $subject = "Password";
-                $txt = "Your password is $pass .";
-                $headers = "From: password@example.com" . "\r\n" .
-                    "CC: ifany@example.com";
-                mail($to, $subject, $txt, $headers);
-            }
-        }
-        $this->view->render('hello/forgot_pass');
     }
 
     public function save()
     {
         parent::save();
     }
-
 }
