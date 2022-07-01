@@ -14,9 +14,13 @@
   controller: user
   action: forgotPassword
 
-/forgot-password/{success}:
+/forgot-password/{id}:
   controller: user
   action: mailSent
+
+/forgot-password/r/{id}:
+  controller: user
+  action: tokenCheck
 
 /logout:
   controller: user

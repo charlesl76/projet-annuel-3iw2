@@ -1,4 +1,4 @@
-<?php if(!isset($success)) :?>
+<?php if (!isset($id)) : ?>
     <div class="container-forget-password">
         <img src="<?= $final_url ?>./dist/lock_password.svg" alt="forgot-password">
         <h3 class="header-box">Trouble logging in?</h3>
@@ -11,10 +11,14 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
-<?php elseif(isset($success) && $success == 1):?>
+<?php elseif (isset($id) && $id == 1) : ?>
 
     <p>
         An email has been sent to your email address with a link to reset your password.
     </p>
 
-<?php endif;?>
+<?php elseif (isset($id) && $id == 0) : ?>
+    <p>
+        Your account does not exist, is not activated or is blocked. <a href="mailto:admin@sported.site">Please contact the administrator</a>.
+    </p>
+<?php endif; ?>

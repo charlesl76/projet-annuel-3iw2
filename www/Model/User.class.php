@@ -360,7 +360,7 @@ class User extends BaseSQL
         ];
     }
 
-    public function getUserByCredentials($user_cred)
+    public function getUserByCredentials(string $user_cred)
     {
         $user = $this->findByColumn(["email"], ["email" => $user_cred]);
         if (isset($user["email"])) {
@@ -375,7 +375,7 @@ class User extends BaseSQL
         }
     }
 
-    protected function forgotPasswordProcess(array $user)
+    protected function forgotPasswordProcess(array $user):array
     {
 
         if (isset($user["email"])) {
@@ -391,29 +391,54 @@ class User extends BaseSQL
                 $data["username"] = $user["username"];
                 $data["token"] = $user_cred->getToken();
                 return $data;
+            } else {
+                $data["error"] = "Your account is not activated or is blocked. Please contact the administrator.";
+                return $data;
             }
-            return $user;
         } elseif (isset($user["username"])) {
-            $user = $this->findByColumn(["id", "activated", "blocked"], ["username" => $user["username"]]);
-            return $user;
+            $user = $this->findByColumn(["id", "username", "activated", "blocked", "email"], ["username" => $user["username"]]);
+            if($user["activated"] == 1 && $user["blocked"] == 0){
+                $user_cred = new User;
+                $user_cred->id = $user["id"];
+                $user_cred->getId();
+                $token = null;
+                $user_cred->setToken($token);
+                $user_cred->save();
+                $data["email"] = $user["email"];
+                $data["username"] = $user["username"];
+                $data["token"] = $user_cred->getToken();
+                return $data;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
     }
 
-    public function forgotPassword($user_cred)
+    public function forgotPassword(string $user_cred)
     {
         if (isset($user_cred) && !empty($user_cred)) {
             $user = $this->getUserByCredentials($user_cred);
             if ($user !== false) {
                 // Il faut maintenant traiter l'envoi de mail
-                $user = $this->forgotPasswordProcess($user);
-                return $user;
+                $data = $this->forgotPasswordProcess($user);
+                return $data;
             } else {
-                echo "non";
-                // Renvoyer une erreur en cas de non trouvation
-                return "ça marche pas";
+                return false;
             }
+        } else {
+            return false;
+        }
+    }
+
+    public function tokenCheck(string $token)
+    {
+        $user = $this->findByColumn(["token"], ["token" => $token]);
+        if (isset($user["token"])) {
+            return $user;
+        } else {
+            return false;
         }
     }
 
