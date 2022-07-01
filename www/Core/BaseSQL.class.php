@@ -53,7 +53,7 @@ abstract class BaseSQL
             $sql = "UPDATE " . $this->table . " SET " . implode(",", $setUpdate) . " WHERE id=" . $this->getId();
         } else {
             $sql = "INSERT INTO " . $this->table . " (" . implode(",", array_keys($columns)) . ")
-            VALUES (:" . implode(",:", array_keys($columns)) . ")";
+                    VALUES (:" . implode(",:", array_keys($columns)) . ")";
         }
 
         $queryPrepared = $this->pdo->prepare($sql);
@@ -73,29 +73,49 @@ abstract class BaseSQL
 
     public function findOneBy(array $params): array
     {
-        var_dump($params);
-
         foreach ($params as $key => $value) {
             $where[] = $key . "=:" . $key;
         }
         $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
-        return $queryPrepared->fetch(PDO::FETCH_ASSOC);
+        $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+        $data = empty($data) ? ["user" => false] : $data;
+        return $data;
     }
 
-    public function findExcerpt(array $params): array
+    public function findAllBy(array $params): array
     {
-        foreach ($params as $key => $value){
+        foreach ($params as $key => $value) {
             $where[] = $key . "=:" . $key;
         }
-        $sql = "SELECT `excerpt` FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+        $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+        // echo $sql;
+        // return true;
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
-        return $queryPrepared->fetch(PDO::FETCH_ASSOC);
+        return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function deleteOne()
+    public function findByColumn(array $columns, array $params): array
+    {
+        $select = $columns;
+
+        foreach ($params as $key => $value) {
+            $where[] = $key . "=:" . $key;
+        }
+
+        $sql = "SELECT " . implode(",", $select) . " FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+        // echo $sql;
+        // return true;
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute($params);
+        $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+        $data = empty($data) ? ["user" => false] : $data;
+        return $data;
+    }
+
+    public function deleteOne(array $params)
     {
         if (isset($_POST['id']) && !empty($_POST['id'])) {
 
@@ -111,8 +131,5 @@ abstract class BaseSQL
             $queryPrepared->execute($params);
             return $queryPrepared->fetch(PDO::FETCH_ASSOC);
         }
-
     }
-
-
 }
