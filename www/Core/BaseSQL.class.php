@@ -105,6 +105,7 @@ abstract class BaseSQL
             $where[] = $key . "=:" . $key;
         }
         $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+<<<<<<< HEAD
         // echo $sql;
         // return true;
         $queryPrepared = $this->pdo->prepare($sql);
@@ -113,11 +114,7 @@ abstract class BaseSQL
     }
 
     public function findOneBy(array $params): array
-    {
-        foreach ($params as $key => $value) {
-            $where[] = $key . "=:" . $key;
-        }
-        $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+=======
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
         $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
@@ -125,7 +122,29 @@ abstract class BaseSQL
         return $data;
     }
 
+    public function findAllBy(array $params): array
+>>>>>>> :rocket: New structure for sitemap, to move to Controller? Replaced BaseSQL outdated request
+    {
+        foreach ($params as $key => $value) {
+            $where[] = $key . "=:" . $key;
+        }
+        $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+        // echo $sql;
+        // return true;
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute($params);
+<<<<<<< HEAD
+        $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+        $data = empty($data) ? ["user" => false] : $data;
+        return $data;
+    }
 
+
+=======
+        return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+>>>>>>> :rocket: New structure for sitemap, to move to Controller? Replaced BaseSQL outdated request
     public function findByColumn(array $columns, array $params): array
     {
         $select = $columns;
@@ -139,7 +158,11 @@ abstract class BaseSQL
         // return true;
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
+<<<<<<< HEAD
         $data = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+=======
+        $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+>>>>>>> :rocket: New structure for sitemap, to move to Controller? Replaced BaseSQL outdated request
         $data = empty($data) ? ["user" => false] : $data;
         return $data;
     }
@@ -160,6 +183,7 @@ abstract class BaseSQL
             $queryPrepared->execute($params);
             return $queryPrepared->fetch(PDO::FETCH_ASSOC);
         }
+<<<<<<< HEAD
     }
 
     public function verifieMailUnique() {
@@ -191,4 +215,7 @@ abstract class BaseSQL
     
 
 
+=======
+    }
+>>>>>>> :rocket: New structure for sitemap, to move to Controller? Replaced BaseSQL outdated request
 }

@@ -2,6 +2,7 @@
 
 namespace App;
 
+
 require_once "conf.inc.php";
 require_once "Core/BaseSQL.class.php";
 require_once "Model/Post.class.php";
