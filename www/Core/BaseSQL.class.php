@@ -53,7 +53,7 @@ abstract class BaseSQL
             $sql = "UPDATE " . $this->table . " SET " . implode(",", $setUpdate) . " WHERE id=" . $this->getId();
         } else {
             $sql = "INSERT INTO " . $this->table . " (" . implode(",", array_keys($columns)) . ")
-            VALUES (:" . implode(",:", array_keys($columns)) . ")";
+                    VALUES (:" . implode(",:", array_keys($columns)) . ")";
         }
 
         $queryPrepared = $this->pdo->prepare($sql);
@@ -85,8 +85,19 @@ abstract class BaseSQL
 
     public function findOneBy(array $params): array
     {
-        var_dump($params);
+        foreach ($params as $key => $value) {
+            $where[] = $key . "=:" . $key;
+        }
+        $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute($params);
+        $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+        $data = empty($data) ? ["user" => false] : $data;
+        return $data;
+    }
 
+    public function findAllBy(array $params): array
+    {
         foreach ($params as $key => $value) {
             $where[] = $key . "=:" . $key;
         }
@@ -95,22 +106,34 @@ abstract class BaseSQL
         // return true;
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
-        return $queryPrepared->fetch(PDO::FETCH_ASSOC);
+        return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function findExcerpt(array $params): array
+    public function findByColumn(array $columns, array $params): array
     {
-        foreach ($params as $key => $value){
+        $select = $columns;
+
+        foreach ($params as $key => $value) {
             $where[] = $key . "=:" . $key;
         }
-        $sql = "SELECT `excerpt` FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+
+        $sql = "SELECT " . implode(",", $select) . " FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+        // echo $sql;
+        // return true;
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
-        return $queryPrepared->fetch(PDO::FETCH_ASSOC);
+        $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+        $data = empty($data) ? ["user" => false] : $data;
+        return $data;
     }
 
+<<<<<<< HEAD
     public function deleteOne()
     {   
+=======
+    public function deleteOne(array $params)
+    {
+>>>>>>> :rocket: New structure for sitemap, to move to Controller? Replaced BaseSQL outdated request
         if (isset($_POST['id']) && !empty($_POST['id'])) {
 
             $id = strip_tags($_POST['id']);
@@ -125,8 +148,5 @@ abstract class BaseSQL
             $queryPrepared->execute($params);
             return $queryPrepared->fetch(PDO::FETCH_ASSOC);
         }
-
     }
-
-
 }
