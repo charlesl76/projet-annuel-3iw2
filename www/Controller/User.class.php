@@ -39,4 +39,44 @@ class User{
         $view->assign("user",$user);
     }
 
+    public function show(array $params)
+    {
+        $user = new UserModel();
+        $userById = $user->setId($params['id']);
+        $active = "users";
+
+        if(!empty($userById)) {
+            $form = $user->getFormUpdate($userById);
+
+            $view = new View("show", "back");
+            $view->assign("form", $form);
+            $view->assign("active", $active);
+        } else header("Location: /users");
+    }
+
+    public function update()
+    {
+        $user = new UserModel();
+        $userById = $user->setId($_POST['id']);
+        if(empty($userById)) {
+            header("Location: /users");
+        } else {
+            $user = $user->setId($_POST['id']);
+            $user->setUsername($_POST['username']);
+            $user->setFirstName($_POST['firstname']);
+            $user->setLastName($_POST['lastname']);
+            $user->setRole($_POST['role']);
+            $user->save();
+            header("Location: /users/".$user->getId());
+        }
+    }
+
+    public function delete()
+    {
+        $user = new UserModel();
+        $user->deleteOne();
+
+        header("Location: /users");
+    }
+
 }
