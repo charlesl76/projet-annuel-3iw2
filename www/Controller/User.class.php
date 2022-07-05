@@ -43,11 +43,14 @@ class User{
     {
         $user = new UserModel();
         $userById = $user->setId($params['id']);
+        $active = "users";
 
         if(!empty($userById)) {
             $form = $user->getFormUpdate($userById);
+
             $view = new View("show", "back");
             $view->assign("form", $form);
+            $view->assign("active", $active);
         } else header("Location: /users");
     }
 

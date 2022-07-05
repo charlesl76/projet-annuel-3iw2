@@ -37,7 +37,6 @@ abstract class BaseSQL
         return $queryPrepared->fetchObject(get_called_class());
     }
 
-
     protected function save()
     {
 
@@ -45,6 +44,7 @@ abstract class BaseSQL
         $varsToExclude = get_class_vars(get_class());
         $columns = array_diff_key($columns, $varsToExclude);
         $columns = array_filter($columns);
+
 
         if (!is_null($this->getId())) {
             foreach ($columns as $key => $value) {
@@ -59,7 +59,6 @@ abstract class BaseSQL
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($columns);
     }
-
 
     public function findAll()
     {
@@ -77,6 +76,8 @@ abstract class BaseSQL
             $where[] = $key . "=:" . $key;
         }
         $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+        // echo $sql;
+        // return true;
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
         $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
