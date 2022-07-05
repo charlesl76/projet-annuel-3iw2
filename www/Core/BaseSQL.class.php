@@ -159,10 +159,14 @@ abstract class BaseSQL
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
 <<<<<<< HEAD
+<<<<<<< HEAD
         $data = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 =======
         $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
 >>>>>>> :rocket: New structure for sitemap, to move to Controller? Replaced BaseSQL outdated request
+=======
+        $data = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+>>>>>>> :sparkles: Completed sitemap.xml for articles/pages
         $data = empty($data) ? ["user" => false] : $data;
         return $data;
     }
