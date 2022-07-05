@@ -14,7 +14,7 @@ class Post extends BaseSQL
     protected $date_gmt;
     protected $content;
     protected $title;
-    protected $excerpt;
+    public $excerpt;
     protected $status;
     protected $comment_status;
     protected $post_modified;
@@ -33,11 +33,28 @@ class Post extends BaseSQL
 
     public function getAllPagesExcerpt()
     {
+        $columns[0] = "excerpt";
+        $columns[1] = "date_gmt";
+        $columns[2] = "post_modified_gmt";
         $params['post_type'] = "page";
-        $this->pages = parent::findExcerpt($params);
-        json_encode($this->pages);
+        $this->excerpt = parent::findByColumn($columns, $params);
+        
+        json_encode($this->excerpt);
 
-        return $this;
+        return $this->excerpt;
+    }
+
+    public function getAllArticlesExcerpt()
+    {
+        $columns[0] = "excerpt";
+        $columns[1] = "date_gmt";
+        $columns[2] = "post_modified_gmt";
+        $params['post_type'] = "article";
+        $this->excerpt = parent::findByColumn($columns, $params);
+        
+        json_encode($this->excerpt);
+
+        return $this->excerpt;
     }
 
     public function getAllPages()
@@ -419,12 +436,12 @@ class Post extends BaseSQL
     public function setComment_status($comment_status)
     {
 
-        if($comment_status == 0){
+        if ($comment_status == 0) {
             $this->comment_status = (int) 0;
         } else {
             $this->comment_status = $comment_status;
         }
-        
+
         return $this;
     }
 

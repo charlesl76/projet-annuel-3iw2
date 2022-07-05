@@ -6,6 +6,7 @@ use MongoDB\BSON\Regex;
 
 require "conf.inc.php";
 
+
 function myAutoloader($class)
 {
     //$class = App\Core\CleanWords

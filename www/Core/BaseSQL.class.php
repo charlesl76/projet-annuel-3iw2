@@ -110,7 +110,7 @@ abstract class BaseSQL
         // return true;
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
-        $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+        $data = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
         $data = empty($data) ? ["user" => false] : $data;
         return $data;
     }
