@@ -257,6 +257,7 @@ class Post extends BaseSQL
         ];
     }
 
+    // TODO : Modifier le getformtags avec les contraintes données -> form builder
     public function getFormTags()
     {
         return [
