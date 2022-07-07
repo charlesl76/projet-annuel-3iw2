@@ -8,7 +8,7 @@ class General{
 
     public function home()
     {
-        echo "Welcome";
+        $view = new View("index", "front");
     }
 
     public function contact()
@@ -16,5 +16,3 @@ class General{
         $view = new View("contact");
     }
 }
-
-
