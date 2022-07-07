@@ -75,6 +75,15 @@ class Post extends BaseSQL
         return $this->articles;
     }
 
+    public function getAllTags()
+    {
+        $params["post_type"] = "tag";
+        $this->tags = parent::findAllBy($params);
+        json_encode($this->tags);
+
+        return $this->tags;
+    }
+
     public function getFormPages()
     {
         return [
@@ -152,6 +161,103 @@ class Post extends BaseSQL
     }
 
     public function getFormArticles()
+    {
+        return [
+            "config" => [
+                "method" => "POST",
+                "action" => "post-check",
+                "submit" => "Create and publish",
+            ],
+            "inputs" => [
+                "input" => [
+                    "type" => "text",
+                    "id" => "input",
+                    "class" => "form-control",
+                    "name" => "input",
+                    "placeholder" => "input",
+                    "value" => "article",
+                    "hidden" => true,
+                ],
+                "type" => [
+                    "type" => "text",
+                    "id" => "type",
+                    "class" => "form-control",
+                    "name" => "add",
+                    "placeholder" => "add",
+                    "value" => "add",
+                    "hidden" => true,
+                ],
+                "author" => [
+                    "type" => "text",
+                    "placeholder" => "Author name",
+                    "id" => "author",
+                    "class" => "inputAuthor",
+                    "required" => true,
+                    "error" => "Author name is required",
+                    "unicity" => false
+                ],
+                "title" => [
+                    "type" => "text",
+                    "placeholder" => "Title",
+                    "id" => "title",
+                    "class" => "inputTitle",
+                    "required" => true,
+                    "error" => "Title is required",
+                ],
+                "comment_status" => [
+                    "type" => "select",
+                    "placeholder" => "Comment status",
+                    "id" => "comment_status",
+                    "class" => "inputCommentStatus",
+                    "status" => [
+                        -1 => [
+                            "id" => "-1",
+                            "name" => "Blocked",
+                        ],
+                        0 => [
+                            "id" => "0",
+                            "name" => "On approbation"
+                        ],
+                        1 => [
+                            "id" => "1",
+                            "name" => "Open"
+                        ]
+                    ],
+                ],
+                "post_parent" => [
+                    "type" => "select",
+                    "placeholder" => "Tag",
+                    "id" => "post_parent",
+                    "class" => "inputTag",
+                    // Voir comment faire un selected:selected pour le getStatus()
+                    "parent" => [
+                        0 => [
+                            "id" => "0",
+                            "name" => "None",
+                        ],
+                        1 => [
+                            "id" => "1",
+                            "name" => "Basketball"
+                        ],
+                        2 => [
+                            "id" => "2",
+                            "name" => "Soccer"
+                        ]
+                    ],
+                ],
+                "content" => [
+                    "type" => "textarea",
+                    "id" => "textPage",
+                    "class" => "inputText",
+                    "required" => true,
+                    "error" => "Content is required",
+                ],
+            ]
+
+        ];
+    }
+
+    public function getFormTags()
     {
         return [
             "config" => [

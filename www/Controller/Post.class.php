@@ -73,6 +73,37 @@ class Post
         } else header("Location: /articles");
     }
 
+    public function tags()
+    {
+
+        $tag = new PostModel();
+        $active = "tags";
+        $view = new View("tags", "back");
+
+        $view->assign("tag", $tag);
+        $view->assign("view", $view);
+        $view->assign("active", $active);
+
+        return $tag;
+    }
+
+    public function showTag(array $params)
+    {
+        $post = new PostModel();
+        $postById = $post->setId($params['id']);
+        $action = "update";
+        $active = "tags";
+
+        if (!empty($postById)) {
+            $view = new View("tags", "back");
+            $view->assign("action", $action);
+            $view->assign("postById", $postById);
+            $view->assign("article", $post);
+            $view->assign("view", $view);
+            $view->assign("active", $active);
+        } else header("Location: /tags");
+    }
+
     public function postCheck()
     {
         $page = new PostModel();
