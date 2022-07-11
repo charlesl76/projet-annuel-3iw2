@@ -6,12 +6,12 @@
                 <?php echo $form ?>
 
             <?php endif; ?>
-        </div>
+</div>
 
 
 <br />
 <div class="row">
-    <a href="/forgetPassword" id="mdp_oubli" class="tres-petit texte souligne-jaune">Mot de passe oubliée ?</a>
+    <a href="/forgetPwd" id="mdp_oubli" class="tres-petit texte souligne-jaune">Mot de passe oubliée ?</a>
 </div>
 <div class="row">
     <a href="/register" class="tres-petit texte souligne-bleu italic">Créer un compte</a>
@@ -20,3 +20,4 @@
 
         
     </div>
+

@@ -61,7 +61,8 @@ class User{
                         //$session->set("error",$verification[0] );
                         $user->setFirstname($_POST["firstname"]);
 					    $user->setLastname($_POST["lastname"]);
-					    $user->setPassword(md5($_POST["password"]));
+                        $user->setPassword((password_hash($_POST["password"], PASSWORD_DEFAULT)));
+					    //$user->setPassword(($_POST["password"]));
 					    $user->setEmail($_POST["email"]);
                         $user->setRegistered_at(date('Y-m-d H:i:s'));
 					    $user->setUpdatedAt(date('Y-m-d H:i:s'));
@@ -114,33 +115,7 @@ class User{
         $view->assign("form", $form);
     }
 
-
     
-
-    public function forgetPassword()
-    {
-        $user = new UserModel();
-        $configForm = $user->getForgetPswdForm();
-        $v = new View("forgetPassword", "front");
-        $v->assign('forgetPassword', $configForm);
-
-        if (!empty($_POST)) {
-            $user = new UserModel(["email" => $_POST['email']]);
-            
-            if ($user->__get('id')==true) {
-                $token = $this->generateToken();
-                $user->__set('pwd_token',$token);
-                $user->save();
-                $name = $user->__get('last_name');
-                $body="Bonjour $name !<br><br> Vous avez demandé à réinitialiser votre mot de passe. 
-                 Changez votre mot de passe en cliquant sur le lien ci-dessous :. ". Helper::host() ."changer_mot_de_passe?t=$token\"<br><BT></BT>";
-                Helper::sendMail($user->__get('email'),"Changement de mot de passe",$body);
-
-            }else{
-                 $_SESSION['alert']['danger'][] = "L'adresse mail n'a pas été trouvé";
-            }
-        }
-    }
 
     public function update()
     {
@@ -191,5 +166,7 @@ class User{
 
         header("Location: /users");
     }
+
+    
 
 }

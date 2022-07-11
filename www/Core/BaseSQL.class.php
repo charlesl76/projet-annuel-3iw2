@@ -157,6 +157,38 @@ abstract class BaseSQL
     {
         $this->table = $table;
     }
+
+    public function login($data)
+    {
+
+        $bdd = new \PDO(DBDRIVER . ":host=" . DBHOST . ";port=" . DBPORT . ";dbname=" . DBNAME, DBUSER, DBPWD
+            , [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING]);
+
+        $value = $data[key($data)];
+        $email = htmlspecialchars($value);
+        $sql = "SELECT * FROM " . $this->table . " WHERE " . key($data) . " = '" . $value . "'";
+        $sql1 = "SELECT password FROM " . $this->table . " WHERE " . key($data) . " = '" . $value . "'";
+        
+        $reponse = $bdd->query($sql);
+        $donnees = $reponse->fetch();
+        //var_dump($donnees);
+
+        $sql1 = "SELECT password FROM " . $this->table . " WHERE " . key($data) . " = '" . $value . "'";
+        $reponse1 = $bdd->query($sql1);
+        $donnees1 = $reponse1->fetch();
+         //var_dump($donnees1);
+
+        if(password_verify($_POST["password"], $donnees1[0])) {
+            echo 'Password is valid!';
+        } else {
+            echo 'Invalid password.';
+        }
+
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute();
+
+    }
+
     
 
 

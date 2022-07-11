@@ -25,7 +25,9 @@ class Admin
         $usersList = $users->findAll();
 
         $view = new View("users", "back");
+        $active = "users";
         $view->assign("users", $usersList);
+        $view->assign("active", $active);
 
     }
 }
