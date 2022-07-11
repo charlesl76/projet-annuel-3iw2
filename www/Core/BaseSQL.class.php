@@ -53,25 +53,8 @@ abstract class BaseSQL
             return false;
         }
     }
-<<<<<<< HEAD
 
     public function __set($attr, $value)
-=======
-
-    public function __set($attr, $value)
-    {
-        if (method_exists($this, 'customSet')) {
-            $this->data[$attr] = $this->customSet($attr, $value);
-        } else {
-            $this->data[$attr] = $value;
-        }
-
-        return $this;
-    }
-
-
-    public function save()
->>>>>>> :wrench: Update User-Login
     {
         if (method_exists($this, 'customSet')) {
             $this->data[$attr] = $this->customSet($attr, $value);
@@ -122,7 +105,6 @@ abstract class BaseSQL
             $where[] = $key . "=:" . $key;
         }
         $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
-<<<<<<< HEAD
         // echo $sql;
         // return true;
         $queryPrepared = $this->pdo->prepare($sql);
@@ -131,16 +113,6 @@ abstract class BaseSQL
     }
 
     public function findOneBy(array $params): array
-=======
-        $queryPrepared = $this->pdo->prepare($sql);
-        $queryPrepared->execute($params);
-        $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
-        $data = empty($data) ? ["user" => false] : $data;
-        return $data;
-    }
-
-    public function findAllBy(array $params): array
->>>>>>> :rocket: New structure for sitemap, to move to Controller? Replaced BaseSQL outdated request
     {
         foreach ($params as $key => $value) {
             $where[] = $key . "=:" . $key;
@@ -150,18 +122,12 @@ abstract class BaseSQL
         // return true;
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
-<<<<<<< HEAD
         $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
         $data = empty($data) ? ["user" => false] : $data;
         return $data;
     }
 
 
-=======
-        return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
-    }
-
->>>>>>> :rocket: New structure for sitemap, to move to Controller? Replaced BaseSQL outdated request
     public function findByColumn(array $columns, array $params): array
     {
         $select = $columns;
@@ -175,15 +141,7 @@ abstract class BaseSQL
         // return true;
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
-<<<<<<< HEAD
-<<<<<<< HEAD
         $data = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
-=======
-        $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
->>>>>>> :rocket: New structure for sitemap, to move to Controller? Replaced BaseSQL outdated request
-=======
-        $data = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
->>>>>>> :sparkles: Completed sitemap.xml for articles/pages
         $data = empty($data) ? ["user" => false] : $data;
         return $data;
     }
@@ -204,31 +162,7 @@ abstract class BaseSQL
             $queryPrepared->execute($params);
             return $queryPrepared->fetch(PDO::FETCH_ASSOC);
         }
-<<<<<<< HEAD
     }
-
-    public function verifieMailUnique() {
-		$column = array_diff_key(
-			get_object_vars($this),
-			get_class_vars(get_class())
-		);
-		$sql = $this->pdo->prepare("SELECT count(email) as nb FROM " . $this->table . " WHERE email = :email");
-
-		if ($sql->execute(['email' => $column["email"]])) {
-			$obj = $sql->fetch();
-			return $obj["nb"];
-		}
-
-		return false;
-	}
-
-
-    public function getTable(): string
-    {
-        return $this->table;
-    }
-
-}
 
     public function verifieMailUnique() {
 		$column = array_diff_key(
@@ -256,54 +190,7 @@ abstract class BaseSQL
     {
         $this->table = $table;
     }
-
-    public function login($data)
-    {
-
-        $bdd = new \PDO(DBDRIVER . ":host=" . DBHOST . ";port=" . DBPORT . ";dbname=" . DBNAME, DBUSER, DBPWD
-            , [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING]);
-
-        $value = $data[key($data)];
-        $email = htmlspecialchars($value);
-        $sql = "SELECT * FROM " . $this->table . " WHERE " . key($data) . " = '" . $value . "'";
-        $sql1 = "SELECT password FROM " . $this->table . " WHERE " . key($data) . " = '" . $value . "'";
-        
-        $reponse = $bdd->query($sql);
-        $donnees = $reponse->fetch();
-        //var_dump($donnees);
-
-        $sql1 = "SELECT password FROM " . $this->table . " WHERE " . key($data) . " = '" . $value . "'";
-        $reponse1 = $bdd->query($sql1);
-        $donnees1 = $reponse1->fetch();
-         //var_dump($donnees1);
-
-        if(password_verify($_POST["password"], $donnees1[0])) {
-            echo 'Password is valid!';
-        } else {
-            echo 'Invalid password.';
-        }
-
-        $queryPrepared = $this->pdo->prepare($sql);
-        $queryPrepared->execute();
-
-    }
-
-<<<<<<< HEAD
-   
-    public function setTable(string $table): void
-    {
-        $this->table = $table;
-    }
-    
-
-
-=======
-    }
->>>>>>> :rocket: New structure for sitemap, to move to Controller? Replaced BaseSQL outdated request
-}
-=======
     
 
 
 }
->>>>>>> :wrench: Update User-Login

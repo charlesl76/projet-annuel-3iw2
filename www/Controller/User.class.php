@@ -143,6 +143,8 @@ class User{
         }
     }
 
+    
+
     public function update()
     {
         $user = new UserModel();
@@ -192,5 +194,7 @@ class User{
 
         header("Location: /users");
     }
+
+    
 
 }

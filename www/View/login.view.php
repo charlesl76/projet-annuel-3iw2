@@ -6,7 +6,7 @@
                 <?php echo $form ?>
 
             <?php endif; ?>
-        </div>
+</div>
 
 
 <br />
