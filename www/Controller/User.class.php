@@ -110,7 +110,7 @@ class User{
 
         }
 
-        $view = new View("login");
+        $view = new View("login", "front-login");
         $form = FormBuilder::render($user->getLoginForm());
         $view->assign("form", $form);
     }

@@ -424,14 +424,14 @@ class User extends BaseSQL
                     "placeholder" => "Votre email ...",
                     "type" => "email",
                     "id" => "emailRegister",
-                    "class" => "formRegister",
+                    "class" => "form-input",
                     "required" => true,
                 ],
                 "password" => [
                     "placeholder" => "Votre mot de passe ...",
                     "type" => "password",
                     "id" => "pwdRegister",
-                    "class" => "formRegister",
+                    "class" => "form-input",
                     "required" => true,
                 ]
             ]

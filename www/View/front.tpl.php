@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Yoursite | Admin</title>
     <link rel="stylesheet" href="<?= $final_url ?>./dist/main.css">
     <meta name="description" content="ceci est la description de ma page">
@@ -21,17 +23,23 @@
                 <img src="../dist/logo-spiral-1.png">
                 <h1 class="front-header-title">Sported</h1>
             </a>
-            <button id="menu-button"> <img src="<?= $final_url ?>./dist/assets/images/menu-icon.svg"></button>
-            <nav class="front-header-site-nav">
-                <ul>
-                    <li><a href="#">Fonctionnement</a></li>
-                    <li><a href="#">Tarif</a></li>
-                    <li><a href="#">A propos</a></li>
-                    <li> | </li>
-                    <li><a href="/login" class="button" id="login-button">Se connecter</a></li>
-                    <li><a href="/register" class="button" id="register-button">S'inscrire</a></li>
-                </ul>
-            </nav>         
+            <div id="front-header-nav-container">
+                <button id="menu-button"> <img src="<?= $final_url ?>./dist/assets/images/menu-icon.svg"></button>
+                <nav id="front-header-site-nav">
+                    <ul>
+                        <li><a href="#">Fonctionnement</a></li>
+                        <li><a href="#">Tarif</a></li>
+                        <li><a href="#">A propos</a></li>
+                        <li> | </li>
+                        <li><a href="/login" class="button" id="login-button">Se connecter</a></li>
+                        <li><a href="/register" class="button" id="register-button">S'inscrire</a></li>
+                    </ul>
+                </nav>
+                <div id="front-color">
+                    <button onclick="greenBg()" id="front-color-green"></button>
+                    <button onclick="blueBg()" id="front-color-blue"></button>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -82,7 +90,7 @@
                 </nav>
             </div>
         </div>
-        <div class="footer-copyright">
+        <div class="footer-copyright" id="footer-copyright">
             <p>&copy; 2022 Copyright: Sported.com</p>
         </div>
     </footer>
