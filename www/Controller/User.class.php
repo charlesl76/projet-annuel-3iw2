@@ -94,7 +94,7 @@ class User{
                 }
             }
         }
-        $v = new View("register", "front");
+        $v = new View("register", "front-login");
         $v->assign("configFormRegister", $configForm);
     }
 
