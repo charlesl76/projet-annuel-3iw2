@@ -98,6 +98,19 @@ abstract class BaseSQL
 
         return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
     }
+	
+    public function findAllBy(array $params): array
+    {
+        foreach ($params as $key => $value) {
+            $where[] = $key . "=:" . $key;
+        }
+        $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+        // echo $sql;
+        // return true;
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute($params);
+        return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public function findOneBy(array $params): array
     {
