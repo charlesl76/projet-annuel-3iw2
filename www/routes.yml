@@ -82,8 +82,3 @@
   controller: user
   action: update
 
-
-/forgetPassword:
-  controller: user
-  action: forgetPassword
-
