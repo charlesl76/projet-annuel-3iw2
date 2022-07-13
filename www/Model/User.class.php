@@ -235,8 +235,6 @@ class User extends BaseSQL
         $this->token = substr(str_shuffle(bin2hex($bytes)), 0, 255);
     }
 
-    
-
     public function getFormRegister(): array
     {
         return [
@@ -438,32 +436,6 @@ class User extends BaseSQL
         ];
     }
 
-    public function formForgetPwd(){
-        return [
-
-            "config" => [
-                    "method" => "POST",
-                    "action" => "",
-                    "id" => "form_forgetpwd",
-                    "class" => "form_builder",
-                    "submit" => "Valider"
-                ],
-            "inputs" => [
-                "email" => [
-                    "type" => "email",
-                    "label" => "Votre email",
-                    "minLength" => 8,
-                    "maxLength" => 320,
-                    "id" => "email",
-                    "class" => "form_input",
-                    "placeholder" => "Exemple: nom@gmail.com",
-                    "value" => $this->getEmail() ?? '',
-                    "error" => "Votre email doit faire entre 8 et 320 caractères",
-                    "required" => true
-                ]
-            ]
-        ];
-    }
     
 
     public function save()
