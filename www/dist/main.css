@@ -800,9 +800,10 @@ footer .footer-copyright {
     opacity: 1;
   }
 }
-#login-main {
+.front-main {
+  width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
@@ -810,24 +811,21 @@ footer .footer-copyright {
   background-repeat: no-repeat;
   background-position: center;
 }
-
-main {
+.front-main #front-index-hero-banner {
   width: 100%;
-}
-main #front-index-hero-banner {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
 }
-main #front-section2 {
+.front-main #front-section2 {
   margin: 3rem;
   padding: 1.25rem;
   background-color: #E9E6E6;
 }
-main #front-section2 p {
+.front-main #front-section2 p {
   line-height: 1.875rem;
 }
-main .login-main-card {
+.front-main .login-main-card {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -839,27 +837,27 @@ main .login-main-card {
   box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.25);
   background-color: white;
 }
-main .login-main-card .half-card {
+.front-main .login-main-card .half-card {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-main .login-main-card .half-card.ad {
+.front-main .login-main-card .half-card.ad {
   display: none;
 }
-main .login-main-card .half-card > img {
+.front-main .login-main-card .half-card > img {
   margin-bottom: 1.875rem;
   height: 140px;
   width: auto;
 }
-main .login-main-card .half-card #formLogin {
+.front-main .login-main-card .half-card #formLogin {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-main .login-main-card .half-card #formLogin input {
+.front-main .login-main-card .half-card #formLogin input {
   border: 2px solid #A5A5A5;
   border-radius: 30px;
   height: 1.4375rem;
@@ -867,36 +865,41 @@ main .login-main-card .half-card #formLogin input {
   margin-bottom: 1.25rem;
   padding: 0 0.625rem;
 }
-main .login-main-card .half-card #formLogin input[type=submit] {
+.front-main .login-main-card .half-card #formLogin input[type=submit] {
   background-image: linear-gradient(to right, #80D6FF, #0077C2);
   border: none;
   height: 33px;
   width: 208px;
+  color: white;
 }
-main .login-main-card .half-card .form-nav-account {
+.front-main .login-main-card .half-card .form-nav-account {
   display: flex;
   flex-direction: column;
 }
-main .login-main-card .half-card .form-nav-account .form-nav-account-link {
+.front-main .login-main-card .half-card .form-nav-account .form-nav-account-link {
   text-decoration: none;
   color: #A5A5A5;
   margin-bottom: 0.5rem;
 }
+.front-main #formRegister {
+  display: flex;
+  flex-direction: row;
+}
 @media screen and (min-width: 840px) {
-  main .login-main-card {
+  .front-main .login-main-card {
     display: flex;
     height: 100%;
     margin: 2.5rem 0;
     padding: 20px;
   }
-  main .login-main-card .half-card.login {
+  .front-main .login-main-card .half-card.login {
     padding: 20px 10px;
     width: 50%;
   }
-  main .login-main-card .half-card.login img {
+  .front-main .login-main-card .half-card.login img {
     flex: 1;
   }
-  main .login-main-card .half-card.ad {
+  .front-main .login-main-card .half-card.ad {
     display: flex;
     height: 100%;
     width: 50%;
@@ -909,7 +912,7 @@ main .login-main-card .half-card .form-nav-account .form-nav-account-link {
     animation-timing-function: ease-in;
     animation-duration: 1s;
   }
-  main .login-main-card .half-card.ad img {
+  .front-main .login-main-card .half-card.ad img {
     flex: 1;
     width: 100%;
     margin-bottom: 0;

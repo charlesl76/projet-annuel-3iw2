@@ -1,5 +1,4 @@
-Création du formulaire
-<form method="<?= $config["config"]["method"]??"POST" ?>" action="<?= $config["config"]["action"]??"" ?>">
+<form method="<?= $config["config"]["method"]??"POST" ?>" action="<?= $config["config"]["action"]??"" ?>" id="<?= $config["config"]["id"] ?>" class="<?= $config["config"]["class"] ?>"  >
 
     <?php foreach ($config["inputs"] as $name=>$input):?>
 

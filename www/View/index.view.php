@@ -1,6 +1,6 @@
-<main>
+<main class="front-main">
     <section id="front-index-hero-banner">
-        <div class="hero-banner">
+        <div class="hero-banner" src="<?= $final_url ?>./dist/assets/images/Hero-background.png">
         </div>
     </section>
     
