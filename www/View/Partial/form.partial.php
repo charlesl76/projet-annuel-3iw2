@@ -61,16 +61,7 @@
         ?>
     });
 
-    var ddData = [
-        <?php foreach($tagImages as $tagImage):
-        {
-            value: <?= "'" . $tagImage["id"] . "'" ?>,
-            selected: false,
-            imageSrc: `<?= $tagImage["path"] ?>`
-        },
-        <?php endforeach; ?>
-    
-    ];
+
 
 
     $('#thumbnail').ddslick({
