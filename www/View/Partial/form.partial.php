@@ -20,12 +20,22 @@
 <?php endif;
                 endfor;
 
+            elseif ($input["type"] == "select" && isset($input["images"])) : ?>
+<select name="<?= $name ?>" id="<?= $input["id"] ?>">
+    <?php for ($i = 0; $i + 1 < count($input["images"]); $i++) : ?>
+        <option value="<?= $input["images"][$i]["id"]; ?>"><?= $input["images"][$i]["name"]; ?></option>
+        <?php if ($i === count($input["images"])) : ?>
+</select>
+
+<?php endif;
+                endfor;
+
             elseif ($input["type"] == "select" && isset($input["parent"])) : ?>
 <select name="<?= $name ?>" id="<?= $input["id"] ?>"><select name="<?= $name ?>" id="<?= $input["id"] ?>">
-    <?php for ($i = 0; $i < count($input["parent"]); $i++) : ?>
-        <option value="<?= $input["parent"][$i]["id"]; ?>"><?= $input["parent"][$i]["name"]; ?></option>
-        <?php if ($i === count($input["parent"])) : ?>
-</select>
+        <?php for ($i = 0; $i < count($input["parent"]); $i++) : ?>
+            <option value="<?= $input["parent"][$i]["id"]; ?>"><?= $input["parent"][$i]["name"]; ?></option>
+            <?php if ($i === count($input["parent"])) : ?>
+    </select>
 <?php endif;
                 endfor;
 
@@ -50,6 +60,25 @@
                 endif;
         ?>
     });
+
+    var ddData = [
+        <?php foreach($tagImages as $tagImage):
+        {
+            value: <?= "'" . $tagImage["id"] . "'" ?>,
+            selected: false,
+            imageSrc: `<?= $tagImage["path"] ?>`
+        },
+        <?php endforeach; ?>
+    
+    ];
+
+
+    $('#thumbnail').ddslick({
+        width: 300,
+        imagePosition: "left",
+
+        selectText: "Select your favorite social network"
+    });
 </script>
 
 <?php if ($input["type"] == "select") : ?>
@@ -66,8 +95,8 @@
     <?php for ($i = 0; $i < count($input['roles']); $i++) : ?>
         <option value="<?= $input['roles'][$i]["id"]; ?>"><?= $input["roles"][$i]["name"]; ?> </option>
         <?php if ($i === count($input["roles"])) : ?>
-            </select>
-    <?php endif;
+</select>
+<?php endif;
                         endfor; ?>
 <?php endif; ?>
 

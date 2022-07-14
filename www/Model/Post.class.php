@@ -84,6 +84,15 @@ class Post extends BaseSQL
         return $this->tags;
     }
 
+    public function getAllTagImages()
+    {
+        $params["collection"] = "olympic-sports";
+        $this->tagImages = parent::findAllBy($params, "icon");
+        json_encode($this->tagImages);
+
+        return $this->tagImages;
+    }
+
     public function getFormPages()
     {
         return [
@@ -260,11 +269,13 @@ class Post extends BaseSQL
     // TODO : Modifier le getformtags avec les contraintes données -> form builder
     public function getFormTags()
     {
+        $tagImages = $this->getAllTagImages();
+
         return [
             "config" => [
                 "method" => "POST",
                 "action" => "post-check",
-                "submit" => "Create and publish",
+                "submit" => "Create tag",
             ],
             "inputs" => [
                 "input" => [
@@ -302,30 +313,17 @@ class Post extends BaseSQL
                     "required" => true,
                     "error" => "Title is required",
                 ],
-                "comment_status" => [
+                "thumbnail" => [
                     "type" => "select",
-                    "placeholder" => "Comment status",
-                    "id" => "comment_status",
+                    "placeholder" => "Thumbnail",
+                    "id" => "thumbnail",
                     "class" => "inputCommentStatus",
-                    "status" => [
-                        -1 => [
-                            "id" => "-1",
-                            "name" => "Blocked",
-                        ],
-                        0 => [
-                            "id" => "0",
-                            "name" => "On approbation"
-                        ],
-                        1 => [
-                            "id" => "1",
-                            "name" => "Open"
-                        ]
-                    ],
+                    "images" => $tagImages,
                 ],
-                "post_parent" => [
+                "tag-image" => [
                     "type" => "select",
                     "placeholder" => "Tag",
-                    "id" => "post_parent",
+                    "id" => "tag-image",
                     "class" => "inputTag",
                     // Voir comment faire un selected:selected pour le getStatus()
                     "parent" => [

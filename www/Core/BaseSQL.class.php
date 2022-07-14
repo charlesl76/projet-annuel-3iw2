@@ -85,12 +85,16 @@ abstract class BaseSQL
         return $data;
     }
 
-    public function findAllBy(array $params): array
+    public function findAllBy(array $params, string $opt_table = null): array
     {
         foreach ($params as $key => $value) {
             $where[] = $key . "=:" . $key;
         }
+        if(!is_null($opt_table)){
+            $sql = "SELECT * FROM " . DBPREFIXE . strtolower($opt_table) . " WHERE " . (implode(" AND ", $where));
+        } else {
         $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+        }
         // echo $sql;
         // return true;
         $queryPrepared = $this->pdo->prepare($sql);
