@@ -15,7 +15,7 @@ class Post
         $page = new PostModel();
         $active = "pages";
         $view = new View("pages", "back");
-        $final_url = $view->dynamicNav();   
+        $final_url = $view->dynamicNav();
 
         $view->assign("page", $page);
         $view->assign("view", $view);
@@ -108,6 +108,7 @@ class Post
     {
         $page = new PostModel();
         $article = new PostModel();
+        $tag = new PostModel();
 
         $validator = new Validator();
 
@@ -155,8 +156,27 @@ class Post
                         header('location: /articles');
                         break;
                 endswitch;
-            } else {
-                print_r($result);
+            }
+        } elseif (!empty($_POST) && $_POST['input'] == "tag") {
+            $result = $validator::checkPost($tag->getFormTags(), $_POST);
+            if (empty($result)) {
+                switch ($_POST["type"]):
+                    case "add":
+                        $tag->createTag($_POST);
+                        unset($_POST);
+                        header('location: /tags');
+                        break;
+                    case "update":
+                        $tag->updateTag($_POST);
+                        unset($_POST);
+                        header('location: /tags');
+                        break;
+                    case "delete":
+                        $tag->deleteTag($tag);
+                        unset($_POST);
+                        header('location: /tags');
+                        break;
+                endswitch;
             }
         }
     }

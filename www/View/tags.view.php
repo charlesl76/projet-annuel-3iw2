@@ -17,6 +17,7 @@ elseif (isset($action) && $action !== null) :
     switch ($action):
         case 'update':
             $view->update = 'update';
+            $view->assign("tagImages", $tag->tagImages);
             $view->includePartial("form", $tag->getFormUpdateTags($postById));
     
             break;

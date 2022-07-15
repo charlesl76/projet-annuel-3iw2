@@ -21,21 +21,62 @@
                 endfor;
 
             elseif ($input["type"] == "select" && isset($input["images"])) : ?>
+
+
 <select name="<?= $name ?>" id="<?= $input["id"] ?>">
-    <?php for ($i = 0; $i + 1 < count($input["images"]); $i++) : ?>
-        <option value="<?= $input["images"][$i]["id"]; ?>"><?= $input["images"][$i]["name"]; ?></option>
-        <?php if ($i === count($input["images"])) : ?>
+
 </select>
 
-<?php endif;
-                endfor;
+<style>
+    form {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    form>input {
+        height: 30px;
+    }
+</style>
+
+<script>
+    var ddData = [
+        <?php foreach ($input["images"] as $image) : ?> {
+                value: '<?= $image["id"]; ?>',
+
+                selected: false,
+                imageSrc: '<?= "dist/assets/images/tags-icons/olympic-sports/" . $image["type"] . "/" . $image["name"] . "." . strtolower($image["type"]); ?>',
+            },
+        <?php endforeach; ?>
+    ];
+
+    $('#thumbnail').ddslick({
+        width: '100px',
+        height: '200px',
+        imagePosition: "left",
+        data: ddData,
+        selectText: "Image",
+        onSelected: function(data) {
+            data.selectedData.name = "content";
+            $('#thumbnail').find('input[type=hidden]:first').attr("name", data.selectedData.name);
+        }
+
+    });
+</script>
+
+
+
+
+<?php
 
             elseif ($input["type"] == "select" && isset($input["parent"])) : ?>
-<select name="<?= $name ?>" id="<?= $input["id"] ?>"><select name="<?= $name ?>" id="<?= $input["id"] ?>">
-        <?php for ($i = 0; $i < count($input["parent"]); $i++) : ?>
-            <option value="<?= $input["parent"][$i]["id"]; ?>"><?= $input["parent"][$i]["name"]; ?></option>
-            <?php if ($i === count($input["parent"])) : ?>
-    </select>
+    <select name="<?= $name ?>" id="<?= $input["id"] ?>"><select name="<?= $name ?>" id="<?= $input["id"] ?>">
+            <?php for ($i = 0; $i < count($input["parent"]); $i++) : ?>
+                <option value="<?= $input["parent"][$i]["id"]; ?>"><?= $input["parent"][$i]["name"]; ?></option>
+                <?php if ($i === count($input["parent"])) : ?>
+        </select>
 <?php endif;
                 endfor;
 
@@ -60,17 +101,8 @@
                 endif;
         ?>
     });
-
-
-
-
-    $('#thumbnail').ddslick({
-        width: 300,
-        imagePosition: "left",
-
-        selectText: "Select your favorite social network"
-    });
 </script>
+
 
 <?php if ($input["type"] == "select") : ?>
     <select name="<?= $name ?>" id="<?= $input["id"] ?>">
@@ -86,7 +118,7 @@
     <?php for ($i = 0; $i < count($input['roles']); $i++) : ?>
         <option value="<?= $input['roles'][$i]["id"]; ?>"><?= $input["roles"][$i]["name"]; ?> </option>
         <?php if ($i === count($input["roles"])) : ?>
-</select>
+    </select>
 <?php endif;
                         endfor; ?>
 <?php endif; ?>

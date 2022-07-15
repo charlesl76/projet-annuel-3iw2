@@ -104,6 +104,34 @@ class Validator
                     return $result;
                     break;
             endswitch;
+        } elseif (!empty($data["input"]) && $data["input"] == "tag") {
+            switch ($data["type"]):
+                case "add":
+                    if (!isset($data["author"]) || empty($data["author"])) {
+                        $result["input"] = "Do not forget to fill the author in the form";
+                    }
+                    if (!isset($data["title"]) || empty($data["title"])) {
+                        $result["input"] = "Do not forget to fill the title in the form";
+                    }
+                    if (!isset($data["content"]) || empty($data["content"])) {
+                        $result["input"] = "Do not forget to put an image in the form";
+                    }
+                    break;
+                case "update":
+                    if (!isset($data["author"]) || empty($data["author"])) {
+                        $result["input"] = "Do not forget to fill the author in the form";
+                    }
+                    if (!isset($data["title"]) || empty($data["title"])) {
+                        $result["input"] = "Do not forget to fill the title in the form";
+                    }
+                    if (!isset($data["content"]) || empty($data["content"])) {
+                        $result["input"] = "Do not forget to put an image in the form";
+                    }
+                    break;
+                case "delete":
+                    return $result;
+                    break;
+            endswitch;
         } else {
             $result[] = "Fatal error, no input specified in the form";
         }
