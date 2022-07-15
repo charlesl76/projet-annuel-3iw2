@@ -1,13 +1,18 @@
 <?php
 
 namespace App\Core;
+use App\Core\BaseSQL;
 
 class Validator
 {
 
-    public static function run($config, $data): array
+    public static function checkForm($config, $data): array
     {
         $result = [];
+        //Le nb de inputs envoyés ?
+        $images = array_filter($config['inputs'], function($input) {
+            return $input["type"] === "file";
+        });
 
         if (count($data) != count($config["inputs"])) {
             $result[] = "Formulaire modifié par user";
@@ -70,22 +75,62 @@ class Validator
                     return $result;
                     break;
             endswitch;
+        } elseif (!empty($data["input"]) && $data["input"] == "article") {
+            switch ($data["type"]):
+                case "add":
+                    if (!isset($data["author"]) || empty($data["author"])) {
+                        $result["input"] = "Do not forget to fill the author in the form";
+                    }
+                    if (!isset($data["title"]) || empty($data["title"])) {
+                        $result["input"] = "Do not forget to fill the title in the form";
+                    }
+                    if (!isset($data["content"]) || empty($data["content"])) {
+                        $result["input"] = "Do not forget to fill the content in the form";
+                    }
+                    if (!isset($data["post_parent"]) || empty($data["post_parent"])) {
+                        $result["input"] = "Do not forget to put a tag on the article";
+                    }
+                    break;
+                case "update":
+                    if (!isset($data["author"]) || empty($data["author"])) {
+                        $result["input"] = "Do not forget to fill the author in the form";
+                    }
+                    if (!isset($data["title"]) || empty($data["title"])) {
+                        $result["input"] = "Do not forget to fill the title in the form";
+                    }
+                    if (!isset($data["content"]) || empty($data["content"])) {
+                        $result["input"] = "Do not forget to fill the content in the form";
+                    }
+                    if (!isset($data["post_parent"]) || empty($data["post_parent"])) {
+                        $result["input"] = "Do not forget to put a tag on the article";
+                    }
+                    break;
+                case "delete":
+                    return $result;
+                    break;
+            endswitch;
         } else {
             $result[] = "Fatal error, no input specified in the form";
         }
 
         return $result;
+
     }
 
-    public static function checkPassword($pwd): bool
-    {
-        return strlen($pwd) >= 8 && strlen($pwd) <= 16
-            && preg_match("/[a-z]/i", $pwd, $result)
-            && preg_match("/[0-9]/", $pwd, $result);
-    }
 
     public static function checkEmail($email): bool
     {
-        return filter_var($email, FILTER_VALIDATE_EMAIL);
+       return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
+
+
+    public static function checkPassword($password): bool
+    {
+
+        return strlen($password)>=8
+            && preg_match("/[0-9]/", $password, $match)
+            && preg_match("/[a-z]/", $password, $match)
+            && preg_match("/[A-Z]/", $password, $match);
+    }
+    
 }

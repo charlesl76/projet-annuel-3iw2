@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use App\Core\BaseSQL;
+use App\Core\Routing;
 
 class User extends BaseSQL
 {
@@ -18,6 +19,9 @@ class User extends BaseSQL
     protected $token = null;
     protected $birth;
     protected $gender;
+    protected $registered_at;
+	protected $updated_at;
+	protected $activated;
 
     public function __construct()
     {
@@ -47,6 +51,8 @@ class User extends BaseSQL
     {
         $this->email = $email;
     }
+
+    
 
     /**
      * @return mixed
@@ -191,6 +197,44 @@ class User extends BaseSQL
     public function setGender($gender)
     {
         $this->gender = $gender;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRegistered_at()
+    {
+        return $this->registered_at;
+    }
+
+    /**
+     * @param mixed $registered_at
+     */
+    public function setRegistered_at($registered_at)
+    {
+        $this->registered_at = $registered_at;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updated_at;
+    }
+
+    /**
+     * @param mixed $updated_at
+     */
+    public function setUpdatedAt($updated_at)
+    {
+        $this->updated_at = $updated_at;
+    }
+
+    public function generateToken(): void
+    {
+        $bytes = random_bytes(128);
+        $this->token = substr(str_shuffle(bin2hex($bytes)), 0, 255);
     }
 
     public function getFormRegister(): array

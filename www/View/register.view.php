@@ -1,7 +1,6 @@
-<h1>S'inscrire</h1>
+<div class="container">
+<h1>Register an Account</h1>
 
-
-<?php $this->includePartial("form", $user->getFormRegister()) ?>
-
-<!--todo-->
-<?php //$this->includePartial("form", $user->getFormLogin()) ?>
+<?php
+$this->includePartial("form", $configFormRegister);
+?>

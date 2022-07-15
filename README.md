@@ -18,4 +18,4 @@ Looking to build your own sport-themed website? Sported is made for you! This in
 
 ## Support
 
-For support, email charleslebg@gmail.com or join our Discord.
+For support, email admin@sported.site or join our Discord.

@@ -2,9 +2,14 @@
 
 namespace App\Controller;
 
+
 use App\Core\BaseSQL;
 use App\Core\Validator;
 use App\Core\View;
+use App\Core\Helper;
+use App\Core\Mailer;
+use App\Core\FormBuilder;
+use App\Core\Session;
 use App\Model\User as UserModel;
 use App\Controller\Mail;
 
@@ -113,10 +118,28 @@ class User
         echo "Se deco";
     }
 
+    public function checkUser($mail){
+        $user = new UserModel(["email" => $mail]);
+        if($user->__get('id')==true){
+           return true;
+        }else{
+          return false;
+        }
+
+    }
+
+    public function modifyPwdAction($password)
+    {   
+       $this->user->__set('password',$password);
+       $this->user->save();
+    }
+
     public function register()
     {
-
+        $session = new Session();
         $user = new UserModel();
+        
+        $configForm = $user->getFormRegister();
 
         print_r($_POST);
         if (!empty($_POST)) {
@@ -132,10 +155,9 @@ class User
         $view->assign("user", $user);
     }
 
-    public function show(array $params)
+    public function login()
     {
         $user = new UserModel();
-        $userById = $user->setId($params['id']);
 
         if (!empty($userById)) {
             $form = $user->getFormUpdate($userById);
@@ -143,6 +165,8 @@ class User
             $view->assign("form", $form);
         } else header("Location: /users");
     }
+
+    
 
     public function update()
     {
@@ -160,6 +184,31 @@ class User
             header("Location: /users/" . $user->getId());
         }
     }
+
+ 
+    private function generateToken(){
+        $length=30;
+        $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $string = '';
+        for($i=0; $i<$length; $i++){
+            $string .= $chars[rand(0, strlen($chars)-1)];
+        }
+        return $string;;
+    }
+
+    public function show(array $params)
+    {
+        $user = new UserModel();
+        $userById = $user->setId($params['id']);
+
+        if(!empty($userById)) {
+            $form = $user->getFormUpdate($userById);
+            $view = new View("show", "back");
+            $view->assign("form", $form);
+        } else header("Location: /users");
+    }
+
+    
 
     public function delete()
     {

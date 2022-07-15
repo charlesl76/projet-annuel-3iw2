@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Core;
+use App\Model\User;
+use App\Model\User as UserModel;
 
 use PDO;
 
@@ -8,6 +10,8 @@ abstract class BaseSQL
 {
     private $pdo;
     private $table;
+    private $data = [];
+   
 
 
     public function __construct()
@@ -37,8 +41,32 @@ abstract class BaseSQL
         return $queryPrepared->fetchObject(get_called_class());
     }
 
+    public function __get($attr)
+    {
+        if (isset($this->data[$attr])) {
+            if (method_exists($this, 'customGet')) {
+                return $this->customGet($attr, $this->data[$attr]);
+            } else {
+                return $this->data[$attr];
+            }
+        } else {
+            return false;
+        }
+    }
 
-    protected function save()
+    public function __set($attr, $value)
+    {
+        if (method_exists($this, 'customSet')) {
+            $this->data[$attr] = $this->customSet($attr, $value);
+        } else {
+            $this->data[$attr] = $value;
+        }
+
+        return $this;
+    }
+
+
+    public function save()
     {
 
         $columns  = get_object_vars($this);
@@ -68,6 +96,19 @@ abstract class BaseSQL
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute();
 
+        return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+    }
+	
+    public function findAllBy(array $params): array
+    {
+        foreach ($params as $key => $value) {
+            $where[] = $key . "=:" . $key;
+        }
+        $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+        // echo $sql;
+        // return true;
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute($params);
         return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -132,4 +173,67 @@ abstract class BaseSQL
             return $queryPrepared->fetch(PDO::FETCH_ASSOC);
         }
     }
+}
+
+    public function verifieMailUnique() {
+		$column = array_diff_key(
+			get_object_vars($this),
+			get_class_vars(get_class())
+		);
+		$sql = $this->pdo->prepare("SELECT count(email) as nb FROM " . $this->table . " WHERE email = :email");
+
+		if ($sql->execute(['email' => $column["email"]])) {
+			$obj = $sql->fetch();
+			return $obj["nb"];
+		}
+
+		return false;
+	}
+
+
+    public function getTable(): string
+    {
+        return $this->table;
+    }
+
+   
+    public function setTable(string $table): void
+    {
+        $this->table = $table;
+    }
+
+    public function login($data)
+    {
+
+        $bdd = new \PDO(DBDRIVER . ":host=" . DBHOST . ";port=" . DBPORT . ";dbname=" . DBNAME, DBUSER, DBPWD
+            , [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING]);
+
+        $value = $data[key($data)];
+        $email = htmlspecialchars($value);
+        $sql = "SELECT * FROM " . $this->table . " WHERE " . key($data) . " = '" . $value . "'";
+        $sql1 = "SELECT password FROM " . $this->table . " WHERE " . key($data) . " = '" . $value . "'";
+        
+        $reponse = $bdd->query($sql);
+        $donnees = $reponse->fetch();
+        //var_dump($donnees);
+
+        $sql1 = "SELECT password FROM " . $this->table . " WHERE " . key($data) . " = '" . $value . "'";
+        $reponse1 = $bdd->query($sql1);
+        $donnees1 = $reponse1->fetch();
+         //var_dump($donnees1);
+
+        if(password_verify($_POST["password"], $donnees1[0])) {
+            echo 'Password is valid!';
+        } else {
+            echo 'Invalid password.';
+        }
+
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute();
+
+    }
+
+    
+
+
 }
