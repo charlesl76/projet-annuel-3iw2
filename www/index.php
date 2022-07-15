@@ -34,6 +34,11 @@ $routes = yaml_parse_file($routeFile);
 // Permet de récupérer les paramètres d'une requête
 // todo: rendre ça plus générique
 $uri_explode = explode("/", $uri);
+
+// À REGLER : POUR LE MOMENT, ON NE PEUT PAS AVOIR DE PARAMÈTRES DANS L'URI RESETPASSWORD
+// localhost/r/{token} ne fonctionne pas
+// J'ai tenté un fix avec elseif (preg_match("/\d/i", $uri_explode[3]) mais ne fonctionne pas
+
 if (count($uri_explode) > 2) {
     if (preg_match("/\d/i", $uri_explode[2])) {
         $param = "id";
@@ -42,6 +47,12 @@ if (count($uri_explode) > 2) {
         else $uri = "/" . $uri_explode[1] . "/{{$param}}";
         // paramètres de l'uri
         $params = [$param => $uri_explode[2]];
+    } elseif (preg_match("/\d/i", $uri_explode[3])) {
+        $param = "id";
+        // uri plus longue
+        if (isset($uri_explode[3])) $uri = "/" . $uri_explode[1] . $uri_explode[2] . "/{{$param}}/";
+        // paramètres de l'uri
+        $params = [$param => $uri_explode[3]];
     }
 }
 

@@ -10,6 +10,18 @@
   controller: user
   action: login
 
+/forgot-password:
+  controller: user
+  action: forgotPassword
+
+/forgot-password/{id}:
+  controller: user
+  action: mailSent
+
+/forgot-password/r/{id}:
+  controller: user
+  action: tokenCheck
+
 /logout:
   controller: user
   action: logout

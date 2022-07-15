@@ -88,10 +88,10 @@ abstract class BaseSQL
         $queryPrepared->execute($columns);
     }
 
-  
+
     public function findAll()
     {
-        $sql = "SELECT * FROM ".$this->table;
+        $sql = "SELECT * FROM " . $this->table;
 
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute();
@@ -114,15 +114,46 @@ abstract class BaseSQL
 
     public function findOneBy(array $params): array
     {
-        var_dump($params);
-      
         foreach ($params as $key => $value) {
             $where[] = $key . "=:" . $key;
         }
         $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
-        return $queryPrepared->fetch(PDO::FETCH_ASSOC);
+        $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+        $data = empty($data) ? ["user" => false] : $data;
+        return $data;
+    }
+
+    public function findAllBy(array $params): array
+    {
+        foreach ($params as $key => $value) {
+            $where[] = $key . "=:" . $key;
+        }
+        $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+        // echo $sql;
+        // return true;
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute($params);
+        return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function findByColumn(array $columns, array $params): array
+    {
+        $select = $columns;
+
+        foreach ($params as $key => $value) {
+            $where[] = $key . "=:" . $key;
+        }
+
+        $sql = "SELECT " . implode(",", $select) . " FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+        // echo $sql;
+        // return true;
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute($params);
+        $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+        $data = empty($data) ? ["user" => false] : $data;
+        return $data;
     }
 
     public function deleteOne()
@@ -132,16 +163,16 @@ abstract class BaseSQL
             $id = strip_tags($_POST['id']);
 
             $sql = "DELETE FROM `" . $this->table . "` WHERE `id`=:id";
-          
-        foreach ($params as $key=>$value){
-            $where[] = $key."=:".$key;
-        }
-        $sql = "SELECT * FROM ".$this->table." WHERE ".(implode(" AND ", $where));
-        $queryPrepared = $this->pdo->prepare($sql);
-        $queryPrepared->execute($params);
-       return $queryPrepared->fetch(PDO::FETCH_ASSOC);
-    }
 
+            foreach ($params as $key => $value) {
+                $where[] = $key . "=:" . $key;
+            }
+            $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+            $queryPrepared = $this->pdo->prepare($sql);
+            $queryPrepared->execute($params);
+            return $queryPrepared->fetch(PDO::FETCH_ASSOC);
+        }
+    }
 }
 
     public function verifieMailUnique() {
