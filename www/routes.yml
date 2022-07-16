@@ -69,7 +69,7 @@
 
 /tags/{id}:
   controller: post
-  action: showArticle
+  action: showTag
 
 /tags/{id}/update:
   controller: post

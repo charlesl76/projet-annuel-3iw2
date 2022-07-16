@@ -98,9 +98,10 @@ class Post
             $view = new View("tags", "back");
             $view->assign("action", $action);
             $view->assign("postById", $postById);
-            $view->assign("article", $post);
+            $view->assign("category", $post);
             $view->assign("view", $view);
             $view->assign("active", $active);
+            $view->assign("dynamicNav", $view->dynamicNav());
         } else header("Location: /tags");
     }
 

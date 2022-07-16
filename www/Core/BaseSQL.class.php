@@ -35,6 +35,7 @@ abstract class BaseSQL
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute(["id" => $id]);
         return $queryPrepared->fetchObject(get_called_class());
+        
     }
 
     protected function save()
@@ -90,10 +91,10 @@ abstract class BaseSQL
         foreach ($params as $key => $value) {
             $where[] = $key . "=:" . $key;
         }
-        if(!is_null($opt_table)){
+        if (!is_null($opt_table)) {
             $sql = "SELECT * FROM " . DBPREFIXE . strtolower($opt_table) . " WHERE " . (implode(" AND ", $where));
         } else {
-        $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+            $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
         }
         // echo $sql;
         // return true;
@@ -120,7 +121,7 @@ abstract class BaseSQL
         return $data;
     }
 
-    public function deleteOne(array $params)
+    public function deleteOne()
     {
         if (isset($_POST['id']) && !empty($_POST['id'])) {
 
@@ -128,13 +129,12 @@ abstract class BaseSQL
 
             $sql = "DELETE FROM `" . $this->table . "` WHERE `id`=:id";
 
-            foreach ($params as $key => $value) {
-                $where[] = $key . "=:" . $key;
-            }
-            $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
             $queryPrepared = $this->pdo->prepare($sql);
-            $queryPrepared->execute($params);
-            return $queryPrepared->fetch(PDO::FETCH_ASSOC);
+
+            $queryPrepared->bindValue(':id', $id, PDO::PARAM_INT);
+            $queryPrepared->execute(['id' => $id]);
+
+            return true;
         }
     }
 }

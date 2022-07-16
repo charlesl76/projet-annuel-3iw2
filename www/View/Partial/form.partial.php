@@ -44,10 +44,21 @@
 <script>
     var ddData = [
         <?php foreach ($input["images"] as $image) : ?> {
-                value: '<?= $image["id"]; ?>',
-
-                selected: false,
-                imageSrc: '<?= "dist/assets/images/tags-icons/olympic-sports/" . $image["type"] . "/" . $image["name"] . "." . strtolower($image["type"]); ?>',
+                <?php
+                    if (isset($input["selected"])) :
+                        $dir = "../dist/assets/images/tags-icons/olympic-sports/" . $image["type"] . "/" . $image["name"] . "." . strtolower($image["type"]);
+                        if ($image["id"] == $input["selected"]) : ?>
+                        selected: true,
+                        <?php else : ?>
+                        selected: false,
+                        <?php
+                        endif;
+                    else :
+                        $dir = "dist/assets/images/tags-icons/olympic-sports/" . $image["type"] . "/" . $image["name"] . "." . strtolower($image["type"]);
+                    endif;
+                        ?>
+                        value: '<?= $image["id"]; ?>',
+                            imageSrc: '<?= $dir ?>',
             },
         <?php endforeach; ?>
     ];
@@ -71,10 +82,15 @@
 
 <?php
 
-            elseif ($input["type"] == "select" && isset($input["parent"])) : ?>
+            elseif ($input["type"] == "select" && isset($input["parent"])) : 
+            var_dump($input); ?>
     <select name="<?= $name ?>" id="<?= $input["id"] ?>"><select name="<?= $name ?>" id="<?= $input["id"] ?>">
             <?php for ($i = 0; $i < count($input["parent"]); $i++) : ?>
-                <option value="<?= $input["parent"][$i]["id"]; ?>"><?= $input["parent"][$i]["name"]; ?></option>
+                <?php if(isset($input["parent"][$i]["selected"])) : ?>
+                    <option value="<?= $input["parent"][$i]["id"]; ?>" selected><?= $input["parent"][$i]["name"]; ?></option>
+                <?php else: ?>
+                    <option value="<?= $input["parent"][$i]["id"]; ?>"><?= $input["parent"][$i]["name"]; ?></option>
+                <?php endif; ?>
                 <?php if ($i === count($input["parent"])) : ?>
         </select>
 <?php endif;
@@ -118,7 +134,7 @@
     <?php for ($i = 0; $i < count($input['roles']); $i++) : ?>
         <option value="<?= $input['roles'][$i]["id"]; ?>"><?= $input["roles"][$i]["name"]; ?> </option>
         <?php if ($i === count($input["roles"])) : ?>
-    </select>
+</select>
 <?php endif;
                         endfor; ?>
 <?php endif; ?>
