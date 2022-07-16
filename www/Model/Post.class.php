@@ -501,10 +501,6 @@ class Post extends BaseSQL
             $i = $i + 1;
         }
 
-        echo "<pre>";
-        var_dump($tagList);
-        echo "</pre>";
-
         return [
             "config" => [
                 "method" => "POST",
