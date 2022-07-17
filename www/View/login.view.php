@@ -1,4 +1,4 @@
-<main class="front-main" style="background-image: url(<?= $final_url ?>./dist/bg-login.png)">
+<div class="front-main" style="background-image: url(<?= $final_url ?>./dist/bg-login.png)">
     <section class="login-main-card">
         <div class="half-card login">
             <img src="<?= $final_url ?>./dist/logo-sported-vertical.svg" alt="Logo">
@@ -18,4 +18,4 @@
         </div>
 
     </section>
-</main>
+</div>

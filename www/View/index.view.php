@@ -1,4 +1,4 @@
-<main class="front-main">
+<div class="front-main">
     <section id="front-index-hero-banner">
         <div class="hero-banner" src="<?= $final_url ?>./dist/assets/images/Hero-background.png">
         </div>
@@ -19,4 +19,4 @@
                 Nam euismod sapien eu diam convallis porta. </p>
     </div>
     </section>
-</main>
+</div>

@@ -41,9 +41,9 @@
         </div>
     </header>
 
-    <div class="front-container">
+    <main class="front-container">
         <?php include $this->view . ".view.php"; ?>
-    </div>
+    </main>
 
     <footer>
         <div id="front-footer">

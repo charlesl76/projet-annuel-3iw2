@@ -250,7 +250,7 @@ class User extends BaseSQL
             "inputs"=>[
                 "firstname"=>[
                     "type"=>"text",
-                    "placeholder"=>"Prénom ...",
+                    "placeholder"=>"Prénom",
                     "id"=>"firstnameRegister",
                     "class"=>"form-input",
                     "name" => "firstname",
@@ -260,7 +260,7 @@ class User extends BaseSQL
                 ],
                 "lastname"=>[
                     "type"=>"text",
-                    "placeholder"=>"Nom ...",
+                    "placeholder"=>"Nom",
                     "id"=>"lastnameRegister",
                     "class"=>"form-input",
                     "name" => "lastname",
@@ -270,7 +270,7 @@ class User extends BaseSQL
                 ],
                 "email"=>[
                     "type"=>"email",
-                    "placeholder"=>"Votre email ...",
+                    "placeholder"=>"Votre email",
                     "id"=>"emailRegister",
                     "class"=>"form-input",
                     "name" => "email",
@@ -281,7 +281,7 @@ class User extends BaseSQL
                 ],
                 "password"=>[
                     "type"=>"password",
-                    "placeholder"=>"Votre mot de passe ...",
+                    "placeholder"=>"Votre mot de passe",
                     "id"=>"pwdRegister",
                     "class"=>"form-input",
                     "name" => "password",
