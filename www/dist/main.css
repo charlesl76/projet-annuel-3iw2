@@ -695,6 +695,7 @@ footer .footer-copyright {
   width: 13rem;
   margin-bottom: 1.25rem;
   padding: 0 0.625rem;
+  width: 18.75rem;
 }
 .front-main--register #formRegister #cgu {
   width: 1rem;
@@ -834,9 +835,6 @@ footer .footer-copyright {
     align-items: center;
     justify-content: center;
     width: 80%;
-  }
-  .front-main--register #register-section #formRegister input {
-    width: 18.75rem;
   }
 }
 .button {
