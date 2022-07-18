@@ -74,6 +74,23 @@
   controller: post
   action: postCheck
 
+  ## Tags
+/tags:
+  controller: post
+  action: tags
+
+/tags/{id}:
+  controller: post
+  action: showTag
+
+/tags/{id}/update:
+  controller: post
+  action: postCheck
+
+/tags/{id}/delete:
+  controller: post
+  action: postCheck
+
 /post-check:
   controller: post
   action: postCheck

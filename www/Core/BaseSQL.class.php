@@ -2,9 +2,6 @@
 
 namespace App\Core;
 
-use App\Model\User;
-use App\Model\User as UserModel;
-
 use PDO;
 
 abstract class BaseSQL
@@ -39,6 +36,7 @@ abstract class BaseSQL
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute(["id" => $id]);
         return $queryPrepared->fetchObject(get_called_class());
+        
     }
 
 
@@ -75,12 +73,16 @@ abstract class BaseSQL
         return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function findAllBy(array $params): array
+    public function findAllBy(array $params, string $opt_table = null): array
     {
         foreach ($params as $key => $value) {
             $where[] = $key . "=:" . $key;
         }
-        $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+        if (!is_null($opt_table)) {
+            $sql = "SELECT * FROM " . DBPREFIXE . strtolower($opt_table) . " WHERE " . (implode(" AND ", $where));
+        } else {
+            $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+        }
         // echo $sql;
         // return true;
         $queryPrepared = $this->pdo->prepare($sql);
@@ -133,65 +135,5 @@ abstract class BaseSQL
 
             return true;
         }
-    }
-
-    public function verifieMailUnique()
-    {
-        $column = array_diff_key(
-            get_object_vars($this),
-            get_class_vars(get_class())
-        );
-        $sql = $this->pdo->prepare("SELECT count(email) as nb FROM " . $this->table . " WHERE email = :email");
-
-        if ($sql->execute(['email' => $column["email"]])) {
-            $obj = $sql->fetch();
-            return $obj["nb"];
-        }
-
-        return false;
-    }
-
-
-    public function getTable(): string
-    {
-        return $this->table;
-    }
-
-
-    public function setTable(string $table): void
-    {
-        $this->table = $table;
-    }
-
-    public function login($data)
-    {
-
-        $bdd = new \PDO(
-            DBDRIVER . ":host=" . DBHOST . ";port=" . DBPORT . ";dbname=" . DBNAME,
-            DBUSER,
-            DBPWD,
-            [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING]
-        );
-
-        $value = $data[key($data)];
-        $email = htmlspecialchars($value);
-        $sql = "SELECT * FROM " . $this->table . " WHERE " . key($data) . " = '" . $value . "'";
-        $sql1 = "SELECT password FROM " . $this->table . " WHERE " . key($data) . " = '" . $value . "'";
-
-        $reponse = $bdd->query($sql);
-        $donnees = $reponse->fetch();
-
-        $sql1 = "SELECT password FROM " . $this->table . " WHERE " . key($data) . " = '" . $value . "'";
-        $reponse1 = $bdd->query($sql1);
-        $donnees1 = $reponse1->fetch();
-
-        if (password_verify($_POST["password"], $donnees1[0])) {
-            echo 'Password is valid!';
-        } else {
-            echo 'Invalid password.';
-        }
-
-        $queryPrepared = $this->pdo->prepare($sql);
-        $queryPrepared->execute();
     }
 }

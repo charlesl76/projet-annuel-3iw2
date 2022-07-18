@@ -9,6 +9,7 @@ use DateTime;
 class Post extends BaseSQL
 {
 
+    protected $id;
     protected $author;
     protected $date;
     protected $date_gmt;
@@ -38,7 +39,7 @@ class Post extends BaseSQL
         $columns[2] = "post_modified_gmt";
         $params['post_type'] = "page";
         $this->excerpt = parent::findByColumn($columns, $params);
-        
+
         json_encode($this->excerpt);
 
         return $this->excerpt;
@@ -51,7 +52,7 @@ class Post extends BaseSQL
         $columns[2] = "post_modified_gmt";
         $params['post_type'] = "article";
         $this->excerpt = parent::findByColumn($columns, $params);
-        
+
         json_encode($this->excerpt);
 
         return $this->excerpt;
@@ -73,6 +74,24 @@ class Post extends BaseSQL
         json_encode($this->articles);
 
         return $this->articles;
+    }
+
+    public function getAllTags()
+    {
+        $params["post_type"] = "category";
+        $this->tags = parent::findAllBy($params);
+        json_encode($this->tags);
+
+        return $this->tags;
+    }
+
+    public function getAllTagImages()
+    {
+        $params["collection"] = "olympic-sports";
+        $tagImages = BaseSQL::findAllBy($params, "icon");
+        json_encode($tagImages);
+
+        return $tagImages;
     }
 
     public function getFormPages()
@@ -153,6 +172,20 @@ class Post extends BaseSQL
 
     public function getFormArticles()
     {
+        $tags = $this->getAllTags();
+        $i = 1;
+
+        $tagList[0] = [
+            "id" => "0",
+            "name" => "No tag",
+        ];
+
+        foreach($tags as $tag) {
+            $tagList[$i]["id"] = $tag['id'];
+            $tagList[$i]["name"] = $tag['title'];
+            $i = $i + 1;
+        }
+
         return [
             "config" => [
                 "method" => "POST",
@@ -220,21 +253,7 @@ class Post extends BaseSQL
                     "placeholder" => "Tag",
                     "id" => "post_parent",
                     "class" => "inputTag",
-                    // Voir comment faire un selected:selected pour le getStatus()
-                    "parent" => [
-                        0 => [
-                            "id" => "0",
-                            "name" => "None",
-                        ],
-                        1 => [
-                            "id" => "1",
-                            "name" => "Basketball"
-                        ],
-                        2 => [
-                            "id" => "2",
-                            "name" => "Soccer"
-                        ]
-                    ],
+                    "parent" => $tagList,
                 ],
                 "content" => [
                     "type" => "textarea",
@@ -242,6 +261,132 @@ class Post extends BaseSQL
                     "class" => "inputText",
                     "required" => true,
                     "error" => "Content is required",
+                ],
+            ]
+
+        ];
+    }
+
+    public function getFormTags()
+    {
+        $tagImages = $this->getAllTagImages();
+
+        return [
+            "config" => [
+                "method" => "POST",
+                "action" => "post-check",
+                "submit" => "Create tag",
+            ],
+            "inputs" => [
+                "input" => [
+                    "type" => "text",
+                    "id" => "input",
+                    "class" => "form-control",
+                    "name" => "input",
+                    "placeholder" => "input",
+                    "value" => "tag",
+                    "hidden" => true,
+                ],
+                "type" => [
+                    "type" => "text",
+                    "id" => "type",
+                    "class" => "form-control",
+                    "name" => "add",
+                    "placeholder" => "add",
+                    "value" => "add",
+                    "hidden" => true,
+                ],
+                "author" => [
+                    "type" => "text",
+                    "placeholder" => "Author name",
+                    "id" => "author",
+                    "class" => "inputAuthor",
+                    "required" => true,
+                    "error" => "Author name is required",
+                    "unicity" => false
+                ],
+                "title" => [
+                    "type" => "text",
+                    "placeholder" => "Title",
+                    "id" => "title",
+                    "class" => "inputTitle",
+                    "required" => true,
+                    "error" => "Title is required",
+                ],
+                "thumbnail" => [
+                    "type" => "select",
+                    "placeholder" => "Thumbnail",
+                    "id" => "thumbnail",
+                    "class" => "inputCommentStatus",
+                    "images" => $tagImages,
+                ],
+            ]
+
+        ];
+    }
+
+    public function getFormUpdateTags(Post $post)
+    {
+        $tagImages = $this->getAllTagImages();
+
+        return [
+            "config" => [
+                "method" => "POST",
+                "action" => "/tags/" . $post->getId() . "/update",
+                "submit" => "Update",
+            ],
+            "inputs" => [
+                "input" => [
+                    "type" => "text",
+                    "id" => "input",
+                    "class" => "form-control",
+                    "name" => "input",
+                    "placeholder" => "input",
+                    "value" => "tag",
+                    "hidden" => true,
+                ],
+                "id" => [
+                    "type" => "hidden",
+                    "id" => "id",
+                    "class" => "id",
+                    "placeholder" => "id",
+                    "value" => $post->getId(),
+                ],
+                "type" => [
+                    "type" => "text",
+                    "id" => "type",
+                    "class" => "form-control",
+                    "name" => "update",
+                    "placeholder" => "update",
+                    "value" => "update",
+                    "hidden" => true,
+                ],
+                "author" => [
+                    "type" => "text",
+                    "placeholder" => "Author name",
+                    "id" => "author",
+                    "class" => "inputAuthor",
+                    "required" => true,
+                    "error" => "Author name is required",
+                    "unicity" => false,
+                    "value" => $post->getAuthor(),
+                ],
+                "title" => [
+                    "type" => "text",
+                    "placeholder" => "Title",
+                    "id" => "title",
+                    "class" => "inputTitle",
+                    "required" => true,
+                    "error" => "Title is required",
+                    "value" => $post->getTitle(),
+                ],
+                "thumbnail" => [
+                    "type" => "select",
+                    "placeholder" => "Thumbnail",
+                    "id" => "thumbnail",
+                    "class" => "inputCommentStatus",
+                    "images" => $tagImages,
+                    "selected" => $post->getContent(),
                 ],
             ]
 
@@ -338,6 +483,24 @@ class Post extends BaseSQL
 
     public function getFormUpdateArticles(Post $post)
     {
+        $tags = $this->getAllTags();
+        $selected = $post->getPost_parent();
+        $i = 1;
+
+        $tagList[0] = [
+            "id" => "0",
+            "name" => "No tag",
+        ];
+
+        foreach($tags as $tag) {
+            if($tag["id"] == $selected) {
+                $tagList[$i]["selected"] = true;
+            }
+            $tagList[$i]["id"] = $tag['id'];
+            $tagList[$i]["name"] = $tag['title'];
+            $i = $i + 1;
+        }
+
         return [
             "config" => [
                 "method" => "POST",
@@ -416,21 +579,7 @@ class Post extends BaseSQL
                     "placeholder" => "Tag",
                     "id" => "post_parent",
                     "class" => "inputTag",
-                    // Voir comment faire un selected:selected pour le getStatus()
-                    "parent" => [
-                        0 => [
-                            "id" => "0",
-                            "name" => "None",
-                        ],
-                        1 => [
-                            "id" => "1",
-                            "name" => "Basketball"
-                        ],
-                        2 => [
-                            "id" => "2",
-                            "name" => "Soccer"
-                        ]
-                    ],
+                    "parent" => $tagList,
                 ],
                 "content" => [
                     "type" => "textarea",
@@ -495,10 +644,10 @@ class Post extends BaseSQL
         $this->date = $this->setDate();
         $this->date_gmt = $this->setDate_gmt();
         $this->status = 1;
-        $this->post_parent = 0;
         $this->post_type = "article";
         $this->post_parent = $data["post_parent"];
         $this->comment_count = 0;
+        unset($this->tags);
 
         $this->save();
     }
@@ -516,11 +665,52 @@ class Post extends BaseSQL
         $this->post_type = "article";
         $this->post_parent = $data["post_parent"];
         $this->comment_count = 0;
+        unset($this->tags);
 
         $this->save();
     }
 
     public function deleteArticle($params)
+    {
+        $this->deleteOne($params);
+    }
+
+    public function createTag($data)
+    {
+
+        $this->author = 1;
+        $this->title = $data["title"];
+        $this->excerpt = $this->setExcerpt($data["title"]);
+        $this->content = $data["content"];
+        $this->comment_status = 0;
+        $this->date = $this->setDate();
+        $this->date_gmt = $this->setDate_gmt();
+        $this->status = 1;
+        $this->post_parent = 0;
+        $this->post_type = "category";
+        $this->comment_count = 0;
+
+        $this->save();
+    }
+
+    public function updateTag($data)
+    {
+        $this->id = $data["id"];
+        $this->author = 1;
+        $this->title = $data["title"];
+        $this->excerpt = $this->setExcerpt($data["title"]);
+        $this->content = $data["content"];
+        $this->comment_status = $data["comment_status"];
+        $this->status = 1;
+        $this->post_parent = 0;
+        $this->post_type = "category";
+        $this->post_parent = $data["post_parent"];
+        $this->comment_count = 0;
+
+        $this->save();
+    }
+
+    public function deleteTag($params)
     {
         $this->deleteOne($params);
     }

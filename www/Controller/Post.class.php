@@ -15,7 +15,7 @@ class Post
         $page = new PostModel();
         $active = "pages";
         $view = new View("pages", "back");
-        $final_url = $view->dynamicNav();   
+        $final_url = $view->dynamicNav();
 
         $view->assign("page", $page);
         $view->assign("view", $view);
@@ -124,10 +124,43 @@ class Post
         } else header("Location: /articles");
     }
 
+    public function tags()
+    {
+
+        $tag = new PostModel();
+        $active = "tags";
+        $view = new View("tags", "back");
+
+        $view->assign("tag", $tag);
+        $view->assign("view", $view);
+        $view->assign("active", $active);
+
+        return $tag;
+    }
+
+    public function showTag(array $params)
+    {
+        $post = new PostModel();
+        $postById = $post->setId($params['id']);
+        $action = "update";
+        $active = "tags";
+
+        if (!empty($postById)) {
+            $view = new View("tags", "back");
+            $view->assign("action", $action);
+            $view->assign("postById", $postById);
+            $view->assign("category", $post);
+            $view->assign("view", $view);
+            $view->assign("active", $active);
+            $view->assign("dynamicNav", $view->dynamicNav());
+        } else header("Location: /tags");
+    }
+
     public function postCheck()
     {
         $page = new PostModel();
         $article = new PostModel();
+        $tag = new PostModel();
 
         $validator = new Validator();
 
@@ -175,8 +208,27 @@ class Post
                         header('location: /articles');
                         break;
                 endswitch;
-            } else {
-                print_r($result);
+            }
+        } elseif (!empty($_POST) && $_POST['input'] == "tag") {
+            $result = $validator::checkPost($tag->getFormTags(), $_POST);
+            if (empty($result)) {
+                switch ($_POST["type"]):
+                    case "add":
+                        $tag->createTag($_POST);
+                        unset($_POST);
+                        header('location: /tags');
+                        break;
+                    case "update":
+                        $tag->updateTag($_POST);
+                        unset($_POST);
+                        header('location: /tags');
+                        break;
+                    case "delete":
+                        $tag->deleteTag($tag);
+                        unset($_POST);
+                        header('location: /tags');
+                        break;
+                endswitch;
             }
         }
     }

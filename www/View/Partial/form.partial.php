@@ -19,12 +19,79 @@
 <?php endif;
                 endfor;
 
-            elseif ($input["type"] == "select" && isset($input["parent"])) : ?>
-<select name="<?= $name ?>" id="<?= $input["id"] ?>"><select name="<?= $name ?>" id="<?= $input["id"] ?>">
-    <?php for ($i = 0; $i < count($input["parent"]); $i++) : ?>
-        <option value="<?= $input["parent"][$i]["id"]; ?>"><?= $input["parent"][$i]["name"]; ?></option>
-        <?php if ($i === count($input["parent"])) : ?>
+            elseif ($input["type"] == "select" && isset($input["images"])) : ?>
+
+
+<select name="<?= $name ?>" id="<?= $input["id"] ?>">
+
 </select>
+
+<style>
+    form {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    form>input {
+        height: 30px;
+    }
+</style>
+
+<script>
+    var ddData = [
+        <?php foreach ($input["images"] as $image) : ?> {
+                <?php
+                    if (isset($input["selected"])) :
+                        $dir = "../dist/assets/images/tags-icons/olympic-sports/" . $image["type"] . "/" . $image["name"] . "." . strtolower($image["type"]);
+                        if ($image["id"] == $input["selected"]) : ?>
+                        selected: true,
+                        <?php else : ?>
+                        selected: false,
+                        <?php
+                        endif;
+                    else :
+                        $dir = "dist/assets/images/tags-icons/olympic-sports/" . $image["type"] . "/" . $image["name"] . "." . strtolower($image["type"]);
+                    endif;
+                        ?>
+                        value: '<?= $image["id"]; ?>',
+                            imageSrc: '<?= $dir ?>',
+            },
+        <?php endforeach; ?>
+    ];
+
+    $('#thumbnail').ddslick({
+        width: '100px',
+        height: '200px',
+        imagePosition: "left",
+        data: ddData,
+        selectText: "Image",
+        onSelected: function(data) {
+            data.selectedData.name = "content";
+            $('#thumbnail').find('input[type=hidden]:first').attr("name", data.selectedData.name);
+        }
+
+    });
+</script>
+
+
+
+
+<?php
+
+            elseif ($input["type"] == "select" && isset($input["parent"])) : 
+            var_dump($input); ?>
+    <select name="<?= $name ?>" id="<?= $input["id"] ?>"><select name="<?= $name ?>" id="<?= $input["id"] ?>">
+            <?php for ($i = 0; $i < count($input["parent"]); $i++) : ?>
+                <?php if(isset($input["parent"][$i]["selected"])) : ?>
+                    <option value="<?= $input["parent"][$i]["id"]; ?>" selected><?= $input["parent"][$i]["name"]; ?></option>
+                <?php else: ?>
+                    <option value="<?= $input["parent"][$i]["id"]; ?>"><?= $input["parent"][$i]["name"]; ?></option>
+                <?php endif; ?>
+                <?php if ($i === count($input["parent"])) : ?>
+        </select>
 <?php endif;
                 endfor;
 
@@ -51,6 +118,7 @@
     });
 </script>
 
+
 <?php if ($input["type"] == "select") : ?>
     <select name="<?= $name ?>" id="<?= $input["id"] ?>">
         <?php if ($input['countries']) : ?>
@@ -65,8 +133,8 @@
     <?php for ($i = 0; $i < count($input['roles']); $i++) : ?>
         <option value="<?= $input['roles'][$i]["id"]; ?>"><?= $input["roles"][$i]["name"]; ?> </option>
         <?php if ($i === count($input["roles"])) : ?>
-            </select>
-    <?php endif;
+</select>
+<?php endif;
                         endfor; ?>
 <?php endif; ?>
 
