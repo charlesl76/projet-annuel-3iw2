@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Core\Interfaces;
+
 interface ObserverInterface {
     /**
      * Observer
@@ -30,7 +32,7 @@ interface ObserverInterface {
      */
 
     //Nofify --> You could call this: update, push, etc
-    public function notify($message);
+    public function notify();
 
 
     // Example of notifying the observer state change
