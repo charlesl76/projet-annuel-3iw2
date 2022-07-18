@@ -80,8 +80,9 @@ abstract class BaseSQL
         foreach ($params as $key => $value) {
             $where[] = $key . "=:" . $key;
         }
-
         $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+        // echo $sql;
+        // return true;
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
         return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
@@ -96,9 +97,7 @@ abstract class BaseSQL
         $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
-        $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
-        $data = empty($data) ? ["user" => false] : $data;
-        return $data;
+        return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function findByColumn(array $columns, array $params): array

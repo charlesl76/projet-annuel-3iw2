@@ -94,3 +94,14 @@
   controller: user
   action: update
 
+/front-pages:
+  controller: post
+  action: getPagesListFront
+
+/front-articles:
+  controller: post
+  action: getArticlesListFront
+
+/post/{id}:
+  controller: post
+  action: getOnePostFront
