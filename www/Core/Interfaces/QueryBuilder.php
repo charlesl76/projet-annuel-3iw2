@@ -38,4 +38,13 @@ interface QueryBuilder
 
     //Get
     public function get(): string;
+
+    //Fetch
+    public function fetch(string $called_classes);
+
+    //FetchAll
+    public function fetchAll(string $called_classes);
+
+    //Count
+    public function count();
 }
