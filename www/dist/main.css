@@ -1069,4 +1069,19 @@ main .front-main #front-section2 p {
   }
 }
 
+.container-error {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 6rem;
+  text-align: center;
+  background: #f5f5f5;
+}
+
+.title404 > h1 {
+  font-size: 12rem;
+  color: #0077C2;
+  font-weight: bold;
+}
+
 /*# sourceMappingURL=main.css.map */

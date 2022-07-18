@@ -82,8 +82,11 @@
   controller: user
   action: update
 
-
 /forgetPassword:
   controller: user
   action: forgetPassword
+
+/404:
+  controller: general
+  action: error404
 

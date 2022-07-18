@@ -15,4 +15,9 @@ class General{
     {
         $view = new View("contact");
     }
+
+    public function error404()
+    {
+        $view = new View("404");
+    }
 }

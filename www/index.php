@@ -46,7 +46,7 @@ if (count($uri_explode) > 2) {
 }
 
 if (empty($routes[$uri]) || empty($routes[$uri]["controller"]) || empty($routes[$uri]["action"])) {
-    die("Page 404");
+    header('location: /404');
 }
 
 $controller = ucfirst(strtolower($routes[$uri]["controller"]));
