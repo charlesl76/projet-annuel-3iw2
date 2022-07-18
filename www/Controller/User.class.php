@@ -11,11 +11,107 @@ use App\Core\Mailer;
 use App\Core\FormBuilder;
 use App\Core\Session;
 use App\Model\User as UserModel;
+use App\Controller\Mail;
 
+class User
+{
 
+    public function login()
+    {
+        $view = new View("Login");
+        $view->assign("titleSeo", "Se connecter au site");
+    }
 
-class User{
+    public function forgotPassword()
+    {
+        $user = new UserModel();
+        $mail = new Mail();
 
+        if (isset($_POST['user_cred']) && !empty($_POST['user_cred'])) {
+
+            $data = $user->forgotPassword($_POST['user_cred']);
+
+            if ($data !== false) {
+                $body = "
+                <div class=\"container\">
+                    <h1>Reset your password</h1>
+                    <p>Hello " . $data["username"] . ", to reset your password, click the link below.</p>
+                    <p><a href=\"http://" . $_SERVER['SERVER_NAME'] . "/r/" . $data['token'] . "\">Reset your password</a></p>
+                    
+                    <p>If you did not request a password reset, please ignore this email.</p>
+                    <p class=\"signature\">Sitename.</p>      
+                </div>
+    
+                <style>
+                .container {
+                    border: 1px solid #d4d4d4;
+                    border-radius: 5px;
+                    padding: 10px;
+                    margin: 0 auto;
+                    width: 50%;
+                    margin-top: 20px;
+                    font: normal 14px/23px 'Helvetica', Arial, sans-serif;
+                }
+    
+                h1 {
+                    font-size: 18px;
+                    font-weight: bold;
+                    margin: 1em 0;
+                }
+    
+                p {
+                    margin: 0;
+                }
+    
+                .signature {
+                    font-size: 12px;
+                    color: #999;
+                    margin-top: 1em;
+                }
+                </style>
+    
+                ";
+                echo $body;
+                $mail = $mail->sendMail($data["email"], "[Sitename] Reset password request", $body);
+
+                header("location: /forgot-password/1");
+            } else {
+
+                header("location: /forgot-password/0");
+            }
+        } else {
+            $view = new View("forgotpassword", "front");
+            $final_url = $view->dynamicNav();
+            $view->assign("titleSeo", "Forgot Password");
+            $view->assign("final_url", $final_url);
+        }
+    }
+
+    public function mailSent(array $params)
+    {
+        $view = new View("forgotpassword", "front");
+        $final_url = $view->dynamicNav();
+        $view->assign("id", $params["id"]);
+        $view->assign("titleSeo", "Forgot Password");
+        $view->assign("final_url", $final_url);
+    }
+
+    public function tokenCheck(array $params) {
+        $user = new UserModel();
+        $data = $user->tokenCheck($params["id"]);
+        echo $params["id"];
+
+        if ($data !== false) {
+            $view = new View("resetpassword", "front");
+            $final_url = $view->dynamicNav();
+            $view->assign("id", $data["id"]);
+            $view->assign("token", $params["token"]);
+            $view->assign("titleSeo", "Reset Password");
+            $view->assign("final_url", $final_url);
+        } else {
+            header("location: /forgot-password/0");
+        }
+    }
 
     public function logout()
     {
@@ -45,74 +141,29 @@ class User{
         
         $configForm = $user->getFormRegister();
 
-        //print_r($_POST);
-        if( !empty($_POST)){
-            $method = $configForm["config"]["method"];
-            $data = $GLOBALS["_".$method];
-
-            if($_SERVER["REQUEST_METHOD"]==$method && !empty($data)){
-                $validator = new Validator($configForm, $data);
-                if ($this->checkUser($data['email'])) {
-                    $_SESSION['alert']['danger'][] = "L'adresse mail entré correspond déjà à un compte existant compte.";
-                } else {
-            
-                    if(empty($configForm["errors"])){
-
-                        //$session->set("error",$verification[0] );
-                        $user->setFirstname($_POST["firstname"]);
-					    $user->setLastname($_POST["lastname"]);
-                        $user->setPassword((password_hash($_POST["password"], PASSWORD_DEFAULT)));
-					    //$user->setPassword(($_POST["password"]));
-					    $user->setEmail($_POST["email"]);
-                        $user->setRegistered_at(date('Y-m-d H:i:s'));
-					    $user->setUpdatedAt(date('Y-m-d H:i:s'));
-
-                        $user->generateToken((Helper::createToken()));
-
-					    $id = $user->save();
-                        $session->addFlashMessage("success", "Your registration is OK!");
-
-                        
-                        Mailer::sendMail($data['email'],$verification_code );
-                        header('Location: /login');
-                        $_SESSION['alert']['success'][] = 'Votre compte à bien été créer.';
-                      
-                    
-
-					    /*Mailer::sendMail(
-						    $user->getEmail(),
-						    $user->getFirstname(),
-						    $user->getLastname(),
-						    'Vous venez de creer un compte !' , 'Bienvenue !<br /> Vous venez de creer un compte.'
-					    );
-                        header('Location: /login');
-					    exit;*/
-
-                    }else {
-                        $_POST["errors"] = $errors;
-                    }
-                }
-            }
+        print_r($_POST);
+        if (!empty($_POST)) {
+            $result = Validator::run($user->getFormRegister(), $_POST);
+            print_r($result);
         }
-        $v = new View("register", "front");
-        $v->assign("configFormRegister", $configForm);
+
+        //$user= $user->setId(3);
+        //$user->setEmail("toto@gmail.com");
+        //$user->save();
+
+        $view = new View("register");
+        $view->assign("user", $user);
     }
 
     public function login()
     {
         $user = new UserModel();
 
-        if (!empty($_POST)) {
-
-            $user->setEmail(htmlspecialchars($_POST["email"]));
-            $user->setPassword(htmlspecialchars($_POST["password"]));
-            $user->login(["email" => $_POST['email']]);
-
-        }
-
-        $view = new View("login");
-        $form = FormBuilder::render($user->getLoginForm());
-        $view->assign("form", $form);
+        if (!empty($userById)) {
+            $form = $user->getFormUpdate($userById);
+            $view = new View("show", "back");
+            $view->assign("form", $form);
+        } else header("Location: /users");
     }
 
     
@@ -121,7 +172,7 @@ class User{
     {
         $user = new UserModel();
         $userById = $user->setId($_POST['id']);
-        if(empty($userById)) {
+        if (empty($userById)) {
             header("Location: /users");
         } else {
             $user = $user->setId($_POST['id']);
@@ -130,7 +181,7 @@ class User{
             $user->setLastName($_POST['lastname']);
             $user->setRole($_POST['role']);
             $user->save();
-            header("Location: /users/".$user->getId());
+            header("Location: /users/" . $user->getId());
         }
     }
 
@@ -166,7 +217,4 @@ class User{
 
         header("Location: /users");
     }
-
-    
-
 }
