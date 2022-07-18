@@ -24,6 +24,22 @@ class Post
 
         return $page;
     }
+    
+    public function getPagesListFront()
+    {
+        $page = new PostModel();
+        $pagesList = $page->getAllPages();
+        $active = "page";
+        $view = new View("display-posts", "front");
+        $final_url = $view->dynamicNav();
+
+        $view->assign("pages",$pagesList);
+        $view->assign("post_type", $active);
+        $view->assign("view", $view);
+        $view->assign("final_url", $final_url);
+    
+        return $page;
+    }
 
     public function showPage(array $params)
     {
@@ -54,6 +70,41 @@ class Post
         $view->assign("active", $active);
 
         return $article;
+    }
+
+    public function getArticlesListFront()
+    {
+        $article = new PostModel();
+        $articlesList = $article->getAllArticles();
+        $active = "article";
+        $view = new View("display-posts", "front");
+        $final_url = $view->dynamicNav();
+
+        $view->assign("articles",$articlesList);
+        $view->assign("post_type", $active);
+        $view->assign("view", $view);
+        $view->assign("final_url", $final_url);
+    
+        return $article;
+    }
+
+    public function getOnePostFront(array $params)
+    {
+        $post = new PostModel();
+        $postById = $post->setId($params['id']);
+
+        $postType = $postById->getPost_type();
+        $postTitle = $postById->getTitle();
+        $postContent = $postById->getContent();
+        $postAuthor = $postById->getAuthor();
+        $postDate = $postById->getDate();
+
+        $view = new View("display-post", "front");
+        $view->assign("postType", $postType);
+        $view->assign("postTitle", $postTitle);
+        $view->assign("postContent", $postContent);
+        $view->assign("postAuthor", $postAuthor);
+        $view->assign("postDate", $postDate);
     }
 
     public function showArticle(array $params)

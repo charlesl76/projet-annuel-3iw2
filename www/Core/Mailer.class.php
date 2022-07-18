@@ -1,21 +1,36 @@
 <?php
 
-namespace App\Controller;
+namespace App\Core;
 
-use App\Core\View;
-use App\Model\Register;
+use App\Core\BaseSQL;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
-require 'PHPMailer/src/Exception.php';
-require 'PHPMailer/src/PHPMailer.php';
-require 'PHPMailer/src/SMTP.php';
+require './Controller/PHPMailer/src/Exception.php';
+require './Controller/PHPMailer/src/PHPMailer.php';
+require './Controller/PHPMailer/src/SMTP.php';
 
-class Mail
+
+class Mailer 
 {
 
-    function sendMail($email, $subject, $body)
+    protected $id = null;
+    protected $email;
+    protected $password;
+    protected $first_name;
+    protected $last_name;
+    protected $status = null;
+    protected $token = null;
+    protected $birth;
+    protected $verification_code;
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    function sendMail($email, $verification_code)
     {
         try {
             $mail = new PHPMailer(true);
@@ -33,8 +48,8 @@ class Mail
             $mail->setFrom('noreply@sported.site', 'Sported');
             $mail->addAddress($email);                              // Add a recipient
             $mail->isHTML(true);                                    // Set email format to HTML
-            $mail->Subject = $subject;
-            $mail->Body = $body;
+            $mail->Subject = 'Your email registration link';
+            $mail->Body = "Thanks for registring with us. To activate your account click <a href='http://localhost/verify?email=$email&verification_code=$verification_code'>here</a>";
 
             $result = $mail->send();
         } catch (Exception $e) {
@@ -43,19 +58,4 @@ class Mail
             echo '</pre>';
         }
     }
-
-    public function verificationMail()
-    {
-        $view = new View("testmail");
-
-        $registration = new Register;
-
-        $view->assign("titleSeo", "Test mail");
-
-        $token = "abcde";                           // Set the token after registration of the user
-        $email = "mail@adress.com";                 // Set the email after registration of the user
-        $registration->sendMail($email, $token);    // Send the email
-    }
-
-    
 }
