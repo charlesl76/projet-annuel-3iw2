@@ -2,6 +2,7 @@
 
 namespace App\Core;
 
+use App\Core\Logger;
 use App\Core\Db;
 //use PDO;
 
@@ -15,7 +16,13 @@ abstract class BaseSQL
     {
         //Faudra intégrer le singleton
 
-        $this->pdo = Db::connect();
+        try {
+            $this->pdo = Db::connect();
+        } catch (\Exception $e) {
+            $error = $e->getMessage();
+            Logger::wErrorLog("Error with DB Connection, $error");
+            die("Erreur SQL : " . $error);
+        }
 
         /*try {
             //Connexion à la base de données

@@ -49,4 +49,13 @@ class Logger
         $instance = self::getInstance();
         fclose($instance);
     }
+
+    public static function wErrorLog(string $message)
+    {
+        $currentTime = date('[Y/m/d, H:i:s]');
+
+        $instance = self::getInstance();
+        fwrite($instance, "[$currentTime]: $message\n");
+    }
+
 };
