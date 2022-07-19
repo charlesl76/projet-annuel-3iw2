@@ -2,6 +2,11 @@
 
 namespace App\Core;
 
+use App\Model\User;
+use App\Model\User as UserModel;
+use DateInterval;
+use DateTime;
+use Exception;
 use PDO;
 
 abstract class BaseSQL
@@ -9,7 +14,6 @@ abstract class BaseSQL
     private $pdo;
     private $table;
     private $data = [];
-
 
 
     public function __construct()
@@ -43,7 +47,7 @@ abstract class BaseSQL
     public function save()
     {
 
-        $columns  = get_object_vars($this);
+        $columns = get_object_vars($this);
         $varsToExclude = get_class_vars(get_class());
         $columns = array_diff_key($columns, $varsToExclude);
         $columns = array_filter($columns);
@@ -58,8 +62,14 @@ abstract class BaseSQL
             VALUES (:" . implode(",:", array_keys($columns)) . ")";
         }
 
-        $queryPrepared = $this->pdo->prepare($sql);
-        $queryPrepared->execute($columns);
+        $statement = $this->pdo->prepare($sql);
+        if ($statement) {
+            $success = $statement->execute($columns);
+            if ($success) {
+                return $this->pdo->lastInsertId();
+            }
+        }
+        return null;
     }
 
 
@@ -99,7 +109,8 @@ abstract class BaseSQL
         $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
-        return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+        $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+        return empty($data) ? [] : $data;
     }
 
     public function findByColumn(array $columns, array $params): array
@@ -107,21 +118,31 @@ abstract class BaseSQL
         $select = $columns;
 
         foreach ($params as $key => $value) {
-            $where[] = $key . "=:" . $key;
+            if (strstr($key, 'date')) {
+                # date comparaison
+                $where[] = $key . ">:" . $key;
+            } else {
+                $where[] = $key . "=:" . $key;
+            }
         }
 
         $sql = "SELECT " . implode(",", $select) . " FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
-        // echo $sql;
-        // return true;
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
         $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
-        $data = empty($data) ? ["user" => false] : $data;
-        return $data;
+        return empty($data) ? ["user" => false] : $data;
+    }
+
+    public function findUserById(string $id) {
+        $sql = 'SELECT id, username, email, first_name, last_name, role, registered_at, updated_at, activated, gender, blocked, blocked_until, birth FROM oklm_user WHERE id = ?';
+        $params = [$id];
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute($params);
+        return $queryPrepared->fetchObject(User::class);
     }
 
     public function deleteOne()
-    {   
+    {
         if (isset($_POST['id']) && !empty($_POST['id'])) {
 
             $id = strip_tags($_POST['id']);
@@ -135,5 +156,43 @@ abstract class BaseSQL
 
             return true;
         }
+    }
+
+    public function verifieMailUnique()
+    {
+        $column = array_diff_key(
+            get_object_vars($this),
+            get_class_vars(get_class())
+        );
+        $sql = $this->pdo->prepare("SELECT count(email) as nb FROM " . $this->table . " WHERE email = :email");
+
+        if ($sql->execute(['email' => $column["email"]])) {
+            $obj = $sql->fetch();
+            return $obj["nb"];
+        }
+
+        return false;
+    }
+
+
+    public function getTable(): string
+    {
+        return $this->table;
+    }
+
+
+    public function setTable(string $table): void
+    {
+        $this->table = $table;
+    }
+
+    /**
+     * Cette fonction permet de récupérer une session à partir d'un token
+     * @param string $token Le token
+     * @return array|null La session ou null si le token est invalide ou expiré
+     */
+    public function sessionWithToken(string $token): ?array
+    {
+        return $this->findByColumn(["id", "token", "user_id", "expiration_date"], ["token" => $token, "expiration_date" => " NOW()"]);
     }
 }

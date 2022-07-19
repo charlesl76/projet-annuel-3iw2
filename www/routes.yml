@@ -18,7 +18,7 @@
   controller: user
   action: mailSent
 
-/forgot-password/r/{id}:
+/forgot-password/r/{token}:
   controller: user
   action: tokenCheck
 
@@ -29,6 +29,10 @@
 /register:
   controller: user
   action: register
+
+/register/r/{token}:
+  controller: user
+  action: tokenCheck
 
 /dashboard:
   controller: admin

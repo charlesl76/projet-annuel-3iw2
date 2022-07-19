@@ -15,7 +15,7 @@ require 'PHPMailer/src/SMTP.php';
 class Mail
 {
 
-    function sendMail($email, $subject, $body)
+    public function sendMail($email, $subject, $body)
     {
         try {
             $mail = new PHPMailer(true);

@@ -1,6 +1,6 @@
 <div class="container">
-<h1>Register an Account</h1>
+<h1>Inscription</h1>
 
 <?php
-$this->includePartial("form", $configFormRegister);
+$this->includePartial("form", $getFormRegister);
 ?>

@@ -3,7 +3,6 @@
 namespace App\Model;
 
 use App\Core\BaseSQL;
-use App\Core\Routing;
 
 class User extends BaseSQL
 {
@@ -163,8 +162,7 @@ class User extends BaseSQL
      */
     public function setToken($token)
     {
-        $token = urlencode(base64_encode(openssl_random_pseudo_bytes(32)));
-        $this->token = $token;
+        $this->token = bin2hex(openssl_random_pseudo_bytes(32));
     }
 
     /**
@@ -233,8 +231,7 @@ class User extends BaseSQL
 
     public function generateToken(): void
     {
-        $bytes = random_bytes(128);
-        $this->token = substr(str_shuffle(bin2hex($bytes)), 0, 255);
+        $this->token = bin2hex(openssl_random_pseudo_bytes(32));
     }
 
     public function getFormRegister(): array
@@ -246,9 +243,19 @@ class User extends BaseSQL
                 "submit" => "S'inscrire"
             ],
             "inputs" => [
+                "username" => [
+                    "type" => "text",
+                    "placeholder" => "Votre nom d'utilisateur",
+                    "id" => "usernameRegister",
+                    "class" => "usernameRegister",
+                    "required" => true,
+                    "error" => "Nom d'utilisateur incorrect",
+                    "unicity" => true,
+                    "errorUnicity" => "Nom d'utilisateur déjà utilisé",
+                ],
                 "email" => [
                     "type" => "email",
-                    "placeholder" => "Votre email ...",
+                    "placeholder" => "Votre email",
                     "id" => "emailRegister",
                     "class" => "inputRegister",
                     "required" => true,
@@ -258,7 +265,7 @@ class User extends BaseSQL
                 ],
                 "password" => [
                     "type" => "password",
-                    "placeholder" => "Votre mot de passe ...",
+                    "placeholder" => "Votre mot de passe",
                     "id" => "pwdRegister",
                     "class" => "inputRegister",
                     "required" => true,
@@ -325,6 +332,38 @@ class User extends BaseSQL
                         ],
                     ],
                 ]
+            ]
+
+        ];
+    }
+
+    public function getFormLogin(): array
+    {
+        return [
+            "config" => [
+                "method" => "POST",
+                "action" => "",
+                "submit" => "Se connecter"
+            ],
+            "inputs" => [
+                "username" => [
+                    "type" => "text",
+                    "placeholder" => "Votre nom d'utilisateur",
+                    "id" => "usernameLogin",
+                    "class" => "usernameLogin",
+                    "required" => true,
+                    "error" => "Nom d'utilisateur incorrect",
+                    "unicity" => true,
+                    "errorUnicity" => "Nom d'utilisateur déjà utilisé",
+                ],
+                "password" => [
+                    "type" => "password",
+                    "placeholder" => "Votre mot de passe",
+                    "id" => "pwdLogin",
+                    "class" => "inputLogin",
+                    "required" => true,
+                    "error" => "Votre mot de passe doit faire entre 8 et 16 et contenir des chiffres et des lettres",
+                ],
             ]
 
         ];
@@ -404,6 +443,45 @@ class User extends BaseSQL
         ];
     }
 
+    public function getFormResetPassword(): array
+    {
+        return [
+            "config" => [
+                "method" => "POST",
+                "action" => "",
+                "submit" => "Valider"
+            ],
+            "inputs" => [
+                "oldPassword" => [
+                    "type" => "password",
+                    "placeholder" => "Votre ancien mot de passe",
+                    "id" => "oldPassword",
+                    "class" => "oldPassword",
+                    "required" => true,
+                    "error" => "Votre mot de passe doit faire entre 8 et 16 et contenir des chiffres et des lettres",
+                ],
+                "newPassword" => [
+                    "type" => "password",
+                    "placeholder" => "Votre nouveau mot de passe",
+                    "id" => "newPassword",
+                    "class" => "newPassword",
+                    "required" => true,
+                    "error" => "Votre mot de passe doit faire entre 8 et 16 et contenir des chiffres et des lettres",
+                ],
+                "newPasswordConfirm" => [
+                    "type" => "password",
+                    "placeholder" => "Confirmation de votre nouveau mot de passe",
+                    "id" => "newPasswordConfirm",
+                    "class" => "newPasswordConfirm",
+                    "required" => true,
+                    "confirm" => "password",
+                    "error" => "Votre mot de passe de confirmation ne correspond pas",
+                ],
+            ]
+
+        ];
+    }
+
     public function getUserByCredentials(string $user_cred)
     {
         $user = $this->findByColumn(["email"], ["email" => $user_cred]);
@@ -436,7 +514,7 @@ class User extends BaseSQL
                 $data["token"] = $user_cred->getToken();
                 return $data;
             } else {
-                $data["error"] = "Your account is not activated or is blocked. Please contact the administrator.";
+                $data["error"] = "Votre compte n'est pas activé ou est bloqué.";
                 return $data;
             }
         } elseif (isset($user["username"])) {
@@ -462,18 +540,13 @@ class User extends BaseSQL
 
     public function forgotPassword(string $user_cred)
     {
-        if (isset($user_cred) && !empty($user_cred)) {
+        if (!empty($user_cred)) {
             $user = $this->getUserByCredentials($user_cred);
             if ($user !== false) {
                 // Il faut maintenant traiter l'envoi de mail
-                $data = $this->forgotPasswordProcess($user);
-                return $data;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
+                return $this->forgotPasswordProcess($user);
+            } else return false;
+        } else return false;
     }
 
     public function tokenCheck(string $token)
@@ -486,8 +559,12 @@ class User extends BaseSQL
         }
     }
 
+    /**
+     * @return false|string|null
+     */
     public function save()
     {
-        parent::save();
+        return parent::save();
     }
+
 }
