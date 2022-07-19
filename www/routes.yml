@@ -18,7 +18,7 @@
   controller: user
   action: mailSent
 
-/forgot-password/r/{id}:
+/forgot-password/r/{token}:
   controller: user
   action: tokenCheck
 

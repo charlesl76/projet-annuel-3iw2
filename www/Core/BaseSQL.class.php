@@ -65,7 +65,9 @@ abstract class BaseSQL
         $statement = $this->pdo->prepare($sql);
         if ($statement) {
             $success = $statement->execute($columns);
-            if ($success) return $this->pdo->lastInsertId();
+            if ($success) {
+                return $this->pdo->lastInsertId();
+            }
         }
         return null;
     }
@@ -123,7 +125,7 @@ abstract class BaseSQL
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
         $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
-        return empty($data) ? [] : $data;
+        return empty($data) ? ["user" => false] : $data;
     }
 
     public function findUserById(string $id) {

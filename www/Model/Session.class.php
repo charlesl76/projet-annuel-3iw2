@@ -48,7 +48,7 @@ class Session extends BaseSQL
 
     public function setToken(): void
     {
-        $this->token = bin2hex(random_bytes(32));
+        $this->token = bin2hex(openssl_random_pseudo_bytes(32));
     }
 
     /**

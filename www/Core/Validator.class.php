@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Core;
-use App\Core\BaseSQL;
 
-class Validator
+use App\Model\User;
+
+class Validator extends BaseSQL
 {
 
     public static function checkForm($config, $data): array
@@ -132,5 +133,27 @@ class Validator
             && preg_match("/[a-z]/", $password, $match)
             && preg_match("/[A-Z]/", $password, $match);
     }
+
+
+    public function changePassword($token, $oldPassword, $newPassword, $newPasswordConfirm): bool
+    {
+        $user = new User();
+        $user = $user->findByColumn(["id", "password", "token"], ["token" => $token]);
+
+        if (hash('sha512', $oldPassword) === $user['password']) {
+            if ($newPassword === $newPasswordConfirm) {
+                var_dump('nope');
+                $user = $this->findUserById($user['id']);
+                $user->setPassword(hash('sha512', $newPassword));
+                $datetime = new \DateTime();
+                $user->setUpdatedAt($datetime->format('Y-m-d H:i:s'));
+                $user->save();
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     
 }

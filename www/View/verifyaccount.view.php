@@ -1,4 +1,4 @@
 <div class="container">
-    <h1>Vérification de votre compte</h1>
+    <h3>Vérification de votre compte</h3>
 
-    <p>Votre compte a été vérifié avec succès <?= $username ?></p>
+    <p>Votre compte a été vérifié avec succès.</p>

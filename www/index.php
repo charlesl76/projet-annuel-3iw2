@@ -48,12 +48,17 @@ if (count($uri_explode) > 2) {
         // paramètres de l'uri
         $params = [$param => $uri_explode[2]];
     } elseif (preg_match("/\d/i", $uri_explode[3])) {
-        var_dump($uri_explode);
-        $param = "id";
-        // uri plus longue
-        if (isset($uri_explode[3])) $uri = "/" . $uri_explode[1] . $uri_explode[2] . "/{{$param}}/";
-        // paramètres de l'uri
-        $params = [$param => $uri_explode[3]];
+        if (strlen($uri_explode[3]) === 64) {
+            // token
+            $param = "token";
+            if (isset($uri_explode[3])) $uri = "/" . $uri_explode[1] . "/".$uri_explode[2] . "/{{$param}}";
+            $params = [$param => $uri_explode[3]];
+
+        } else {
+//            $param = "id";
+//            if (isset($uri_explode[3])) $uri = "/" . $uri_explode[1] . "/{{$param}}/" . $uri_explode[2];
+//            $params = [$param => $uri_explode[3]];
+        }
     }
 }
 
