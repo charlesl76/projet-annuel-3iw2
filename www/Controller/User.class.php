@@ -155,17 +155,6 @@ class User
         $view->assign("user", $user);
     }
 
-    public function login()
-    {
-        $user = new UserModel();
-
-        if (!empty($userById)) {
-            $form = $user->getFormUpdate($userById);
-            $view = new View("show", "back");
-            $view->assign("form", $form);
-        } else header("Location: /users");
-    }
-
     
 
     public function update()
