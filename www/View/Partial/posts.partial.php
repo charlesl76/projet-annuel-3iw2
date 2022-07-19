@@ -26,7 +26,9 @@ $type = $uri[1];
 
         <?php
         foreach ($config as $entry) :
-            // var_dump($entry);
+            if($entry['post_type'] == "category"){
+                $entry['post_type'] = "tag";
+            }
         ?>
             <input type="text" value="<?= $entry["id"] ?>" name="update" hidden>
             <tr>

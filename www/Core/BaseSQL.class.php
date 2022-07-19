@@ -4,7 +4,6 @@ namespace App\Core;
 
 use App\Model\User;
 use App\Model\User as UserModel;
-
 use DateInterval;
 use DateTime;
 use Exception;
@@ -41,6 +40,7 @@ abstract class BaseSQL
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute(["id" => $id]);
         return $queryPrepared->fetchObject(get_called_class());
+        
     }
 
 
@@ -83,13 +83,18 @@ abstract class BaseSQL
         return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function findAllBy(array $params): array
+    public function findAllBy(array $params, string $opt_table = null): array
     {
         foreach ($params as $key => $value) {
             $where[] = $key . "=:" . $key;
         }
-
-        $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+        if (!is_null($opt_table)) {
+            $sql = "SELECT * FROM " . DBPREFIXE . strtolower($opt_table) . " WHERE " . (implode(" AND ", $where));
+        } else {
+            $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+        }
+        // echo $sql;
+        // return true;
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
         return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);

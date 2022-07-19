@@ -198,6 +198,7 @@ class User
         $view->assign("getFormRegister", $getFormRegister);
     }
 
+
     public function login()
     {
         $user = new UserModel();

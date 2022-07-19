@@ -78,6 +78,23 @@
   controller: post
   action: postCheck
 
+  ## Tags
+/tags:
+  controller: post
+  action: tags
+
+/tags/{id}:
+  controller: post
+  action: showTag
+
+/tags/{id}/update:
+  controller: post
+  action: postCheck
+
+/tags/{id}/delete:
+  controller: post
+  action: postCheck
+
 /post-check:
   controller: post
   action: postCheck
@@ -98,3 +115,14 @@
   controller: user
   action: update
 
+/front-pages:
+  controller: post
+  action: getPagesListFront
+
+/front-articles:
+  controller: post
+  action: getArticlesListFront
+
+/post/{id}:
+  controller: post
+  action: getOnePostFront
