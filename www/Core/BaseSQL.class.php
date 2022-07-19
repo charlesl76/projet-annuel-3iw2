@@ -5,6 +5,9 @@ namespace App\Core;
 use App\Model\User;
 use App\Model\User as UserModel;
 
+use DateInterval;
+use DateTime;
+use Exception;
 use PDO;
 
 abstract class BaseSQL
@@ -12,7 +15,6 @@ abstract class BaseSQL
     private $pdo;
     private $table;
     private $data = [];
-
 
 
     public function __construct()
@@ -45,7 +47,7 @@ abstract class BaseSQL
     public function save()
     {
 
-        $columns  = get_object_vars($this);
+        $columns = get_object_vars($this);
         $varsToExclude = get_class_vars(get_class());
         $columns = array_diff_key($columns, $varsToExclude);
         $columns = array_filter($columns);
@@ -60,8 +62,12 @@ abstract class BaseSQL
             VALUES (:" . implode(",:", array_keys($columns)) . ")";
         }
 
-        $queryPrepared = $this->pdo->prepare($sql);
-        $queryPrepared->execute($columns);
+        $statement = $this->pdo->prepare($sql);
+        if ($statement) {
+            $success = $statement->execute($columns);
+            if ($success) return $this->pdo->lastInsertId();
+        }
+        return null;
     }
 
 
@@ -97,8 +103,7 @@ abstract class BaseSQL
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
         $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
-        $data = empty($data) ? ["user" => false] : $data;
-        return $data;
+        return empty($data) ? [] : $data;
     }
 
     public function findByColumn(array $columns, array $params): array
@@ -106,21 +111,31 @@ abstract class BaseSQL
         $select = $columns;
 
         foreach ($params as $key => $value) {
-            $where[] = $key . "=:" . $key;
+            if (strstr($key, 'date')) {
+                # date comparaison
+                $where[] = $key . ">:" . $key;
+            } else {
+                $where[] = $key . "=:" . $key;
+            }
         }
 
         $sql = "SELECT " . implode(",", $select) . " FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
-        // echo $sql;
-        // return true;
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
         $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
-        $data = empty($data) ? ["user" => false] : $data;
-        return $data;
+        return empty($data) ? [] : $data;
+    }
+
+    public function findUserById(string $id) {
+        $sql = 'SELECT id, username, email, first_name, last_name, role, registered_at, updated_at, activated, gender, blocked, blocked_until, birth FROM oklm_user WHERE id = ?';
+        $params = [$id];
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute($params);
+        return $queryPrepared->fetchObject(User::class);
     }
 
     public function deleteOne()
-    {   
+    {
         if (isset($_POST['id']) && !empty($_POST['id'])) {
 
             $id = strip_tags($_POST['id']);
@@ -164,35 +179,13 @@ abstract class BaseSQL
         $this->table = $table;
     }
 
-    public function login($data)
+    /**
+     * Cette fonction permet de récupérer une session à partir d'un token
+     * @param string $token Le token
+     * @return array|null La session ou null si le token est invalide ou expiré
+     */
+    public function sessionWithToken(string $token): ?array
     {
-
-        $bdd = new \PDO(
-            DBDRIVER . ":host=" . DBHOST . ";port=" . DBPORT . ";dbname=" . DBNAME,
-            DBUSER,
-            DBPWD,
-            [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING]
-        );
-
-        $value = $data[key($data)];
-        $email = htmlspecialchars($value);
-        $sql = "SELECT * FROM " . $this->table . " WHERE " . key($data) . " = '" . $value . "'";
-        $sql1 = "SELECT password FROM " . $this->table . " WHERE " . key($data) . " = '" . $value . "'";
-
-        $reponse = $bdd->query($sql);
-        $donnees = $reponse->fetch();
-
-        $sql1 = "SELECT password FROM " . $this->table . " WHERE " . key($data) . " = '" . $value . "'";
-        $reponse1 = $bdd->query($sql1);
-        $donnees1 = $reponse1->fetch();
-
-        if (password_verify($_POST["password"], $donnees1[0])) {
-            echo 'Password is valid!';
-        } else {
-            echo 'Invalid password.';
-        }
-
-        $queryPrepared = $this->pdo->prepare($sql);
-        $queryPrepared->execute();
+        return $this->findByColumn(["id", "token", "user_id", "expiration_date"], ["token" => $token, "expiration_date" => " NOW()"]);
     }
 }

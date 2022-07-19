@@ -2,7 +2,6 @@
 
 namespace App\Model;
 
-use FFI\Exception;
 use App\Core\BaseSQL;
 use DateTime;
 

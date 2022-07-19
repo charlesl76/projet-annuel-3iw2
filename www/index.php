@@ -48,6 +48,7 @@ if (count($uri_explode) > 2) {
         // paramètres de l'uri
         $params = [$param => $uri_explode[2]];
     } elseif (preg_match("/\d/i", $uri_explode[3])) {
+        var_dump($uri_explode);
         $param = "id";
         // uri plus longue
         if (isset($uri_explode[3])) $uri = "/" . $uri_explode[1] . $uri_explode[2] . "/{{$param}}/";

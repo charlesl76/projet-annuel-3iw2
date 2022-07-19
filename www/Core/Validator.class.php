@@ -27,7 +27,7 @@ class Validator
             }
 
             if ($input["type"] == "password" && !self::checkPassword($data[$name])) {
-                $result[] = "Password incorrect";
+                $result[] = "Le mot de passe n'est pas assez fort";
             } else if ($input["type"] == "email"  && !self::checkEmail($data[$name])) {
                 $result[] = "Email incorrect";
             }

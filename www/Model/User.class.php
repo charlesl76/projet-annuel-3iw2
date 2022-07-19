@@ -3,7 +3,6 @@
 namespace App\Model;
 
 use App\Core\BaseSQL;
-use App\Core\Routing;
 
 class User extends BaseSQL
 {
@@ -246,9 +245,19 @@ class User extends BaseSQL
                 "submit" => "S'inscrire"
             ],
             "inputs" => [
+                "username" => [
+                    "type" => "text",
+                    "placeholder" => "Votre nom d'utilisateur",
+                    "id" => "usernameRegister",
+                    "class" => "usernameRegister",
+                    "required" => true,
+                    "error" => "Nom d'utilisateur incorrect",
+                    "unicity" => true,
+                    "errorUnicity" => "Nom d'utilisateur déjà utilisé",
+                ],
                 "email" => [
                     "type" => "email",
-                    "placeholder" => "Votre email ...",
+                    "placeholder" => "Votre email",
                     "id" => "emailRegister",
                     "class" => "inputRegister",
                     "required" => true,
@@ -258,7 +267,7 @@ class User extends BaseSQL
                 ],
                 "password" => [
                     "type" => "password",
-                    "placeholder" => "Votre mot de passe ...",
+                    "placeholder" => "Votre mot de passe",
                     "id" => "pwdRegister",
                     "class" => "inputRegister",
                     "required" => true,
@@ -325,6 +334,38 @@ class User extends BaseSQL
                         ],
                     ],
                 ]
+            ]
+
+        ];
+    }
+
+    public function getFormLogin(): array
+    {
+        return [
+            "config" => [
+                "method" => "POST",
+                "action" => "",
+                "submit" => "Se connecter"
+            ],
+            "inputs" => [
+                "username" => [
+                    "type" => "text",
+                    "placeholder" => "Votre nom d'utilisateur",
+                    "id" => "usernameLogin",
+                    "class" => "usernameLogin",
+                    "required" => true,
+                    "error" => "Nom d'utilisateur incorrect",
+                    "unicity" => true,
+                    "errorUnicity" => "Nom d'utilisateur déjà utilisé",
+                ],
+                "password" => [
+                    "type" => "password",
+                    "placeholder" => "Votre mot de passe",
+                    "id" => "pwdLogin",
+                    "class" => "inputLogin",
+                    "required" => true,
+                    "error" => "Votre mot de passe doit faire entre 8 et 16 et contenir des chiffres et des lettres",
+                ],
             ]
 
         ];
@@ -406,7 +447,8 @@ class User extends BaseSQL
 
     public function getUserByCredentials(string $user_cred)
     {
-        $user = $this->findByColumn(["email"], ["email" => $user_cred]);
+        $user = $this->findByColumn(["id", "email", "username"], ["email" => $user_cred]);
+        print_r($user);
         if (isset($user["email"])) {
             return $user;
         } else {
@@ -462,12 +504,11 @@ class User extends BaseSQL
 
     public function forgotPassword(string $user_cred)
     {
-        if (isset($user_cred) && !empty($user_cred)) {
+        if (!empty($user_cred)) {
             $user = $this->getUserByCredentials($user_cred);
             if ($user !== false) {
                 // Il faut maintenant traiter l'envoi de mail
-                $data = $this->forgotPasswordProcess($user);
-                return $data;
+                return $this->forgotPasswordProcess($user);
             } else {
                 return false;
             }
@@ -490,4 +531,5 @@ class User extends BaseSQL
     {
         parent::save();
     }
+
 }

@@ -30,6 +30,10 @@
   controller: user
   action: register
 
+/register/r/{token}:
+  controller: user
+  action: tokenCheck
+
 /dashboard:
   controller: admin
   action: dashboard

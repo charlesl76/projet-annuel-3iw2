@@ -30,7 +30,7 @@ class Mailer
         parent::__construct();
     }
 
-    function sendMail($email, $verification_code)
+    public function sendMail($email, $verification_code)
     {
         try {
             $mail = new PHPMailer(true);

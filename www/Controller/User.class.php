@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+session_start();
 
 use App\Core\BaseSQL;
 use App\Core\Validator;
@@ -11,16 +12,12 @@ use App\Core\Mailer;
 use App\Core\FormBuilder;
 use App\Core\Session;
 use App\Model\User as UserModel;
+use App\Model\Session as UserSession;
 use App\Controller\Mail;
+use Exception;
 
 class User
 {
-
-    public function login()
-    {
-        $view = new View("Login");
-        $view->assign("titleSeo", "Se connecter au site");
-    }
 
     public function forgotPassword()
     {
@@ -28,9 +25,8 @@ class User
         $mail = new Mail();
 
         if (isset($_POST['user_cred']) && !empty($_POST['user_cred'])) {
-
             $data = $user->forgotPassword($_POST['user_cred']);
-
+            print_r($data);
             if ($data !== false) {
                 $body = "
                 <div class=\"container\">
@@ -71,13 +67,11 @@ class User
                 </style>
     
                 ";
-                echo $body;
-                $mail = $mail->sendMail($data["email"], "[Sitename] Reset password request", $body);
-
-                header("location: /forgot-password/1");
+                $mail->sendMail($data["email"], "[Sitename] Reset password request", $body);
+                var_dump('sentmail');
+//                header("location: /forgot-password/1");
             } else {
-
-                header("location: /forgot-password/0");
+//                header("location: /forgot-password/0");
             }
         } else {
             $view = new View("forgotpassword", "front");
@@ -98,61 +92,102 @@ class User
 
     public function tokenCheck(array $params) {
         $user = new UserModel();
-        $data = $user->tokenCheck($params["id"]);
-        echo $params["id"];
-
-        if ($data !== false) {
-            $view = new View("resetpassword", "front");
-            $final_url = $view->dynamicNav();
-            $view->assign("id", $data["id"]);
-            $view->assign("token", $params["token"]);
-            $view->assign("titleSeo", "Reset Password");
-            $view->assign("final_url", $final_url);
-        } else {
-            header("location: /forgot-password/0");
+        var_dump($params);
+        if (isset($params['id'])) {
+            $data = $user->tokenCheck($params["id"]);
+            if ($data !== false) {
+                $view = new View("resetpassword", "front");
+                $final_url = $view->dynamicNav();
+                $view->assign("id", $data["id"]);
+                $view->assign("token", $params["token"]);
+                $view->assign("titleSeo", "Reset Password");
+                $view->assign("final_url", $final_url);
+            } else header("location: /forgot-password/0");
+        } elseif (isset($params['token'])) {
+            $data = $user->tokenCheck($params["token"]);
+            if ($data !== false) {
+                $view = new View("verifyaccount", "front");
+                $view->assign("username", $data['username']);
+            } else header("location: /");
         }
+
+
     }
 
     public function logout()
     {
-        echo "Se deco";
-    }
-
-    public function checkUser($mail){
-        $user = new UserModel(["email" => $mail]);
-        if($user->__get('id')==true){
-           return true;
-        }else{
-          return false;
-        }
-
-    }
-
-    public function modifyPwdAction($password)
-    {   
-       $this->user->__set('password',$password);
-       $this->user->save();
+        $_SESSION = null;
+        // fonction pour supprimer le token
     }
 
     public function register()
     {
-        $session = new Session();
         $user = new UserModel();
-        
-        $configForm = $user->getFormRegister();
-
-        print_r($_POST);
-        if (!empty($_POST)) {
-            $result = Validator::run($user->getFormRegister(), $_POST);
-            print_r($result);
+        $session = new UserSession();
+        if ($session->ensureUserConnected()) {
+            $view = new View("dashboard", "back");
+            $view->assign("user", $session->getUser());
         }
 
-        //$user= $user->setId(3);
-        //$user->setEmail("toto@gmail.com");
-        //$user->save();
+        $getFormRegister = $user->getFormRegister();
 
+        if (!empty($_POST)) {
+            Validator::checkForm($getFormRegister, $_POST);
+            $user->setEmail($_POST['email']);
+            $user->setUsername($_POST['username']);
+            $user->setPassword(hash('sha512', $_POST['password']));
+            $user->setFirstName($_POST['firstname']);
+            $user->setLastName($_POST['lastname']);
+            $user->generateToken();
+            $datetime = new \DateTime();
+            $user->setRegistered_at($datetime->format('Y-m-d H:i:s'));
+            if ($user->save()) {
+                $mail = new Mail();
+                $body = "
+                <div class=\"container\">
+                    <h1>Véréfication de votre adresse e-mail</h1>
+                    <p>Hello " . $user->getUsername() . ", veuillez cliquer sur ce lien pour vérifier pour compte.</p>
+                    <p><a href=\"http://" . $_SERVER['SERVER_NAME'] . "/register/r/" . $user->getToken() . "\">Vérifier mon compte</a></p>
+                </div>
+    
+                <style>
+                .container {
+                    border: 1px solid #d4d4d4;
+                    border-radius: 5px;
+                    padding: 10px;
+                    margin: 0 auto;
+                    width: 50%;
+                    margin-top: 20px;
+                    font: normal 14px/23px 'Helvetica', Arial, sans-serif;
+                }
+    
+                h1 {
+                    font-size: 18px;
+                    font-weight: bold;
+                    margin: 1em 0;
+                }
+    
+                p {
+                    margin: 0;
+                }
+    
+                .signature {
+                    font-size: 12px;
+                    color: #999;
+                    margin-top: 1em;
+                }
+                </style>
+    
+                ";
+                echo $body;
+                $mail->sendMail($user->getEmail(), "Veuillez vérifier votre adresse e-mail", $body);
+                http_response_code(201);
+                echo json_encode($user);
+            }
+        }
         $view = new View("register");
         $view->assign("user", $user);
+        $view->assign("getFormRegister", $getFormRegister);
     }
 
     public function login()
@@ -163,7 +198,32 @@ class User
             $form = $user->getFormUpdate($userById);
             $view = new View("show", "back");
             $view->assign("form", $form);
-        } else header("Location: /users");
+        } else {
+            $getFormLogin = $user->getFormLogin();
+            if(isset($_POST['username']) && isset($_POST['password'])) {
+                $user_data = $user->findByColumn(
+                    ["id", "username", "email"],
+                    ["username" => $_POST['username'], "password" => hash('sha512', $_POST['password'])]
+                );
+                if ($user_data){
+                    try {
+                        $session = new UserSession();
+                        $session->setUserId($user_data['id']);
+                        $session->save();
+                        $_SESSION['Authorization'] = 'Bearer '.$session->getToken();
+                        echo json_encode([
+                            'token' => $session->getToken()
+                        ]);
+                        http_response_code(201);
+                    } catch (Exception $e) {
+                        echo $e;
+                    }
+                }
+            } else {
+                $view = new View("login");
+                $view->assign("getFormLogin", $getFormLogin);
+            }
+        }
     }
 
     
@@ -185,17 +245,6 @@ class User
         }
     }
 
- 
-    private function generateToken(){
-        $length=30;
-        $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $string = '';
-        for($i=0; $i<$length; $i++){
-            $string .= $chars[rand(0, strlen($chars)-1)];
-        }
-        return $string;;
-    }
-
     public function show(array $params)
     {
         $user = new UserModel();
@@ -208,8 +257,6 @@ class User
         } else header("Location: /users");
     }
 
-    
-
     public function delete()
     {
         $user = new UserModel();
@@ -217,4 +264,5 @@ class User
 
         header("Location: /users");
     }
+
 }
