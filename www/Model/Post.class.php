@@ -37,7 +37,7 @@ class Post extends BaseSQL
         $columns[1] = "date_gmt";
         $columns[2] = "post_modified_gmt";
         $params['post_type'] = "page";
-        $this->excerpt = parent::findByColumn($columns, $params);
+        $this->excerpt = parent::findAllByColumn($columns, $params);
 
         json_encode($this->excerpt);
 
@@ -50,7 +50,7 @@ class Post extends BaseSQL
         $columns[1] = "date_gmt";
         $columns[2] = "post_modified_gmt";
         $params['post_type'] = "article";
-        $this->excerpt = parent::findByColumn($columns, $params);
+        $this->excerpt = parent::findAllByColumn($columns, $params);
 
         json_encode($this->excerpt);
 
