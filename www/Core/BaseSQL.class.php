@@ -133,6 +133,26 @@ abstract class BaseSQL
         return empty($data) ? ["user" => false] : $data;
     }
 
+    public function findAllByColumn(array $columns, array $params): array
+    {
+        $select = $columns;
+
+        foreach ($params as $key => $value) {
+            if (strstr($key, 'date')) {
+                # date comparaison
+                $where[] = $key . ">:" . $key;
+            } else {
+                $where[] = $key . "=:" . $key;
+            }
+        }
+
+        $sql = "SELECT " . implode(",", $select) . " FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute($params);
+        $data = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+        return empty($data) ? ["user" => false] : $data;
+    }
+
     public function findUserById(string $id) {
         $sql = 'SELECT id, username, email, first_name, last_name, role, registered_at, updated_at, activated, gender, blocked, blocked_until, birth FROM oklm_user WHERE id = ?';
         $params = [$id];
