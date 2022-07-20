@@ -20,7 +20,7 @@ class Logger
      */
     public function getInstance() {
         if(self::$instance === NULL) {
-            self::$instance = fopen('./errors.log', 'a');
+            self::$instance = fopen('./error.log', 'a');
         }
         return self::$instance;
     }
