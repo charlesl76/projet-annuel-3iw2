@@ -100,17 +100,15 @@ class Post
     public function getArticlesListFront()
     {
         $article = new PostModel();
-        $articlesList = $article->getAllArticles();
+        $articles = $article->getAllArticles();
         $active = "article";
         $view = new View("display-posts", "front");
         $final_url = $view->dynamicNav();
 
-        $view->assign("articles", $articlesList);
+        $view->assign("articles", $articles);
         $view->assign("post_type", $active);
         $view->assign("view", $view);
         $view->assign("final_url", $final_url);
-
-        return $article;
     }
 
     public function getOnePostFront(array $params)
@@ -227,6 +225,7 @@ class Post
             if (empty($result)) {
                 switch ($_POST["type"]):
                     case "add":
+                        var_dump($article);
                         $article->createArticle($_POST);
                         unset($_POST);
                         header('location: /articles');
