@@ -567,4 +567,20 @@ class User extends BaseSQL
         return parent::save();
     }
 
+    /**
+     * @return mixed
+     */
+    public function getActivated()
+    {
+        return $this->activated;
+    }
+
+    /**
+     * @param bool $activated
+     */
+    public function setActivated(bool $activated): void
+    {
+        $this->activated = $activated;
+    }
+
 }

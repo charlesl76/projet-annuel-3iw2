@@ -31,7 +31,7 @@ class User
             if ($data !== false && !isset($data['error'])) {
                 $body = "
                 <div class=\"container\">
-                    <h1>Reset your password</h1>
+                    <h1>Réinitialisation de votre mot de passe</h1>
                     <p>Hello " . $data["username"] . ", pour réinitialiser votre mot de passe, cliquez sur le lien ci-dessous.</p>
                     <p><a href=\"http://" . $_SERVER['SERVER_NAME'] . "/forgot-password/r/" . $data['token'] . "\">Réinitialiser votre mot de passe</a></p>
                     
@@ -68,7 +68,7 @@ class User
                 </style>
     
                 ";
-                $mail->sendMail($data["email"], "[Sitename] Reset password request", $body);
+                $mail->sendMail($data["email"], "[Sported] Reinitialisation de votre mot de passe", $body);
                 header("location: /forgot-password/1");
             } else {
                 echo $data['error'];
@@ -118,6 +118,10 @@ class User
                 } else header("location: /forgot-password/0");
             } elseif ($uri_explode[1] === "register") {
                 if ($data !== false) {
+                    $data = $user->findByColumn(["id", "token"], ["token" => $params['token']]);
+                    $user = $user->findUserById($data['id']);
+                    $user->setActivated(true);
+                    $user->save();
                     $view = new View("verifyaccount", "front");
                 } else header("location: /");
             }
@@ -134,10 +138,10 @@ class User
     {
         $user = new UserModel();
         $session = new UserSession();
-        if ($session->ensureUserConnected()) {
-            $view = new View("dashboard", "back");
-            $view->assign("user", $session->getUser());
-        }
+//        if ($session->ensureUserConnected()) {
+//            $view = new View("dashboard", "back");
+//            $view->assign("user", $session->getUser());
+//        }
 
         $getFormRegister = $user->getFormRegister();
 
@@ -152,7 +156,6 @@ class User
             $datetime = new \DateTime();
             $user->setRegistered_at($datetime->format('Y-m-d H:i:s'));
             if ($user->save() !== null) {
-                var_dump('test');
                 $mail = new Mail();
                 $body = "
                 <div class=\"container\">

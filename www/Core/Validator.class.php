@@ -170,7 +170,6 @@ class Validator extends BaseSQL
 
         if (hash('sha512', $oldPassword) === $user['password']) {
             if ($newPassword === $newPasswordConfirm) {
-                var_dump('nope');
                 $user = $this->findUserById($user['id']);
                 $user->setPassword(hash('sha512', $newPassword));
                 $datetime = new \DateTime();
