@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-session_start();
-
 use App\Core\View;
 use App\Model\Session as UserSession;
 use App\Model\User as UserModel;

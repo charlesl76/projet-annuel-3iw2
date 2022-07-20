@@ -2,9 +2,6 @@
 
 namespace App\Controller;
 
-session_start();
-// check session à ajouter
-
 use App\Core\Validator;
 use App\Core\View;
 use App\Model\Post as PostModel;

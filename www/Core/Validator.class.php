@@ -36,9 +36,9 @@ class Validator extends BaseSQL
             if ($input["type"] == "checkbox" && empty($data[$name])) {
                 $result[] = "Vous devez accepter les CGU";
             } else if ($input["type"] == "checkbox" && !empty($data[$name])) {
-                var_dump($data[$name]);
+                // var_dump($data[$name]);
             } else if ($input["type"] == "select" && !empty($data[$name])) {
-                var_dump($data[$name]);
+                // var_dump($data[$name]);
             }
         }
         return $result;

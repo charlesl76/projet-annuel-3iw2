@@ -2,14 +2,18 @@
 <form method="<?= $config["config"]["method"]??"POST" ?>" action="<?= $config["config"]["action"]??"" ?>" id="<?= $config["config"]["id"] ?>" class="<?= $config["config"]["class"] ?>"  >
     <?php foreach ($config["inputs"] as $name => $input) : ?>
 
-        <?php if ($input["type"] == "select" && isset($input["countries"])) : ?>
+        <?php if ($input["type"] == "select") :
+            if (isset($input["countries"])) :
+                $inputOptions = $input["countries"];
+            elseif (isset($input["roles"])) :
+                $inputOptions = $input["roles"];
+            ?>
             <select name="<?= $name ?>" id="<?= $input["id"] ?>">
-                <?php for ($i = 0; $i < count($input["countries"]); $i++) : ?>
-                    <option value="<?= $input["countries"][$i]["id"]; ?>"><?= $input["countries"][$i]["name"]; ?></option>
-                    <?php if ($i === count($input["countries"])) : ?>
+                <?php for ($i = 0; $i < count($inputOptions); $i++) : ?>
+                    <option value="<?= $inputOptions[$i]["id"]; ?>"><?= $inputOptions[$i]["name"]; ?></option>
+                    <?php if (count($inputOptions) === $i) : ?>
             </select>
-    <?php endif;
-                endfor;
+            <?php endif; endfor; endif;
 
             elseif ($input["type"] == "select" && isset($input["status"])) : ?>
     <select name="<?= $name ?>" id="<?= $input["id"] ?>">
@@ -82,8 +86,7 @@
 
 <?php
 
-            elseif ($input["type"] == "select" && isset($input["parent"])) : 
-            var_dump($input); ?>
+            elseif ($input["type"] == "select" && isset($input["parent"])) : ?>
     <select name="<?= $name ?>" id="<?= $input["id"] ?>"><select name="<?= $name ?>" id="<?= $input["id"] ?>">
             <?php for ($i = 0; $i < count($input["parent"]); $i++) : ?>
                 <?php if(isset($input["parent"][$i]["selected"])) : ?>
