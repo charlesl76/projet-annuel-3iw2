@@ -2,6 +2,8 @@
 
 namespace App\Core;
 
+use App\Model\Comment;
+use App\Model\Post;
 use App\Model\User;
 use App\Model\User as UserModel;
 use DateInterval;
@@ -83,7 +85,7 @@ abstract class BaseSQL
         return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function findAllBy(array $params, string $opt_table = null): array
+    public function findAllBy(array $params, string $opt_table = null, ?string $class = '')
     {
         foreach ($params as $key => $value) {
             $where[] = $key . "=:" . $key;
@@ -97,6 +99,12 @@ abstract class BaseSQL
         // return true;
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
+        switch ($class) {
+            case 'Post':
+                return $queryPrepared->fetchAll(PDO::FETCH_CLASS, Post::class);
+            case 'Comment':
+                return $queryPrepared->fetchAll(PDO::FETCH_CLASS, Comment::class);
+        }
         return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
     }
 

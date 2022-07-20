@@ -8,20 +8,21 @@ use DateTime;
 class Post extends BaseSQL
 {
 
-    protected $id;
-    protected $author;
-    protected $date;
-    protected $date_gmt;
-    protected $content;
-    protected $title;
+    public $id;
+    public $author;
+    public $date;
+    public $date_gmt;
+    public $content;
+    public $title;
     public $excerpt;
-    protected $status;
-    protected $comment_status;
-    protected $post_modified;
-    protected $post_modified_gmt;
-    protected $post_parent;
-    protected $post_type;
-    protected $comment_count;
+    public $status;
+    public $comment_status;
+    public $post_modified;
+    public $post_modified_gmt;
+    public $post_parent;
+    public $post_type;
+    public $comment_count;
+    public $comments;
 
     /**
      * Get the value of id
@@ -60,19 +61,23 @@ class Post extends BaseSQL
     public function getAllPages()
     {
         $params["post_type"] = "page";
-        $this->pages = parent::findAllBy($params);
-        json_encode($this->pages);
-
-        return $this->pages;
+        return parent::findAllBy($params);
     }
 
     public function getAllArticles()
     {
         $params["post_type"] = "article";
-        $this->articles = parent::findAllBy($params);
-        json_encode($this->articles);
-
-        return $this->articles;
+        $articles = $this->findAllBy($params,null, 'Post');
+        $comment = new Comment();
+        foreach ($articles as $article) {
+            $article->setComments($comment->findAllBy(["post" => $article->getId()], null, 'Comment'));
+        }
+//        foreach ($articles as $article) {
+//            print_r($article->getTitle());
+//            print_r($article->getAuthor());
+//            print_r($article->getComments());
+//        }
+        return $articles;
     }
 
     public function getAllTags()
@@ -989,5 +994,29 @@ class Post extends BaseSQL
         $this->comment_count = $comment_count;
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getComments(): array
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param $comments
+     */
+    public function setComments($comments): void
+    {
+        $this->comments = $comments;
+    }
+
+    /**
+     * @param Comment $comment
+     */
+    public function addComment(Comment $comment): void
+    {
+        $this->comments[] = $comment;
     }
 }
