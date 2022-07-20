@@ -80,6 +80,12 @@ class Post extends BaseSQL
         return $articles;
     }
 
+    public function getTagById($params)
+    {
+        $this->tag = parent::findByColumn(["title"], ["id" => $params]);
+        return $this->tag;
+    }
+
     public function getAllTags()
     {
         $params["post_type"] = "category";
