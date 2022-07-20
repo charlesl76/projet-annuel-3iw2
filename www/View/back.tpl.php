@@ -20,7 +20,7 @@
   </header>
   <div class="container">
     <nav class="main">
-      <a href="<?= $final_url ?>/" rel="noopener noreferrer">
+      <a href="<?= $final_url ?>/dashboard" rel="noopener noreferrer">
         <img class="link<?= $active == "dashboard" ? "--active" : "" ?>" src="<?= $final_url ?>./dist/home_black_24dp.svg" alt="Dashboard" />
       </a>
       <a href="/articles" rel="noopener noreferrer">
@@ -51,11 +51,6 @@
       </div>
     </div>
   </div>
-
-
-
-
-
 </body>
 
 </html>
