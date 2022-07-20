@@ -29,8 +29,8 @@
                         <li><a href="#">Tarif</a></li>
                         <li><a href="#">A propos</a></li>
                         <li> | </li>
-                        <li><a href="/login" class="button" id="login-button">Se connecter</a></li>
-                        <li><a href="/register" class="button" id="register-button">S'inscrire</a></li>
+                        <li><a href="/login" class="button" id="login-button">Sign In</a></li>
+                        <li><a href="/register" class="button" id="register-button">Sign Up</a></li>
                     </ul>
                 </nav>
                 <div id="front-color">

@@ -7,9 +7,16 @@
         
     </aside>
     <section id="register-section">
-        <h1>Créez votre compte</h1>
+        <h1>Create your account</h1>
         <?php
             $this->includePartial("form", $configFormRegister);
         ?>
     </section>
 </div>
+
+<style>
+    #cgu{
+        display:flex;
+        flex-direction: row;
+    }
+</style>

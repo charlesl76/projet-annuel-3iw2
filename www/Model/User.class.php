@@ -245,93 +245,59 @@ class User extends BaseSQL
                 "action"=>"",
                 "id" => "formRegister",
                 "class" => "formRegister",
-                "submit"=>"S'inscrire"
+                "submit"=>"Sign Up"
             ],
             "inputs"=>[
                 "firstname"=>[
                     "type"=>"text",
-                    "placeholder"=>"Prénom",
+                    "placeholder"=>"Firstname",
                     "id"=>"firstnameRegister",
                     "class"=>"form-input",
                     "name" => "firstname",
                     "min"=>2,
                     "max"=>50,
-                    "error"=>"Votre prénom n'est pas correct",
+                    "error"=>"Your firstname is incorrect. You need 2 to 50 caracters.",
                 ],
                 "lastname"=>[
                     "type"=>"text",
-                    "placeholder"=>"Nom",
+                    "placeholder"=>"Lastname",
                     "id"=>"lastnameRegister",
                     "class"=>"form-input",
                     "name" => "lastname",
                     "min"=>2,
                     "max"=>100,
-                    "error"=>"Votre nom n'est pas correct",
+                    "error"=>"Your lastname is incorrect. You need 2 to 100 caracters.",
                 ],
                 "email"=>[
                     "type"=>"email",
-                    "placeholder"=>"Votre email",
+                    "placeholder"=>"Email",
                     "id"=>"emailRegister",
                     "class"=>"form-input",
                     "name" => "email",
                     "required"=>true,
                     "error"=>"Email incorrect",
                     "unicity"=>true,
-                    "errorUnicity"=>"Email existe déjà en bdd",
+                    "errorUnicity"=>"Email is already used.",
                 ],
                 "password"=>[
                     "type"=>"password",
-                    "placeholder"=>"Votre mot de passe",
+                    "placeholder"=>"Password",
                     "id"=>"pwdRegister",
                     "class"=>"form-input",
                     "name" => "password",
                     "required"=>true,
-                    "error"=>"Votre mot de passe doit faire entre 8 et 16 et contenir des chiffres et des lettres",
+                    "error"=>"Your password must be between 8 and 16 and contain numbers and letters.",
                 ],
                 "passwordConfirm"=>[
                     "type"=>"password",
-                    "placeholder"=>"Veuillez confirmer votre nouveau mot de passe",
+                    "placeholder"=>"Please confirm your password",
                     "id"=>"pwdConfirmRegister",
                     "class"=>"inputRegister",
                     "name" => "passwordConfirm",
                     "required"=>true,
                     "confirm"=>"password",
-                    "error"=>"Votre mot de passe de confirmation ne correspond pas",
+                    "error"=>"Your confirmation password does not match.",
                 ],
-                "cgu"=>[
-                    "type"=>"checkbox",
-                    "placeholder"=>"Acceptez-vous les CGU",
-                    "name"=>"cgu",
-                    "id"=>"cgu",
-                    "class"=>"cgu",
-                    "required"=>"true",
-                    "error"=>"Merci d'accepter les CGU afin de continuer",
-                ],
-                "select"=>[
-                    "type"=>"select",
-                    "placeholder"=>"Sélectionnez votre pays",
-                    "name"=>"country",
-                    "id"=>"countryRegister",
-                    "class"=>"countryRegister",
-                    "countries"=>[
-                        0=>[
-                            "name"=>"France",
-                            "id"=>"fr"
-                        ],
-                        1=>[
-                            "name"=>"United Kingdom",
-                            "id"=>"uk"
-                        ],
-                        2=>[
-                            "name"=>"Brazil",
-                            "id"=>"br"
-                        ],
-                        3=>[
-                            "name"=>"United States of America",
-                            "id"=>"usa"
-                        ],
-                    ],
-                ]
             ]
 
         ];
@@ -419,18 +385,18 @@ class User extends BaseSQL
                 "action" => "",
                 "id" => "formLogin",
                 "class" => "formLogin",
-                "submit" => "Se connecter"
+                "submit" => "Sign in"
             ],
             "inputs" => [
                 "email" => [
-                    "placeholder" => "Votre email ...",
+                    "placeholder" => "Email",
                     "type" => "email",
                     "id" => "emailRegister",
                     "class" => "form-input",
                     "required" => true,
                 ],
                 "password" => [
-                    "placeholder" => "Votre mot de passe ...",
+                    "placeholder" => "Password",
                     "type" => "password",
                     "id" => "pwdRegister",
                     "class" => "form-input",

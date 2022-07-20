@@ -8,8 +8,8 @@
             <?php endif; ?>
 
             <div class="form-nav-account">
-                <a href="/forgetPassword" class="form-nav-account-link">Mot de passe oubliée ?</a>
-                <a href="/register" class="form-nav-account-link">Créer un compte</a>
+                <a href="/forgetPassword" class="form-nav-account-link">Forget password?</a>
+                <a href="/register" class="form-nav-account-link">Sign Up</a>
             </div>
         </div>
         

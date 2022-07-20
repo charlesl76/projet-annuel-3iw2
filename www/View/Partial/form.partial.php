@@ -18,7 +18,6 @@
                    placeholder="<?=$input["placeholder"]?>"
                 <?= (!empty($input["required"]))?'required="required"':'' ?>
             >
-            <br>
         <?php endif; endforeach;?>
 
     <input type="submit" value="<?= $config["config"]["submit"]??"Valider" ?>">
