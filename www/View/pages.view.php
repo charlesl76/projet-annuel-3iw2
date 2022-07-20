@@ -24,7 +24,7 @@ elseif (isset($action) && $action !== null) :
             break;
     endswitch;
 else :
-    $view->includePartial("posts", $page->getAllPages());
+    $view->includePartial("posts", $page_list);
 endif;
 
 ?>

@@ -8,6 +8,7 @@ session_start();
 use App\Core\Validator;
 use App\Core\View;
 use App\Model\Post as PostModel;
+use App\Model\User as UserModel;
 
 class Post
 {
@@ -17,9 +18,18 @@ class Post
 
         $page = new PostModel();
         $active = "pages";
+        $user = new UserModel();
         $view = new View("pages", "back");
         $final_url = $view->dynamicNav();
 
+        $pages = $page->getAllPages();
+
+        for($i = 0; $i < count($pages); $i++) {
+            $user_cred = $pages[$i]['author'];
+            $pages[$i]['author'] = $user->getUserByCredentials($user_cred);
+        }
+
+        $view->assign("page_list", $pages);
         $view->assign("page", $page);
         $view->assign("view", $view);
         $view->assign("active", $active);
@@ -27,7 +37,7 @@ class Post
 
         return $page;
     }
-    
+
     public function getPagesListFront()
     {
         $page = new PostModel();
@@ -36,11 +46,11 @@ class Post
         $view = new View("display-posts", "front");
         $final_url = $view->dynamicNav();
 
-        $view->assign("pages",$pagesList);
+        $view->assign("pages", $pagesList);
         $view->assign("post_type", $active);
         $view->assign("view", $view);
         $view->assign("final_url", $final_url);
-    
+
         return $page;
     }
 
@@ -65,10 +75,25 @@ class Post
     {
 
         $article = new PostModel();
+        $user = new UserModel();
         $active = "articles";
         $view = new View("articles", "back");
 
+        $articles = $article->getAllArticles();
+
+        for($i = 0; $i < count($articles); $i++) {
+            $user_cred = $articles[$i]['author'];
+            $params = $articles[$i]["post_parent"];
+            $articles[$i]['post_parent'] = $article->getTagById($params);
+            $articles[$i]['post_parent'] = $articles[$i]['post_parent']['title'];
+            $articles[$i]['author'] = $user->getUserByCredentials($user_cred);
+        }
+
+
+
+        $view->assign("article_list", $articles);
         $view->assign("article", $article);
+        $view->assign("user", $user);
         $view->assign("view", $view);
         $view->assign("active", $active);
 
@@ -83,11 +108,11 @@ class Post
         $view = new View("display-posts", "front");
         $final_url = $view->dynamicNav();
 
-        $view->assign("articles",$articlesList);
+        $view->assign("articles", $articlesList);
         $view->assign("post_type", $active);
         $view->assign("view", $view);
         $view->assign("final_url", $final_url);
-    
+
         return $article;
     }
 
@@ -131,9 +156,18 @@ class Post
     {
 
         $tag = new PostModel();
+        $user = new UserModel();
         $active = "tags";
         $view = new View("tags", "back");
 
+        $tags = $tag->getAllTags();
+
+        for($i = 0; $i < count($tags); $i++) {
+            $user_cred = $tags[$i]['author'];
+            $tags[$i]['author'] = $user->getUserByCredentials($user_cred);
+        }
+
+        $view->assign("tag_list", $tags);
         $view->assign("tag", $tag);
         $view->assign("view", $view);
         $view->assign("active", $active);

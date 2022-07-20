@@ -13,11 +13,10 @@ $type = $uri[1];
 <table id="myTable" class="display">
     <thead>
         <tr>
-            <th></th>
             <th>Title</th>
             <th>Author</th>
             <?= $type == "articles" ? "<th>Tag</th>" : "" ?>
-            <th>Comments</th>
+            <?= $type == "articles" ? "<th>Comments</th>" : "" ?>
             <th>Date</th>
             <th>Action</th>
         </tr>
@@ -32,16 +31,23 @@ $type = $uri[1];
         ?>
             <input type="text" value="<?= $entry["id"] ?>" name="update" hidden>
             <tr>
-                <td><span class="material-symbols-outlined">
-                        check_box_outline_blank
-                    </span></td>
                 <td><a href="<?= $entry['post_type'] . 's/' . $entry['id'] . '">' . $entry["title"] ?></a></td>
                     <td><?= $entry["author"] ?></td>
-                    <td><?= $entry["post_parent"] ?></td>
+                    <?= $entry['post_type'] == "article" ? "<td>" . $entry["post_parent"] . "</td>" : "" ?>
                     <?= $entry['post_type'] == "article" ? "<td>" . $entry["comment_count"] . "</td>" : "" ?>
                     <td>
-                        <span><?= $entry["status"] ?></span>
-                        <span><?= $entry["date"] ?></span>
+                        <span><?php
+                                    if($entry["status"] == 1){
+                                        echo "<span style=\"color: green;\">Published</span><br>";
+                                    } elseif($entry["status"] == 0){
+                                        echo "<span style=\"color: grey;\">Hidden</span><br>";
+                                    } elseif($entry["status"] == 2){
+                                        echo "<span style=\"color: blue;\">Draft</span><br>";
+                                    } else {
+                                        echo "<span style=\"color: red;\">Recycle bin</span><br>";
+                                    }
+                        ?></span>
+                        <span><?php $entry["date"] = new DateTime($entry["date"]); echo date_format($entry["date"],"m/d/Y - H:i") ?></span>
                     </td>
                     <td><form action=" <?= $entry['post_type'] ?>s/<?= $entry['id'] ?>/delete" method="post" onsubmit="return confirm('Are you sure you want to delete this post, this action is unreversible?');">
                         <input type="hidden" name="id" value="<?= $entry['id'] ?>">
@@ -64,7 +70,7 @@ $type = $uri[1];
 <script>
     $(document).ready(function() {
         $('#myTable').DataTable({
-            "paging": false,
+            "paging": true,
             "columns": [{
                     "width": "5%"
                 },

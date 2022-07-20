@@ -23,7 +23,7 @@ elseif (isset($action) && $action !== null) :
             break;
     endswitch;
 else :
-    $view->includePartial("posts", $tag->getAllTags());
+    $view->includePartial("posts", $tag_list);
 endif;
 
 ?>

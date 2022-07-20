@@ -492,7 +492,12 @@ class User extends BaseSQL
             if (isset($user["username"])) {
                 return $user;
             } else {
-                return false;
+                $user = $this->findByColumn(["username"], ["id" => $user_cred]);
+                if (isset($user["username"])){
+                    return $user["username"];
+                } else {
+                    return false;
+                }
             }
         }
     }
