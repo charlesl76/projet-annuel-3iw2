@@ -1,4 +1,5 @@
-<h1>Dashboard</h1>
+<h1>Tableau de bord</h1>
+<h2>Bonjour <?= $user->getFirstName() ?> <?= $user->getLastName() ?></h2>
 
 <div class="dashboard">
     <div class="recap">

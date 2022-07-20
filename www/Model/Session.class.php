@@ -48,7 +48,7 @@ class Session extends BaseSQL
 
     public function setToken(): void
     {
-        $this->token = bin2hex(openssl_random_pseudo_bytes(32));
+        if (!$this->ensureUserConnected()) $this->token = bin2hex(openssl_random_pseudo_bytes(32));
     }
 
     /**
@@ -84,9 +84,9 @@ class Session extends BaseSQL
     }
 
     /**
-     * @return mixed
+     * @return User
      */
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }
@@ -101,9 +101,8 @@ class Session extends BaseSQL
 
     /**
      * Cette fonction permet de récupérer un utilisateur à partir d'un jeton d'authentification présent dans le header
-     * @return array Retourne l'utilisateur
      */
-    public function ensureUserConnected(): array {
+    public function ensureUserConnected() {
         $headers = $_SESSION;
         if(isset($headers['Authorization'])) {
             $token = $headers['Authorization'];
@@ -123,9 +122,26 @@ class Session extends BaseSQL
                 }
             }
         }
-        return [
-            'error_message' => 'Le jeton d\'authentification est manquant.'
-        ];
+        return false;
     }
 
+    public function erase() {
+        if ($this->ensureUserConnected()) {
+            $tokens = $this->findAllBy(["user_id" => $this->getUserId()]);
+            foreach ($tokens as $token) {
+                // suppression de tous les tokens de l'utilisateur
+                $tokenArray = $this->findOneBy(["token" => $token['token']]);
+                $this->deleteOne($tokenArray['id']);
+            }
+            $this->deleteOne($this->getId());
+            $this->id = NULL;
+            $this->token = NULL;
+            $this->user_id = NULL;
+            $this->user = NULL;
+            $this->expiration_date = NULL;
+            session_unset();
+            session_destroy();
+            echo "Vous êtes maintenant déconnecté.";
+        } else header("Location: /login");
+    }
 }

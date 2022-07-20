@@ -2,6 +2,9 @@
 
 namespace App;
 
+session_start();
+
+use App\Model\Session as UserSession;
 use MongoDB\BSON\Regex;
 
 require "conf.inc.php";
@@ -47,7 +50,7 @@ if (count($uri_explode) > 2) {
         else $uri = "/" . $uri_explode[1] . "/{{$param}}";
         // paramètres de l'uri
         $params = [$param => $uri_explode[2]];
-    } elseif (preg_match("/\d/i", $uri_explode[3])) {
+    } elseif (count($uri_explode) > 3 && preg_match("/\d/i", $uri_explode[3])) {
         if (strlen($uri_explode[3]) === 64) {
             // token
             $param = "token";
@@ -62,15 +65,12 @@ if (count($uri_explode) > 2) {
     }
 }
 
-if (empty($routes[$uri]) || empty($routes[$uri]["controller"]) || empty($routes[$uri]["action"])) {
+if (empty($routes[$uri]) || empty($routes[$uri]["controller"]) || empty($routes[$uri]["action"]) || empty($routes[$uri]["role"])) {
     die("Page 404");
 }
 
 $controller = ucfirst(strtolower($routes[$uri]["controller"]));
 $action = strtolower($routes[$uri]["action"]);
-
-// $controller = User ou $controller = Global
-// $action = login ou $action = logout ou $action = home
 
 $controllerFile = "Controller/" . $controller . ".class.php";
 if (!file_exists($controllerFile)) {
@@ -88,6 +88,24 @@ $objectController = new $controller();
 if (!method_exists($objectController, $action)) {
     die("La methode " . $action . " n'existe pas");
 }
+
+$session = new UserSession();
+switch (($routes[$uri]["role"])) {
+    case 'all':
+        // regardless of the user's role
+        break;
+    case 'admin':
+        if (!$session->ensureUserConnected() || $session->getUser()->getRole() !== "admin") header("Location: /login");
+        break;
+    case 'user':
+        if (!$session->ensureUserConnected()) header("Location: /login");
+        break;
+    case 'logout':
+        // the user must be not connected
+        if ($session->ensureUserConnected()) echo "Vous devez d'abord vous <a href='/logout'>déconnecter</a>.";
+        break;
+}
+
 
 // on passe les paramètres de l'url
 if (!empty($params))

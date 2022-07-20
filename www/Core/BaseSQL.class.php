@@ -130,7 +130,7 @@ abstract class BaseSQL
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
         $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
-        return empty($data) ? ["user" => false] : $data;
+        return empty($data) ? [] : $data;
     }
 
     public function findAllByColumn(array $columns, array $params): array
@@ -161,21 +161,18 @@ abstract class BaseSQL
         return $queryPrepared->fetchObject(User::class);
     }
 
-    public function deleteOne()
+    public function deleteOne(?int $id): bool
     {
-        if (isset($_POST['id']) && !empty($_POST['id'])) {
+        $id = !empty($_POST['id']) ? strip_tags($_POST['id']) : strip_tags($id);
 
-            $id = strip_tags($_POST['id']);
+        $sql = "DELETE FROM `" . $this->table . "` WHERE `id`=:id";
 
-            $sql = "DELETE FROM `" . $this->table . "` WHERE `id`=:id";
+        $queryPrepared = $this->pdo->prepare($sql);
 
-            $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->bindValue(':id', $id, PDO::PARAM_INT);
+        $queryPrepared->execute(['id' => $id]);
 
-            $queryPrepared->bindValue(':id', $id, PDO::PARAM_INT);
-            $queryPrepared->execute(['id' => $id]);
-
-            return true;
-        }
+        return true;
     }
 
     public function verifieMailUnique()

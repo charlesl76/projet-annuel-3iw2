@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-session_start();
-
 use App\Controller\Mail;
 use App\Core\BaseSQL;
 use App\Core\Validator;
@@ -130,18 +128,20 @@ class User
 
     public function logout()
     {
-        $_SESSION = null;
         // fonction pour supprimer le token
+        $session = new UserSession();
+        $session->erase();
     }
 
     public function register()
     {
         $user = new UserModel();
         $session = new UserSession();
-//        if ($session->ensureUserConnected()) {
+        if ($session->ensureUserConnected()) {
 //            $view = new View("dashboard", "back");
 //            $view->assign("user", $session->getUser());
-//        }
+            header("Location: /dashboard");
+        }
 
         $getFormRegister = $user->getFormRegister();
 
@@ -194,6 +194,7 @@ class User
     
                 ";
                 $mail->sendMail($user->getEmail(), "Veuillez verifier votre adresse e-mail", $body);
+                echo "Vous êtes maintenant inscrit. Merci de vérifier vos mails afin de valider votre compte.";
             }
         }
         $view = new View("register");
@@ -228,7 +229,7 @@ class User
                     } catch (Exception $e) {
                         echo $e;
                     }
-                }
+                } else echo "Identifiants incorrects.";
             } else {
                 $view = new View("login");
                 $view->assign("getFormLogin", $getFormLogin);
