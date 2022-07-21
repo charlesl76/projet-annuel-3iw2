@@ -25,10 +25,16 @@
                 <button id="menu-button"> <img src="<?= $final_url ?>./dist/assets/images/menu-icon.svg"></button>
                 <nav id="front-header-site-nav">
                     <ul>
-                        <li><a href="#">Fonctionnement</a></li>
-                        <li><a href="#">Tarif</a></li>
-                        <li><a href="#">A propos</a></li>
-                        <li> | </li>
+                    <?php
+                    if(is_array($pages)):
+                        foreach($pages as $page):
+                        ?>
+                            <li><a href="/post/<?= $page['id'] ?>"><?= $page['title'] ?></a></li>
+                        <?php 
+                        endforeach;
+                        echo "<li> | </li>";
+                    endif;
+                    ?>
                         <li><a href="/login" class="button" id="login-button">Sign In</a></li>
                         <li><a href="/register" class="button" id="register-button">Sign Up</a></li>
                     </ul>

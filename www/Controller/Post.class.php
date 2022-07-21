@@ -113,6 +113,7 @@ class Post
 
     public function getOnePostFront(array $params)
     {
+        $pages = new PostModel();
         $post = new PostModel();
         $postById = $post->setId($params['id']);
 
@@ -121,8 +122,10 @@ class Post
         $postContent = $postById->getContent();
         $postAuthor = $postById->getAuthor();
         $postDate = $postById->getDate();
+        $pages = $pages->getAllPages();
 
         $view = new View("display-post", "front");
+        $view->assign("pages", $pages);
         $view->assign("postType", $postType);
         $view->assign("postTitle", $postTitle);
         $view->assign("postContent", $postContent);

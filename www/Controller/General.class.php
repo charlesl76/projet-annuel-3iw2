@@ -3,12 +3,17 @@
 namespace App\Controller;
 
 use App\Core\View;
+use App\Model\Post;
 
 class General{
 
     public function home()
     {
+        $pages = new Post();
+        $pages = $pages->getAllPages();
+
         $view = new View("index", "front");
+        $view->assign('pages', $pages);
     }
 
     public function contact()
