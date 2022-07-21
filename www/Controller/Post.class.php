@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Core\Validator;
 use App\Core\View;
 use App\Model\Post as PostModel;
+use App\Model\Session;
 use App\Model\User as UserModel;
 
 class Post
@@ -21,12 +22,7 @@ class Post
 
         $pages = $page->getAllPages();
 
-        for($i = 0; $i < count($pages); $i++) {
-            $user_cred = $pages[$i]['author'];
-            $pages[$i]['author'] = $user->getUserByCredentials($user_cred);
-        }
-
-        $view->assign("page_list", $pages);
+        $view->assign("pages", $pages);
         $view->assign("page", $page);
         $view->assign("view", $view);
         $view->assign("active", $active);
@@ -70,7 +66,6 @@ class Post
 
     public function articles()
     {
-
         $article = new PostModel();
         $user = new UserModel();
         $active = "articles";
@@ -78,23 +73,11 @@ class Post
 
         $articles = $article->getAllArticles();
 
-        for($i = 0; $i < count($articles); $i++) {
-            $user_cred = $articles[$i]['author'];
-            $params = $articles[$i]["post_parent"];
-            $articles[$i]['post_parent'] = $article->getTagById($params);
-            $articles[$i]['post_parent'] = $articles[$i]['post_parent']['title'];
-            $articles[$i]['author'] = $user->getUserByCredentials($user_cred);
-        }
-
-
-
-        $view->assign("article_list", $articles);
+        $view->assign("articles", $articles);
         $view->assign("article", $article);
         $view->assign("user", $user);
         $view->assign("view", $view);
         $view->assign("active", $active);
-
-        return $article;
     }
 
     public function getArticlesListFront()
@@ -104,7 +87,6 @@ class Post
         $active = "article";
         $view = new View("display-posts", "front");
         $final_url = $view->dynamicNav();
-
         $view->assign("articles", $articles);
         $view->assign("post_type", $active);
         $view->assign("view", $view);
@@ -114,20 +96,12 @@ class Post
     public function getOnePostFront(array $params)
     {
         $post = new PostModel();
-        $postById = $post->setId($params['id']);
-
-        $postType = $postById->getPost_type();
-        $postTitle = $postById->getTitle();
-        $postContent = $postById->getContent();
-        $postAuthor = $postById->getAuthor();
-        $postDate = $postById->getDate();
-
+        $post = $post->setId($params['id']);
+        $session = new Session();
+        $post->setComments();
         $view = new View("display-post", "front");
-        $view->assign("postType", $postType);
-        $view->assign("postTitle", $postTitle);
-        $view->assign("postContent", $postContent);
-        $view->assign("postAuthor", $postAuthor);
-        $view->assign("postDate", $postDate);
+        $view->assign("post", $post);
+        $view->assign("isAuthor", $session->getUserId() === $post->getAuthor());
     }
 
     public function showArticle(array $params)
@@ -265,4 +239,6 @@ class Post
             }
         }
     }
+
+
 }

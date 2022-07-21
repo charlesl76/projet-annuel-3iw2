@@ -42,7 +42,6 @@ abstract class BaseSQL
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute(["id" => $id]);
         return $queryPrepared->fetchObject(get_called_class());
-        
     }
 
 
@@ -75,13 +74,14 @@ abstract class BaseSQL
     }
 
 
-    public function findAll()
+    public function findAll(?string $class = '')
     {
         $sql = "SELECT * FROM " . $this->table;
 
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute();
 
+        if ($class !== '') return $queryPrepared->fetchAll(PDO::FETCH_CLASS, get_called_class());
         return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -95,16 +95,9 @@ abstract class BaseSQL
         } else {
             $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
         }
-        // echo $sql;
-        // return true;
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
-        switch ($class) {
-            case 'Post':
-                return $queryPrepared->fetchAll(PDO::FETCH_CLASS, Post::class);
-            case 'Comment':
-                return $queryPrepared->fetchAll(PDO::FETCH_CLASS, Comment::class);
-        }
+        if ($class !== '') return $queryPrepared->fetchAll(PDO::FETCH_CLASS, get_called_class());
         return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
     }
 

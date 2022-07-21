@@ -56,14 +56,6 @@ class Comment extends BaseSQL
     }
 
     /**
-     * @param mixed $id
-     */
-    public function setId($id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @return mixed
      */
     public function getPost()
@@ -85,6 +77,12 @@ class Comment extends BaseSQL
     public function getPublishedDate()
     {
         return $this->published_date;
+    }
+
+    public function getFormatedDate()
+    {
+        $dt = new DateTime($this->getPublishedDate());
+        return date_format($dt,"m/d/Y - H:i");
     }
 
     /**
@@ -184,4 +182,225 @@ class Comment extends BaseSQL
         $this->comment_parent = $comment_parent;
     }
 
+    public function getFormComment(Post $post)
+    {
+        return [
+            "config" => [
+                "method" => "POST",
+                "action" => "/post/".$post->getId()."/comment",
+                "submit" => "Ajouter",
+            ],
+            "inputs" => [
+                "input" => [
+                    "type" => "text",
+                    "id" => "input",
+                    "class" => "form-control",
+                    "name" => "input",
+                    "placeholder" => "input",
+                    "value" => "comment",
+                    "hidden" => true,
+                ],
+                "type" => [
+                    "type" => "text",
+                    "id" => "type",
+                    "class" => "form-control",
+                    "name" => "add",
+                    "placeholder" => "add",
+                    "value" => "add",
+                    "hidden" => true,
+                ],
+                "content" => [
+                    "type" => "textarea",
+                    "id" => "contentComment",
+                    "class" => "contentComment",
+                    "required" => true,
+                    "error" => "Content is required",
+                ],
+            ]
+        ];
+    }
+
+    public function createComment($data, $post)
+    {
+        $session = new Session();
+        $this->post = $post->getId();
+        $this->author = $session->getUserId();
+        $datetime = new \DateTime();
+        $this->published_date = $datetime->format('Y-m-d H:i:s');
+        $this->content = $data['content'];
+
+        $this->save();
+    }
+
+    public function updateComment($data)
+    {
+        print_r($data);
+        $session = new Session();
+        $this->post = $data['post'];
+        $this->author = $session->getUserId();
+        $this->content = $data['content'];
+
+        $this->save();
+    }
+
+    public function deleteComment($params)
+    {
+        $this->deleteOne($params);
+    }
+
+    public function getAllComments()
+    {
+        return parent::findAll('Comment');
+    }
+
+    public function getFormComments()
+    {
+        return [
+            "config" => [
+                "method" => "POST",
+                "action" => "comment",
+                "submit" => "Create and publish",
+            ],
+            "inputs" => [
+                "input" => [
+                    "type" => "text",
+                    "id" => "comment",
+                    "class" => "form-control",
+                    "name" => "comment",
+                    "placeholder" => "comment",
+                    "value" => "comment",
+                    "hidden" => true,
+                ],
+                "type" => [
+                    "type" => "text",
+                    "id" => "type",
+                    "class" => "form-control",
+                    "name" => "add",
+                    "placeholder" => "add",
+                    "value" => "add",
+                    "hidden" => true,
+                ],
+                "author" => [
+                    "type" => "text",
+                    "placeholder" => "Author name",
+                    "id" => "author",
+                    "class" => "inputAuthor",
+                    "required" => true,
+                    "disabled" => true,
+                    "error" => "Author name is required",
+                    "unicity" => false
+                ],
+                "status" => [
+                    "type" => "select",
+                    "placeholder" => "Status",
+                    "id" => "status",
+                    "class" => "status",
+                    "status" => [
+                        0 => [
+                            "id" => "0",
+                            "name" => "En attente de validation",
+                        ],
+                        1 => [
+                            "id" => "1",
+                            "name" => "Validé"
+                        ],
+                        2 => [
+                            "id" => "2",
+                            "name" => "Commentaire désaprouvé"
+                        ]
+                    ],
+                ],
+                "content" => [
+                    "type" => "textarea",
+                    "id" => "textPage",
+                    "class" => "inputText",
+                    "required" => true,
+                    "error" => "Content is required",
+                ],
+            ]
+
+        ];
+    }
+
+    public function getFormUpdateComments(Comment $comment)
+    {
+        return [
+            "config" => [
+                "method" => "POST",
+                "action" => "/comments/" . $comment->getId() . "/update",
+                "submit" => "Update",
+            ],
+            "inputs" => [
+                "input" => [
+                    "type" => "text",
+                    "id" => "comment",
+                    "class" => "form-control",
+                    "name" => "comment",
+                    "placeholder" => "comment",
+                    "value" => "comment",
+                    "hidden" => true,
+                    "required" => true,
+                ],
+                "type" => [
+                    "type" => "text",
+                    "id" => "type",
+                    "class" => "form-control",
+                    "name" => "update",
+                    "placeholder" => "update",
+                    "value" => "update",
+                    "hidden" => true,
+                    "required" => true,
+                ],
+                "id" => [
+                    "type" => "hidden",
+                    "id" => "id",
+                    "class" => "id",
+                    "placeholder" => "id",
+                    "value" => $comment->getId(),
+                    "required" => true,
+                ],
+                "author" => [
+                    "type" => "text",
+                    "placeholder" => "Author name",
+                    "id" => "author",
+                    "class" => "inputAuthor",
+                    "error" => "Author name is required",
+                    "unicity" => false,
+                    "required" => true,
+                    "disabled" => true,
+                    "value" => $comment->showAuthor(),
+                ],
+                "status" => [
+                    "type" => "select",
+                    "placeholder" => "Comment status",
+                    "id" => "status",
+                    "class" => "status",
+                    "required" => true,
+                    "status" => [
+                        0 => [
+                            "id" => "0",
+                            "name" => "En attente de validation",
+                        ],
+                        1 => [
+                            "id" => "1",
+                            "name" => "Validé"
+                        ],
+                        2 => [
+                            "id" => "2",
+                            "name" => "Commentaire désaprouvé"
+                        ]
+                    ],
+                ],
+                "content" => [
+                    "type" => "textarea",
+                    "id" => "textPage",
+                    "class" => "inputText",
+                    "required" => true,
+                    "error" => "Content is required",
+                    "value" => $comment->getContent(),
+                ],
+            ]
+
+        ];
+    }
 }

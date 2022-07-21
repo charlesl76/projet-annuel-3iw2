@@ -61,22 +61,14 @@ class Post extends BaseSQL
     public function getAllPages()
     {
         $params["post_type"] = "page";
-        return parent::findAllBy($params);
+        return parent::findAllBy($params, null, 'Post');
     }
 
     public function getAllArticles()
     {
         $params["post_type"] = "article";
         $articles = $this->findAllBy($params,null, 'Post');
-        $comment = new Comment();
-        foreach ($articles as $article) {
-            $article->setComments($comment->findAllBy(["post" => $article->getId()], null, 'Comment'));
-        }
-//        foreach ($articles as $article) {
-//            print_r($article->getTitle());
-//            print_r($article->getAuthor());
-//            print_r($article->getComments());
-//        }
+        foreach ($articles as $article) $article->setComments();
         return $articles;
     }
 
@@ -137,6 +129,7 @@ class Post extends BaseSQL
                     "id" => "author",
                     "class" => "inputAuthor",
                     "required" => true,
+                    "disabled" => true,
                     "error" => "Author name is required",
                     "unicity" => false
                 ],
@@ -227,6 +220,7 @@ class Post extends BaseSQL
                     "id" => "author",
                     "class" => "inputAuthor",
                     "required" => true,
+                    "disabled" => true,
                     "error" => "Author name is required",
                     "unicity" => false
                 ],
@@ -312,6 +306,7 @@ class Post extends BaseSQL
                     "id" => "author",
                     "class" => "inputAuthor",
                     "required" => true,
+                    "disabled" => true,
                     "error" => "Author name is required",
                     "unicity" => false
                 ],
@@ -379,7 +374,8 @@ class Post extends BaseSQL
                     "required" => true,
                     "error" => "Author name is required",
                     "unicity" => false,
-                    "value" => $post->getAuthor(),
+                    "disabled" => true,
+                    "value" => $post->showAuthor(),
                 ],
                 "title" => [
                     "type" => "text",
@@ -445,8 +441,8 @@ class Post extends BaseSQL
                     "required" => true,
                     "error" => "Author name is required",
                     "unicity" => false,
-                    "required" => true,
-                    "value" => $post->getAuthor(),
+                    "disabled" => true,
+                    "value" => $post->showAuthor(),
                 ],
                 "title" => [
                     "type" => "text",
@@ -551,8 +547,8 @@ class Post extends BaseSQL
                     "required" => true,
                     "error" => "Author name is required",
                     "unicity" => false,
-                    "required" => true,
-                    "value" => $post->getAuthor(),
+                    "disabled" => true,
+                    "value" => $post->showAuthor(),
                 ],
                 "title" => [
                     "type" => "text",
@@ -606,8 +602,8 @@ class Post extends BaseSQL
 
     public function createPage($data)
     {
-
-        $this->author = 1;
+        $session = new Session();
+        $this->author = $session->getUserId();
         $this->title = $data["title"];
         $this->excerpt = $this->setExcerpt($data["title"]);
         $this->content = $data["content"];
@@ -624,8 +620,9 @@ class Post extends BaseSQL
 
     public function updatePage($data)
     {
+        $session = new Session();
         $this->id = $data["id"];
-        $this->author = 1;
+        $this->author = $session->getUserId();
         $this->title = $data["title"];
         $this->excerpt = $this->setExcerpt($data["title"]);
         $this->content = $data["content"];
@@ -645,8 +642,8 @@ class Post extends BaseSQL
 
     public function createArticle($data)
     {
-
-        $this->author = 1;
+        $session = new Session();
+        $this->author = $session->getUserId();
         $this->title = $data["title"];
         $this->excerpt = $this->setExcerpt($data["title"]);
         $this->content = $data["content"];
@@ -664,8 +661,9 @@ class Post extends BaseSQL
 
     public function updateArticle($data)
     {
+        $session = new Session();
         $this->id = $data["id"];
-        $this->author = 1;
+        $this->author = $session->getUserId();
         $this->title = $data["title"];
         $this->excerpt = $this->setExcerpt($data["title"]);
         $this->content = $data["content"];
@@ -687,8 +685,8 @@ class Post extends BaseSQL
 
     public function createTag($data)
     {
-
-        $this->author = 1;
+        $session = new Session();
+        $this->author = $session->getUserId();
         $this->title = $data["title"];
         $this->excerpt = $this->setExcerpt($data["title"]);
         $this->content = $data["content"];
@@ -705,8 +703,9 @@ class Post extends BaseSQL
 
     public function updateTag($data)
     {
+        $session = new Session();
         $this->id = $data["id"];
-        $this->author = 1;
+        $this->author = $session->getUserId();
         $this->title = $data["title"];
         $this->excerpt = $this->setExcerpt($data["title"]);
         $this->content = $data["content"];
@@ -725,13 +724,18 @@ class Post extends BaseSQL
         $this->deleteOne($params);
     }
 
-
     /**
      * Get the value of author
      */
     public function getAuthor()
     {
         return $this->author;
+    }
+
+    public function showAuthor()
+    {
+        $user = $this->findUserById($this->getAuthor());
+        return $user->getUsername();
     }
 
     /**
@@ -758,6 +762,12 @@ class Post extends BaseSQL
     public function getDate()
     {
         return $this->date;
+    }
+
+    public function getFormatedDate()
+    {
+        $dt = new DateTime($this->getDate());
+        return date_format($dt,"m/d/Y - H:i");
     }
 
     /**
@@ -987,19 +997,7 @@ class Post extends BaseSQL
      */
     public function getComment_count()
     {
-        return $this->comment_count;
-    }
-
-    /**
-     * Set the value of comment_count
-     *
-     * @return  self
-     */
-    public function setComment_count($comment_count)
-    {
-        $this->comment_count = $comment_count;
-
-        return $this;
+        return count($this->comments);
     }
 
     /**
@@ -1010,12 +1008,10 @@ class Post extends BaseSQL
         return $this->comments;
     }
 
-    /**
-     * @param $comments
-     */
-    public function setComments($comments): void
+    public function setComments(): void
     {
-        $this->comments = $comments;
+        $comment = new Comment();
+        $this->comments = $comment->findAllBy(["post" => $this->getId()], null, 'Comment');
     }
 
     /**
@@ -1025,4 +1021,7 @@ class Post extends BaseSQL
     {
         $this->comments[] = $comment;
     }
+
+
+
 }

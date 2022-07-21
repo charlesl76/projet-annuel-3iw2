@@ -1,5 +1,5 @@
 
-<form method="<?= $config["config"]["method"]??"POST" ?>" action="<?= $config["config"]["action"]??"" ?>" id="<?= $config["config"]["id"] ?>" class="<?= $config["config"]["class"] ?>"  >
+<form method="<?= $config["config"]["method"]??"POST" ?>" action="<?= $config["config"]["action"]??"" ?>" id="<?= $config["config"]["id"]??"" ?>" class="<?= $config["config"]["class"]??"" ?>"  >
     <?php foreach ($config["inputs"] as $name => $input) : ?>
 
         <?php if ($input["type"] == "select") :
@@ -7,6 +7,8 @@
                 $inputOptions = $input["countries"];
             elseif (isset($input["roles"])) :
                 $inputOptions = $input["roles"];
+            elseif (isset($input["status"])) :
+                $inputOptions = $input["status"];
             ?>
             <select name="<?= $name ?>" id="<?= $input["id"] ?>">
                 <?php for ($i = 0; $i < count($inputOptions); $i++) : ?>
@@ -145,7 +147,7 @@
 <?php endif; ?>
 <?php
             else : ?>
-    <input name="<?= $name ?>" id="<?= $input["id"] ?>" type="<?= $input["type"] ?>" class="<?= $input["class"] ?>" <?= !empty($input["value"]) ? " value=\"" . $input["value"] . "\" " : " " ?> placeholder="<?= $input["placeholder"] ?>" <?= (!empty($input["hidden"])) ? 'hidden="hidden"' : '' ?> <?= (!empty($input["required"])) ? 'required="required"' : '' ?>>
+    <input name="<?= $name ?>" id="<?= $input["id"] ?>" type="<?= $input["type"] ?>" class="<?= $input["class"] ?>" <?= !empty($input["value"]) ? " value=\"" . $input["value"] . "\" " : " " ?> placeholder="<?= $input["placeholder"] ?>" <?= (!empty($input["hidden"])) ? 'hidden="hidden"' : '' ?>  <?= (!empty($input["disabled"])) ? 'disabled' : '' ?> <?= (!empty($input["required"])) ? 'required="required"' : '' ?>>
     <br>
 <?php endif;
         endforeach; ?>

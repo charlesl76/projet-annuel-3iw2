@@ -8,9 +8,8 @@ if ((isset($_POST['action']) && $_POST['action'] !== null)) :
             $view->create = 'create';
             $view->includePartial("form", $tag->getFormTags());
             break;
-        case 'update':
-            break;
         case 'delete':
+        case 'update':
             break;
     endswitch;
 elseif (isset($action) && $action !== null) :
