@@ -51,9 +51,6 @@ class Validator extends BaseSQL
         if (!empty($data["input"]) && $data["input"] == "page") {
             switch ($data["type"]):
                 case "add":
-                    if (!isset($data["author"]) || empty($data["author"])) {
-                        $result["input"] = "Do not forget to fill the author in the form";
-                    }
                     if (!isset($data["title"]) || empty($data["title"])) {
                         $result["input"] = "Do not forget to fill the title in the form";
                     }
@@ -77,11 +74,9 @@ class Validator extends BaseSQL
                     break;
             endswitch;
         } elseif (!empty($data["input"]) && $data["input"] == "article") {
+            var_dump($data);
             switch ($data["type"]):
                 case "add":
-                    if (!isset($data["author"]) || empty($data["author"])) {
-                        $result["input"] = "Do not forget to fill the author in the form";
-                    }
                     if (!isset($data["title"]) || empty($data["title"])) {
                         $result["input"] = "Do not forget to fill the title in the form";
                     }
@@ -93,9 +88,6 @@ class Validator extends BaseSQL
                     }
                     break;
                 case "update":
-                    if (!isset($data["author"]) || empty($data["author"])) {
-                        $result["input"] = "Do not forget to fill the author in the form";
-                    }
                     if (!isset($data["title"]) || empty($data["title"])) {
                         $result["input"] = "Do not forget to fill the title in the form";
                     }
@@ -113,9 +105,6 @@ class Validator extends BaseSQL
         } elseif (!empty($data["input"]) && $data["input"] == "tag") {
             switch ($data["type"]):
                 case "add":
-                    if (!isset($data["author"]) || empty($data["author"])) {
-                        $result["input"] = "Do not forget to fill the author in the form";
-                    }
                     if (!isset($data["title"]) || empty($data["title"])) {
                         $result["input"] = "Do not forget to fill the title in the form";
                     }
@@ -124,9 +113,6 @@ class Validator extends BaseSQL
                     }
                     break;
                 case "update":
-                    if (!isset($data["author"]) || empty($data["author"])) {
-                        $result["input"] = "Do not forget to fill the author in the form";
-                    }
                     if (!isset($data["title"]) || empty($data["title"])) {
                         $result["input"] = "Do not forget to fill the title in the form";
                     }

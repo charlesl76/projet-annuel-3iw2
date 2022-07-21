@@ -1,11 +1,13 @@
-<form method="<?= $config["config"]["method"]??"POST" ?>" action="<?= $config["config"]["action"]??"" ?>" id="<?= $config["config"]["id"] ?>" class="<?= $config["config"]["class"] ?>"  >
+<form method="<?= $config["config"]["method"]??"POST" ?>" action="<?= $config["config"]["action"]??"" ?>" id="<?= $config["config"]["id"]??"" ?>" class="<?= $config["config"]["class"]??"" ?>"  >
     <?php foreach ($config["inputs"] as $name => $input) : ?>
 
-        <?php if ($input["type"] == "select") :
+        <?php if ($input["type"] == "select" && !isset($input['images']) && !isset($input['parent'])) :
             if (isset($input["countries"])) :
                 $inputOptions = $input["countries"];
             elseif (isset($input["roles"])) :
                 $inputOptions = $input["roles"];
+            elseif (isset($input["status"])) :
+                $inputOptions = $input["status"];
             ?>
             <select name="<?= $name ?>" id="<?= $input["id"] ?>">
                 <?php for ($i = 0; $i < count($inputOptions); $i++) : ?>
@@ -24,7 +26,6 @@
                 endfor;
 
             elseif ($input["type"] == "select" && isset($input["images"])) : ?>
-
 
 <select name="<?= $name ?>" id="<?= $input["id"] ?>">
 
@@ -86,19 +87,16 @@
 <?php
 
             elseif ($input["type"] == "select" && isset($input["parent"])) : ?>
-    <select name="<?= $name ?>" id="<?= $input["id"] ?>"><select name="<?= $name ?>" id="<?= $input["id"] ?>">
-            <?php for ($i = 0; $i < count($input["parent"]); $i++) : ?>
-                <?php if(isset($input["parent"][$i]["selected"])) : ?>
-                    <option value="<?= $input["parent"][$i]["id"]; ?>" selected><?= $input["parent"][$i]["name"]; ?></option>
-                <?php else: ?>
-                    <option value="<?= $input["parent"][$i]["id"]; ?>"><?= $input["parent"][$i]["name"]; ?></option>
-                <?php endif; ?>
-                <?php if ($i === count($input["parent"])) : ?>
-        </select>
-<?php endif;
-                endfor;
+            <select name="<?= $name ?>" id="<?= $input["id"] ?>">
+                <?php foreach ($input['parent'] as $tag): ?>
+                    <?php if(isset($tag["selected"])) : ?>
+                        <option value="<?= $$tag->getId(); ?>" selected><?= $tag->getName(); ?></option>
+                    <?php else: ?>
+                        <option value="<?= $tag["id"]; ?>"><?= $tag['name']; ?></option>
+                    <?php endif; endforeach; ?>
+            </select>
 
-            elseif ($input["type"] == "textarea") : ?>
+            <?php elseif ($input["type"] == "textarea") : ?>
 <textarea name="<?= $name ?>" id="<?= $input["id"] ?>" class="<?= $input["class"] ?? "" ?>"></textarea>
 <script>
     tinymce.init({
@@ -144,7 +142,7 @@
 <?php endif; ?>
 <?php
             else : ?>
-    <input name="<?= $name ?>" id="<?= $input["id"] ?>" type="<?= $input["type"] ?>" class="<?= $input["class"] ?>" <?= !empty($input["value"]) ? " value=\"" . $input["value"] . "\" " : " " ?> placeholder="<?= $input["placeholder"] ?>" <?= (!empty($input["hidden"])) ? 'hidden="hidden"' : '' ?> <?= (!empty($input["required"])) ? 'required="required"' : '' ?>>
+    <input name="<?= $name ?>" id="<?= $input["id"] ?>" type="<?= $input["type"] ?>" class="<?= $input["class"] ?>" <?= !empty($input["value"]) ? " value=\"" . $input["value"] . "\" " : " " ?> placeholder="<?= $input["placeholder"] ?>" <?= (!empty($input["hidden"])) ? 'hidden="hidden"' : '' ?>  <?= (!empty($input["disabled"])) ? 'disabled' : '' ?> <?= (!empty($input["required"])) ? 'required="required"' : '' ?>>
     <br>
 <?php endif;
         endforeach; ?>

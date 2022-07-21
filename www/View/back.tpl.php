@@ -30,7 +30,7 @@
         <img class="link<?= $active == "pages" ? "--active" : "" ?>" src="<?= $final_url ?>./dist/layers_black_24dp.svg" alt="Pages" />
       </a>
       <a href="/comments" rel="noopener noreferrer">
-        <img class="link<?= $active == "notset" ? "--active" : "" ?>" src="<?= $final_url ?>./dist/question_answer_black_24dp.svg" alt="Comments" />
+        <img class="link<?= $active == "comments" ? "--active" : "" ?>" src="<?= $final_url ?>./dist/question_answer_black_24dp.svg" alt="Comments" />
       </a>
       <a href="/tags" rel="noopener noreferrer">
         <img class="link<?= $active == "tags" ? "--active" : "" ?>" src="<?= $final_url ?>./dist/perm_media_black_24dp.svg" alt="Tags" />

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : database
--- Généré le : mer. 20 juil. 2022 à 08:02
+-- Généré le : jeu. 21 juil. 2022 à 18:33
 -- Version du serveur : 5.7.37
 -- Version de PHP : 7.4.20
 
@@ -51,9 +51,9 @@ CREATE TABLE `oklm_user` (
 
 INSERT INTO `oklm_user` (`id`, `username`, `password`, `first_name`, `last_name`, `email`, `role`, `registered_at`, `updated_at`, `activated`, `gender`, `blocked`, `blocked_until`, `birth`, `token`) VALUES
 (1, 'admin', '3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2', 'Admin', 'Istrator', 'admin@sported.com', 'admin', '2022-02-03 11:27:15', NULL, 1, 'male', 0, NULL, '1990-02-08', ''),
-(2, 'test2', 'test2', 'test2-1', 'test2-2', 'test2@test.fr', 'user', '2022-05-24 10:35:26', NULL, 0, 'male', 0, NULL, '2022-05-10', ''),
 (3, 'charles2', 'test3', 'Charles', 'Lefebvre', 'test3@test3.fr', 'admin', '2022-05-10 10:35:26', NULL, 0, 'female', 0, NULL, '2022-05-03', ''),
-(33, 'charles', 'aa3498599fc696288dc878f93ac4bcac9d501dcda2978cfc3024d7bb7d8223768ccc94382f3415758fb668c24e05a9566958ac2857fbc9d9e1c8d50f2a4a3433', 'charles', 'lefebvre', 'c.lefebvre76000@gmail.com', 'user', '2022-07-19 23:52:23', '2022-07-20 00:01:25', 1, NULL, 0, NULL, NULL, '934f1ec674e58b353ad77fd0466ea0b514ed8c4374a2072aaa4761aad64ede8c');
+(36, 'charles', '17c1fcd006f4c15649c1bec040496723a2e7d1c8758df435d084fbb2ea9ce940c86e2c368b7f9113e91f788d6e3b19143456919288cecf76a9bbf00247d609f1', 'charles', 'lefebvre', 'c.lefebvre76000@gmail.co', 'admin', '2022-07-20 08:32:08', NULL, 0, NULL, 0, NULL, NULL, '6d54ae4d8e24767ffcf4fc20a37cc2372d141a879122a9473a734c56fa342aad'),
+(38, 'charlesl', '17c1fcd006f4c15649c1bec040496723a2e7d1c8758df435d084fbb2ea9ce940c86e2c368b7f9113e91f788d6e3b19143456919288cecf76a9bbf00247d609f1', 'Charles', 'Lefebvre', 'c.lefebvre76000@gmail.com', 'user', '2022-07-21 16:36:30', NULL, 1, NULL, 0, NULL, NULL, '826ac3996f06c361ba3579821945e7f09e72b1ab0b152e129b984d4cb499f3f8');
 
 --
 -- Index pour les tables déchargées
@@ -76,7 +76,7 @@ ALTER TABLE `oklm_user`
 -- AUTO_INCREMENT pour la table `oklm_user`
 --
 ALTER TABLE `oklm_user`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

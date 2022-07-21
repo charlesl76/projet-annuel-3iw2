@@ -5,8 +5,8 @@
 if ((isset($_POST['action']) && $_POST['action'] !== null)) :
     switch ($_POST['action']):
         case 'create':
-            $view->create = 'create';
-            $view->includePartial("form", $article->getFormArticles());
+            $this->create = 'create';
+            $this->includePartial("form", $article->getFormArticles($article));
             break;
         case 'update':
             break;
@@ -16,15 +16,15 @@ if ((isset($_POST['action']) && $_POST['action'] !== null)) :
 elseif (isset($action) && $action !== null) :
     switch ($action):
         case 'update':
-            $view->update = 'update';
-            $view->includePartial("form", $article->getFormUpdateArticles($postById));
+            $this->update = 'update';
+            $this->includePartial("form", $article->getFormUpdateArticles($postById));
     
             break;
         case 'delete':
             break;
     endswitch;
 else :
-    $view->includePartial("posts", $article_list);
+    $this->includePartial("posts", $articles);
 endif;
 
 ?>

@@ -25,34 +25,34 @@ $type = $uri[1];
 
         <?php
         foreach ($config as $entry) :
-            if($entry['post_type'] == "category"){
-                $entry['post_type'] = "tag";
+            if($entry->getPost_type() == "category"){
+                $entry->setPost_type("tag");
             }
         ?>
-            <input type="text" value="<?= $entry["id"] ?>" name="update" hidden>
+            <input type="text" value="<?= $entry->getId() ?>" name="update" hidden>
             <tr>
-                <td><a href="<?= $entry['post_type'] . 's/' . $entry['id'] . '">' . $entry["title"] ?></a></td>
-                    <td><?= $entry["author"] ?></td>
-                    <?= $entry['post_type'] == "article" ? "<td>" . $entry["post_parent"] . "</td>" : "" ?>
-                    <?= $entry['post_type'] == "article" ? "<td>" . $entry["comment_count"] . "</td>" : "" ?>
+                <td><a href="<?= $entry->getPost_type() . 's/' . $entry->getId() . '">' . $entry->getTitle() ?></a></td>
+                    <td><?= $entry->showAuthor() ?></td>
+                    <?= $entry->getPost_type() == "article" ? "<td>" . $entry->getPost_parent() . "</td>" : "" ?>
+                    <?= $entry->getPost_type() == "article" ? "<td>" . $entry->getComment_count() . "</td>" : "" ?>
                     <td>
                         <span><?php
-                                    if($entry["status"] == 1){
+                                    if($entry->getStatus() == 1){
                                         echo "<span style=\"color: green;\">Published</span><br>";
-                                    } elseif($entry["status"] == 0){
+                                    } elseif($entry->getStatus() == 0){
                                         echo "<span style=\"color: grey;\">Hidden</span><br>";
-                                    } elseif($entry["status"] == 2){
+                                    } elseif($entry->getStatus() == 2){
                                         echo "<span style=\"color: blue;\">Draft</span><br>";
                                     } else {
                                         echo "<span style=\"color: red;\">Recycle bin</span><br>";
                                     }
                         ?></span>
-                        <span><?php $entry["date"] = new DateTime($entry["date"]); echo date_format($entry["date"],"m/d/Y - H:i") ?></span>
+                        <span><?php echo $entry->getFormatedDate() ?></span>
                     </td>
-                    <td><form action=" <?= $entry['post_type'] ?>s/<?= $entry['id'] ?>/delete" method="post" onsubmit="return confirm('Are you sure you want to delete this post, this action is unreversible?');">
-                        <input type="hidden" name="id" value="<?= $entry['id'] ?>">
+                    <td><form action=" <?= $entry->getPost_type() ?>s/<?= $entry->getId() ?>/delete" method="post" onsubmit="return confirm('Are you sure you want to delete this post, this action is unreversible?');">
+                        <input type="hidden" name="id" value="<?= $entry->getId() ?>">
                         <input type="hidden" name="type" value="delete">
-                        <input type="hidden" name="input" value="<?= $entry['post_type'] ?>">
+                        <input type="hidden" name="input" value="<?= $entry->getPost_type() ?>">
                         <input type="submit" value="Delete">
                         </form>
                 </td>

@@ -6,6 +6,7 @@ use App\Core\View;
 use App\Model\Session as UserSession;
 use App\Model\User as UserModel;
 use App\Model\Post as PostModel;
+use App\Model\Comment as CommentModel;
 
 class Admin
 {
@@ -17,11 +18,13 @@ class Admin
         $session = new UserSession();
         if ($session->ensureUserConnected()) {
             $view = new View("dashboard", "back");
-            $articles = new PostModel();
+            $article = new PostModel();
+            $comment = new CommentModel();
             $view->assign("user", $session->getUser());
-            $view->assign("articles", $articles->getAllArticles());
-            $view->assign("pages", $articles->getAllPages());
-            $view->assign("tags", $articles->getAllTags());
+            $view->assign("articles", $article->getAllArticles());
+            $view->assign("pages", $article->getAllPages());
+            $view->assign("comments", $comment->getAllComments());
+            $view->assign("tags", $article->getAllTags());
             $view->assign("active", $active);
         
         } else header("Location: /login");

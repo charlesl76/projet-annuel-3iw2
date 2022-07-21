@@ -6,11 +6,10 @@ if ((isset($_POST['action']) && $_POST['action'] !== null)) :
     switch ($_POST['action']):
         case 'create':
             $view->create = 'create';
-            $view->includePartial("form", $tag->getFormTags());
-            break;
-        case 'update':
+            $view->includePartial("form", $tag->getFormTags($tag));
             break;
         case 'delete':
+        case 'update':
             break;
     endswitch;
 elseif (isset($action) && $action !== null) :
@@ -23,7 +22,7 @@ elseif (isset($action) && $action !== null) :
             break;
     endswitch;
 else :
-    $view->includePartial("posts", $tag_list);
+    $view->includePartial("posts", $tags);
 endif;
 
 ?>

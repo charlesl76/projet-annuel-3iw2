@@ -75,6 +75,27 @@
   action: postCheck
   role: admin
 
+## Comments
+/comments:
+  controller: comment
+  action: comments
+  role: admin
+
+/comments/{id}:
+  controller: comment
+  action: showComment
+  role: admin
+
+/comments/{id}/update:
+  controller: comment
+  action: commentCheck
+  role: admin
+
+/comments/{id}/delete:
+  controller: comment
+  action: commentCheck
+  role: admin
+
 ## Articles
 /articles:
   controller: post
@@ -145,7 +166,7 @@
 /front-pages:
   controller: post
   action: getPagesListFront
-  role: user
+  role: all
 
 /front-articles:
   controller: post
@@ -155,6 +176,16 @@
 /post/{id}:
   controller: post
   action: getOnePostFront
+  role: all
+
+/post/{id}/comment:
+  controller: comment
+  action: commentPost
+  role: user
+
+/post/{id}/comment/delete:
+  controller: comment
+  action: commentPost
   role: user
 
 /404:

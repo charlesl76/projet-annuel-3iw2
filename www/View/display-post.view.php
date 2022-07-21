@@ -1,6 +1,8 @@
 <main>
-    <h1><u>Titre de la page:</u> <?= $postTitle ?></h1>
-    <h2><u>Contenu de la page:</u> <?= $postContent ?></h2>
-    <h2><u>Auteur de la page:</u> <?= $postAuthor ?></h2>     
-    <h2><u>Date de publication:</u> <?= $postDate ?></h2>
+    <h3><?= $post->getTitle() ?></h3>
+    <h3><?= $post->getContent() ?></h3>
+    <h3><?= $post->showAuthor() ?></h3>
+    <h3><?= $post->getDate() ?></h3>
+<!--    --><?php //$this->includePartial("comments", $post); ?>
+    <?php $this->includePartial("display-comments", [$post, $isAuthor]); ?>
 </main>

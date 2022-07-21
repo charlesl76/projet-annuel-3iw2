@@ -36,7 +36,6 @@ CREATE TABLE `oklm_post` (
   `title` tinytext NOT NULL,
   `excerpt` tinytext,
   `status` tinyint(4) NOT NULL,
-  `comment_status` tinyint(4) DEFAULT NULL,
   `post_modified` timestamp NULL DEFAULT NULL,
   `post_modified_gmt` timestamp NULL DEFAULT NULL,
   `post_parent` tinyint(4) DEFAULT NULL,
@@ -48,7 +47,7 @@ CREATE TABLE `oklm_post` (
 -- Déchargement des données de la table `oklm_post`
 --
 
-INSERT INTO `oklm_post` (`id`, `author`, `date`, `date_gmt`, `content`, `title`, `excerpt`, `status`, `comment_status`, `post_modified`, `post_modified_gmt`, `post_parent`, `post_type`, `comment_count`) VALUES
+INSERT INTO `oklm_post` (`id`, `author`, `date`, `date_gmt`, `content`, `title`, `excerpt`, `status`, `post_modified`, `post_modified_gmt`, `post_parent`, `post_type`, `comment_count`) VALUES
 (1, 138, '2022-06-07 08:44:51', '2022-06-07 08:44:51', '<h1>Salut, ceci est un test, ça fonctionne ?</h1></br></br><small>Yes !</small>', 'Test fonctionnel', 'Un joli test pour voir si ça fonctionne', 1, 1, NULL, NULL, 0, 'page', 0),
 (2, 1, '2022-06-10 12:46:54', '2022-06-10 12:46:54', '<p>content</p>', 'title', 'title', 1, 1, NULL, NULL, NULL, 'page', 0),
 (4, 1, '2022-06-10 12:57:39', '2022-06-10 12:57:39', '<h1>What is the common law about passion?</h1>\r\n<p>Today I am going to be speaking about passion and its interests in basketball. From Bryant to James, how does passion impact this fabulous sport?</p>\r\n<p><em>Michel Jalinsky, Sported.</em></p>', 'How to share basketall passion', 'how-to-share-basketall-passion', 1, -1, NULL, NULL, NULL, 'page', 0),

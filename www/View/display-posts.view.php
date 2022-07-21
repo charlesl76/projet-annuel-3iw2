@@ -13,20 +13,11 @@
 
     <?php elseif ($post_type == "article") : ?>
         <ul>
-            <?php foreach ($articles as $article) : ?>
+            <?php foreach ($articles as $post) : ?>
                 <li>
-                    <h3><a href="/post/<?= $article->getId() ?>"><?= $article->getTitle() ?></a></h3>
-                    <p><?= $article->getContent() ?></p>
-                    Liste des commentaires:<ul>
-                        <?php foreach ($article->getComments() as $comment): ?>
-                            <li>
-                                <p><?= $comment->getContent() ?></p>
-                                <p>Posté par <?= $comment->showAuthor() ?></p>
-                                <p>Publié le <?= $comment->getPublishedDate() ?></p>
-                                <p><i><?= $comment->showStatus() ?></i></p>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
+                    <h3><a href="/post/<?= $post->getId() ?>"><?= $post->getTitle() ?></a></h3>
+                    <p><?= $post->getContent() ?></p>
+                    <?php $this->includePartial("display-comments", [$post]); ?>
                 </li>
             <?php endforeach; ?>
         </ul>

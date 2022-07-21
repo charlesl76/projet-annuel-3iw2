@@ -8,6 +8,12 @@ use DateTime;
 class Post extends BaseSQL
 {
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setAuthor();
+    }
+
     public $id;
     public $author;
     public $date;
@@ -16,7 +22,6 @@ class Post extends BaseSQL
     public $title;
     public $excerpt;
     public $status;
-    public $comment_status;
     public $post_modified;
     public $post_modified_gmt;
     public $post_parent;
@@ -61,22 +66,14 @@ class Post extends BaseSQL
     public function getAllPages()
     {
         $params["post_type"] = "page";
-        return parent::findAllBy($params);
+        return parent::findAllBy($params, null, 'Post');
     }
 
     public function getAllArticles()
     {
         $params["post_type"] = "article";
         $articles = $this->findAllBy($params,null, 'Post');
-        $comment = new Comment();
-        foreach ($articles as $article) {
-            $article->setComments($comment->findAllBy(["post" => $article->getId()], null, 'Comment'));
-        }
-//        foreach ($articles as $article) {
-//            print_r($article->getTitle());
-//            print_r($article->getAuthor());
-//            print_r($article->getComments());
-//        }
+        foreach ($articles as $article) $article->setComments();
         return $articles;
     }
 
@@ -89,7 +86,7 @@ class Post extends BaseSQL
     public function getAllTags()
     {
         $params["post_type"] = "category";
-        $this->tags = parent::findAllBy($params);
+        $this->tags = parent::findAllBy($params, null, 'Post');
         json_encode($this->tags);
 
         return $this->tags;
@@ -104,7 +101,7 @@ class Post extends BaseSQL
         return $tagImages;
     }
 
-    public function getFormPages()
+    public function getFormPages(Post $post)
     {
         return [
             "config" => [
@@ -133,10 +130,12 @@ class Post extends BaseSQL
                 ],
                 "author" => [
                     "type" => "text",
-                    "placeholder" => "Author name",
                     "id" => "author",
                     "class" => "inputAuthor",
+                    "placeholder" => "Author",
                     "required" => true,
+                    "disabled" => true,
+                    "value" => $post->showAuthor(),
                     "error" => "Author name is required",
                     "unicity" => false
                 ],
@@ -147,26 +146,6 @@ class Post extends BaseSQL
                     "class" => "inputTitle",
                     "required" => true,
                     "error" => "Title is required",
-                ],
-                "comment_status" => [
-                    "type" => "select",
-                    "placeholder" => "Comment status",
-                    "id" => "comment_status",
-                    "class" => "inputCommentStatus",
-                    "status" => [
-                        -1 => [
-                            "id" => "-1",
-                            "name" => "Blocked",
-                        ],
-                        0 => [
-                            "id" => "0",
-                            "name" => "On approbation"
-                        ],
-                        1 => [
-                            "id" => "1",
-                            "name" => "Open"
-                        ]
-                    ],
                 ],
                 "content" => [
                     "type" => "textarea",
@@ -180,7 +159,7 @@ class Post extends BaseSQL
         ];
     }
 
-    public function getFormArticles()
+    public function getFormArticles(Post $post)
     {
         $tags = $this->getAllTags();
         $i = 1;
@@ -191,9 +170,9 @@ class Post extends BaseSQL
         ];
 
         foreach($tags as $tag) {
-            $tagList[$i]["id"] = $tag['id'];
-            $tagList[$i]["name"] = $tag['title'];
-            $i = $i + 1;
+            $tagList[$i]["id"] = $tag->getId();
+            $tagList[$i]["name"] = $tag->getTitle();
+            $i++;
         }
 
         return [
@@ -223,10 +202,12 @@ class Post extends BaseSQL
                 ],
                 "author" => [
                     "type" => "text",
-                    "placeholder" => "Author name",
                     "id" => "author",
                     "class" => "inputAuthor",
+                    "placeholder" => "Author",
                     "required" => true,
+                    "disabled" => true,
+                    "value" => $post->showAuthor(),
                     "error" => "Author name is required",
                     "unicity" => false
                 ],
@@ -237,26 +218,6 @@ class Post extends BaseSQL
                     "class" => "inputTitle",
                     "required" => true,
                     "error" => "Title is required",
-                ],
-                "comment_status" => [
-                    "type" => "select",
-                    "placeholder" => "Comment status",
-                    "id" => "comment_status",
-                    "class" => "inputCommentStatus",
-                    "status" => [
-                        -1 => [
-                            "id" => "-1",
-                            "name" => "Blocked",
-                        ],
-                        0 => [
-                            "id" => "0",
-                            "name" => "On approbation"
-                        ],
-                        1 => [
-                            "id" => "1",
-                            "name" => "Open"
-                        ]
-                    ],
                 ],
                 "post_parent" => [
                     "type" => "select",
@@ -277,7 +238,7 @@ class Post extends BaseSQL
         ];
     }
 
-    public function getFormTags()
+    public function getFormTags(Post $post)
     {
         $tagImages = $this->getAllTagImages();
 
@@ -308,10 +269,12 @@ class Post extends BaseSQL
                 ],
                 "author" => [
                     "type" => "text",
-                    "placeholder" => "Author name",
                     "id" => "author",
                     "class" => "inputAuthor",
+                    "placeholder" => "Author",
                     "required" => true,
+                    "disabled" => true,
+                    "value" => $post->showAuthor(),
                     "error" => "Author name is required",
                     "unicity" => false
                 ],
@@ -379,7 +342,8 @@ class Post extends BaseSQL
                     "required" => true,
                     "error" => "Author name is required",
                     "unicity" => false,
-                    "value" => $post->getAuthor(),
+                    "disabled" => true,
+                    "value" => $post->showAuthor(),
                 ],
                 "title" => [
                     "type" => "text",
@@ -445,8 +409,8 @@ class Post extends BaseSQL
                     "required" => true,
                     "error" => "Author name is required",
                     "unicity" => false,
-                    "required" => true,
-                    "value" => $post->getAuthor(),
+                    "disabled" => true,
+                    "value" => $post->showAuthor(),
                 ],
                 "title" => [
                     "type" => "text",
@@ -456,27 +420,6 @@ class Post extends BaseSQL
                     "required" => true,
                     "error" => "Title is required",
                     "value" => $post->getTitle(),
-                ],
-                "comment_status" => [
-                    "type" => "select",
-                    "placeholder" => "Comment status",
-                    "id" => "comment_status",
-                    "class" => "inputCommentStatus",
-                    // Voir comment faire un selected:selected pour le getStatus()
-                    "status" => [
-                        -1 => [
-                            "id" => "-1",
-                            "name" => "Blocked",
-                        ],
-                        0 => [
-                            "id" => "0",
-                            "name" => "On approbation"
-                        ],
-                        1 => [
-                            "id" => "1",
-                            "name" => "Open"
-                        ]
-                    ],
                 ],
                 "content" => [
                     "type" => "textarea",
@@ -551,8 +494,8 @@ class Post extends BaseSQL
                     "required" => true,
                     "error" => "Author name is required",
                     "unicity" => false,
-                    "required" => true,
-                    "value" => $post->getAuthor(),
+                    "disabled" => true,
+                    "value" => $post->showAuthor(),
                 ],
                 "title" => [
                     "type" => "text",
@@ -562,27 +505,6 @@ class Post extends BaseSQL
                     "required" => true,
                     "error" => "Title is required",
                     "value" => $post->getTitle(),
-                ],
-                "comment_status" => [
-                    "type" => "select",
-                    "placeholder" => "Comment status",
-                    "id" => "comment_status",
-                    "class" => "inputCommentStatus",
-                    // Voir comment faire un selected:selected pour le getStatus()
-                    "status" => [
-                        -1 => [
-                            "id" => "-1",
-                            "name" => "Blocked",
-                        ],
-                        0 => [
-                            "id" => "0",
-                            "name" => "On approbation"
-                        ],
-                        1 => [
-                            "id" => "1",
-                            "name" => "Open"
-                        ]
-                    ],
                 ],
                 "post_parent" => [
                     "type" => "select",
@@ -606,12 +528,10 @@ class Post extends BaseSQL
 
     public function createPage($data)
     {
-
-        $this->author = 1;
+        $this->author = $this->getAuthor();
         $this->title = $data["title"];
         $this->excerpt = $this->setExcerpt($data["title"]);
         $this->content = $data["content"];
-        $this->comment_status = $data["comment_status"];
         $this->date = $this->setDate();
         $this->date_gmt = $this->setDate_gmt();
         $this->status = 1;
@@ -625,11 +545,10 @@ class Post extends BaseSQL
     public function updatePage($data)
     {
         $this->id = $data["id"];
-        $this->author = 1;
+        $this->author = $this->getAuthor();
         $this->title = $data["title"];
         $this->excerpt = $this->setExcerpt($data["title"]);
         $this->content = $data["content"];
-        $this->comment_status = $data["comment_status"];
         $this->status = 1;
         $this->post_parent = 0;
         $this->post_type = "page";
@@ -645,12 +564,10 @@ class Post extends BaseSQL
 
     public function createArticle($data)
     {
-
-        $this->author = 1;
+        $this->author = $this->getAuthor();
         $this->title = $data["title"];
         $this->excerpt = $this->setExcerpt($data["title"]);
         $this->content = $data["content"];
-        $this->comment_status = $data["comment_status"];
         $this->date = $this->setDate();
         $this->date_gmt = $this->setDate_gmt();
         $this->status = 1;
@@ -665,11 +582,10 @@ class Post extends BaseSQL
     public function updateArticle($data)
     {
         $this->id = $data["id"];
-        $this->author = 1;
+        $this->author = $this->getAuthor();
         $this->title = $data["title"];
         $this->excerpt = $this->setExcerpt($data["title"]);
         $this->content = $data["content"];
-        $this->comment_status = $data["comment_status"];
         $this->status = 1;
         $this->post_parent = 0;
         $this->post_type = "article";
@@ -687,12 +603,10 @@ class Post extends BaseSQL
 
     public function createTag($data)
     {
-
-        $this->author = 1;
+        $this->author = $this->getAuthor();
         $this->title = $data["title"];
         $this->excerpt = $this->setExcerpt($data["title"]);
         $this->content = $data["content"];
-        $this->comment_status = 0;
         $this->date = $this->setDate();
         $this->date_gmt = $this->setDate_gmt();
         $this->status = 1;
@@ -706,11 +620,10 @@ class Post extends BaseSQL
     public function updateTag($data)
     {
         $this->id = $data["id"];
-        $this->author = 1;
+        $this->author = $this->getAuthor();
         $this->title = $data["title"];
         $this->excerpt = $this->setExcerpt($data["title"]);
         $this->content = $data["content"];
-        $this->comment_status = $data["comment_status"];
         $this->status = 1;
         $this->post_parent = 0;
         $this->post_type = "category";
@@ -725,7 +638,6 @@ class Post extends BaseSQL
         $this->deleteOne($params);
     }
 
-
     /**
      * Get the value of author
      */
@@ -734,22 +646,19 @@ class Post extends BaseSQL
         return $this->author;
     }
 
+    public function showAuthor()
+    {
+        $user = $this->findUserById($this->getAuthor());
+        return $user->getUsername();
+    }
+
     /**
      * Set the value of author
-     *
-     * @return  self
      */
-    public function setAuthor($author)
+    public function setAuthor()
     {
-        $this->author = $author;
-
-        if ($author === null) :
-            return null;
-        else :
-            return $author->author;
-        endif;
-
-        return $this;
+        $session = new Session();
+        $this->author = $session->getUserId();
     }
 
     /**
@@ -758,6 +667,12 @@ class Post extends BaseSQL
     public function getDate()
     {
         return $this->date;
+    }
+
+    public function getFormatedDate()
+    {
+        $dt = new DateTime($this->getDate());
+        return date_format($dt,"m/d/Y - H:i");
     }
 
     /**
@@ -878,31 +793,6 @@ class Post extends BaseSQL
     }
 
     /**
-     * Get the value of comment_status
-     */
-    public function getComment_status()
-    {
-        return $this->comment_status;
-    }
-
-    /**
-     * Set the value of comment_status
-     *
-     * @return  self
-     */
-    public function setComment_status($comment_status)
-    {
-
-        if ($comment_status == 0) {
-            $this->comment_status = (int) 0;
-        } else {
-            $this->comment_status = $comment_status;
-        }
-
-        return $this;
-    }
-
-    /**
      * Get the value of post_modified
      */
     public function getPost_modified()
@@ -987,19 +877,7 @@ class Post extends BaseSQL
      */
     public function getComment_count()
     {
-        return $this->comment_count;
-    }
-
-    /**
-     * Set the value of comment_count
-     *
-     * @return  self
-     */
-    public function setComment_count($comment_count)
-    {
-        $this->comment_count = $comment_count;
-
-        return $this;
+        return count($this->comments);
     }
 
     /**
@@ -1010,12 +888,10 @@ class Post extends BaseSQL
         return $this->comments;
     }
 
-    /**
-     * @param $comments
-     */
-    public function setComments($comments): void
+    public function setComments(): void
     {
-        $this->comments = $comments;
+        $comment = new Comment();
+        $this->comments = $comment->findAllBy(["post" => $this->getId()], null, 'Comment');
     }
 
     /**
@@ -1025,4 +901,7 @@ class Post extends BaseSQL
     {
         $this->comments[] = $comment;
     }
+
+
+
 }

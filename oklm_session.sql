@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : database
--- Généré le : mer. 20 juil. 2022 à 08:01
+-- Généré le : jeu. 21 juil. 2022 à 18:33
 -- Version du serveur : 5.7.37
 -- Version de PHP : 7.4.20
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `oklm_session` (
   `id` int(10) NOT NULL,
   `token` varchar(255) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
   `expiration_date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -39,7 +39,8 @@ CREATE TABLE `oklm_session` (
 --
 
 INSERT INTO `oklm_session` (`id`, `token`, `user_id`, `expiration_date`) VALUES
-(4, 'f73c5af0fa6ce6f4dd7d627ef2a84774ad987a71e3c9e840d65ee98208d7fda5', 33, '2022-08-03 23:59:06');
+(28, '3598345567a146bb69bc224d8060061ca7663482e3149b68ceb87adad1a9a6c0', 36, '2022-08-05 16:48:52'),
+(29, '0634f40469f95b9c541206abde482333b9f8855361023d4703899286b89549fb', 36, '2022-08-05 18:01:55');
 
 --
 -- Index pour les tables déchargées
@@ -60,7 +61,7 @@ ALTER TABLE `oklm_session`
 -- AUTO_INCREMENT pour la table `oklm_session`
 --
 ALTER TABLE `oklm_session`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -67,7 +67,6 @@ class View
 
     public function __destruct()
     {
-        //Array ( [firstname] => Yves )
         extract($this->data);
         include "View/" . $this->template . ".tpl.php";
     }

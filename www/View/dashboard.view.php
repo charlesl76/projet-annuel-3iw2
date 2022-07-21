@@ -16,7 +16,7 @@
             </div>
             <div class="comments-recap w-50">
                 <span id="logo-comments" class="icon-recap"></span>
-                <span class="recap-text">16 comments</span>
+                <span class="recap-text"><a href="/comments"><?= count($comments) ?> commentaires</a></span>
             </div>
             <div class="tags-recap w-50">
                 <span id="logo-tags" class="icon-recap"></span>
