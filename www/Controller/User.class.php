@@ -197,9 +197,11 @@ class User
                 echo "Vous êtes maintenant inscrit. Merci de vérifier vos mails afin de valider votre compte.";
             }
         }
-        $view = new View("register");
+
+        $view = new View("register", "front-login");
         $view->assign("user", $user);
         $view->assign("getFormRegister", $getFormRegister);
+
     }
 
 
@@ -212,7 +214,7 @@ class User
             $view = new View("show", "back");
             $view->assign("form", $form);
         } else {
-            $getFormLogin = $user->getFormLogin();
+            $getFormLogin = FormBuilder::render($user->getFormLogin());
             if(isset($_POST['username']) && isset($_POST['password'])) {
                 $user_data = $user->findByColumn(
                     ["id", "username", "email"],
@@ -231,8 +233,37 @@ class User
                     }
                 } else echo "Identifiants incorrects.";
             } else {
-                $view = new View("login");
+                $view = new View("login", "front-login");
                 $view->assign("getFormLogin", $getFormLogin);
+            }
+        }
+
+    }
+
+
+    
+
+    public function forgetPassword()
+    {
+        $user = new UserModel();
+        $configForm = $user->getFormResetPassword();
+        $v = new View("forgetPassword", "front");
+        $v->assign('forgetPassword', $configForm);
+
+        if (!empty($_POST)) {
+            $user = new UserModel(["email" => $_POST['email']]);
+            
+            if ($user->__get('id')==true) {
+                $token = $this->generateToken();
+                $user->__set('pwd_token',$token);
+                $user->save();
+                $name = $user->__get('last_name');
+                $body="Bonjour $name !<br><br> Vous avez demandé à réinitialiser votre mot de passe. 
+                 Changez votre mot de passe en cliquant sur le lien ci-dessous :. ". Helper::host() ."changer_mot_de_passe?t=$token\"<br><BT></BT>";
+                Helper::sendMail($user->__get('email'),"Changement de mot de passe",$body);
+
+            }else{
+                 $_SESSION['alert']['danger'][] = "L'adresse mail n'a pas été trouvé";
             }
         }
     }

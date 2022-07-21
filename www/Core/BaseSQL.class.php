@@ -54,6 +54,7 @@ abstract class BaseSQL
         $columns = array_diff_key($columns, $varsToExclude);
         $columns = array_filter($columns);
 
+
         if (!is_null($this->getId())) {
             foreach ($columns as $key => $value) {
                 $setUpdate[] = $key . "=:" . $key;
@@ -61,7 +62,7 @@ abstract class BaseSQL
             $sql = "UPDATE " . $this->table . " SET " . implode(",", $setUpdate) . " WHERE id=" . $this->getId();
         } else {
             $sql = "INSERT INTO " . $this->table . " (" . implode(",", array_keys($columns)) . ")
-            VALUES (:" . implode(",:", array_keys($columns)) . ")";
+                    VALUES (:" . implode(",:", array_keys($columns)) . ")";
         }
 
         $statement = $this->pdo->prepare($sql);
@@ -73,7 +74,6 @@ abstract class BaseSQL
         }
         return null;
     }
-
 
     public function findAll()
     {
@@ -90,6 +90,7 @@ abstract class BaseSQL
         foreach ($params as $key => $value) {
             $where[] = $key . "=:" . $key;
         }
+
         if (!is_null($opt_table)) {
             $sql = "SELECT * FROM " . DBPREFIXE . strtolower($opt_table) . " WHERE " . (implode(" AND ", $where));
         } else {
@@ -99,6 +100,7 @@ abstract class BaseSQL
         // return true;
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);
+
         switch ($class) {
             case 'Post':
                 return $queryPrepared->fetchAll(PDO::FETCH_CLASS, Post::class);
@@ -205,7 +207,6 @@ abstract class BaseSQL
         return $this->table;
     }
 
-
     public function setTable(string $table): void
     {
         $this->table = $table;
@@ -220,4 +221,5 @@ abstract class BaseSQL
     {
         return $this->findByColumn(["id", "token", "user_id", "expiration_date"], ["token" => $token, "expiration_date" => " NOW()"]);
     }
+
 }

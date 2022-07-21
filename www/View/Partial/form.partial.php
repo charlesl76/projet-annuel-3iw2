@@ -1,4 +1,3 @@
-
 <form method="<?= $config["config"]["method"]??"POST" ?>" action="<?= $config["config"]["action"]??"" ?>" id="<?= $config["config"]["id"] ?>" class="<?= $config["config"]["class"] ?>"  >
     <?php foreach ($config["inputs"] as $name => $input) : ?>
 
@@ -151,4 +150,5 @@
         endforeach; ?>
 
 <input type="submit" value="<?= $config["config"]["submit"] ?? "Valider" ?>">
+
 </form>

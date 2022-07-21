@@ -1,22 +1,21 @@
-<div class="container flex jc-center">
-        <div class="flex ai-center jc-center column form-register">
-            <h1>Se connecter</h1>
+<div class="front-main" style="background-image: url(<?= $final_url ?>./dist/bg-login.png)">
+    <section class="login-main-card">
+        <div class="half-card login">
+            <img src="<?= $final_url ?>./dist/logo-sported-vertical.svg" alt="Logo">
 
-            <?php
-            $this->includePartial("form", $getFormLogin);
-            ?>
+            <?php if (isset($getFormLogin)) : ?>
+                <?php echo $getFormLogin ?>
+            <?php endif; ?>
+
+            <div class="form-nav-account">
+                <a href="/forgot-password" class="form-nav-account-link">Forget password?</a>
+                <a href="/register" class="form-nav-account-link">Sign Up</a>
+            </div>
+        </div>
+        
+        <div class="half-card ad">
+            <img src="<?= $final_url ?>./dist/login-ad.png">
         </div>
 
-
-<br />
-<div class="row">
-    <a href="/forgot-password" id="mdp_oubli" class="tres-petit texte souligne-jaune">Mot de passe oubliée ?</a>
+    </section>
 </div>
-<div class="row">
-    <a href="/register" class="tres-petit texte souligne-bleu italic">Créer un compte</a>
-</div>
-<br />
-
-        
-    </div>
-

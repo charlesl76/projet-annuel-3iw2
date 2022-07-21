@@ -332,9 +332,67 @@ class User extends BaseSQL
                         ],
                     ],
                 ]
-            ]
-
-        ];
+//            "config"=>[
+//                "method"=>"POST",
+//                "action"=>"",
+//                "id" => "formRegister",
+//                "class" => "formRegister",
+//                "submit"=>"Sign Up"
+//            ],
+//            "inputs"=>[
+//                "firstname"=>[
+//                    "type"=>"text",
+//                    "placeholder"=>"Firstname",
+//                    "id"=>"firstnameRegister",
+//                    "class"=>"form-input",
+//                    "name" => "firstname",
+//                    "min"=>2,
+//                    "max"=>50,
+//                    "error"=>"Your firstname is incorrect. You need 2 to 50 caracters.",
+//                ],
+//                "lastname"=>[
+//                    "type"=>"text",
+//                    "placeholder"=>"Lastname",
+//                    "id"=>"lastnameRegister",
+//                    "class"=>"form-input",
+//                    "name" => "lastname",
+//                    "min"=>2,
+//                    "max"=>100,
+//                    "error"=>"Your lastname is incorrect. You need 2 to 100 caracters.",
+//                ],
+//                "email"=>[
+//                    "type"=>"email",
+//                    "placeholder"=>"Email",
+//                    "id"=>"emailRegister",
+//                    "class"=>"form-input",
+//                    "name" => "email",
+//                    "required"=>true,
+//                    "error"=>"Email incorrect",
+//                    "unicity"=>true,
+//                    "errorUnicity"=>"Email is already used.",
+//                ],
+//                "password"=>[
+//                    "type"=>"password",
+//                    "placeholder"=>"Password",
+//                    "id"=>"pwdRegister",
+//                    "class"=>"form-input",
+//                    "name" => "password",
+//                    "required"=>true,
+//                    "error"=>"Your password must be between 8 and 16 and contain numbers and letters.",
+//                ],
+//                "passwordConfirm"=>[
+//                    "type"=>"password",
+//                    "placeholder"=>"Please confirm your password",
+//                    "id"=>"pwdConfirmRegister",
+//                    "class"=>"inputRegister",
+//                    "name" => "passwordConfirm",
+//                    "required"=>true,
+//                    "confirm"=>"password",
+//                    "error"=>"Your confirmation password does not match.",
+//                ],
+//            ]
+                ]
+            ];
     }
 
     public function getFormLogin(): array

@@ -156,3 +156,7 @@
   controller: post
   action: getOnePostFront
   role: user
+
+/404:
+  controller: general
+  action: error404
