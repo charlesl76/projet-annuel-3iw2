@@ -8,10 +8,8 @@
     <meta name="description" content="ceci est la description de ma page">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
-    <script type="text/javascript" src="<?= $final_url ?>./dist/src/js/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="<?= $final_url ?>./dist/src/js/main.js"></script>
-    <script src="https://cdn.tiny.cloud/1/dngik02bbjynezc0xdewv8zjhqxwjqzfc1hq0a8azqg58db9/tinymce/6/tinymce.min.js"
-        referrerpolicy="origin"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.tiny.cloud/1/dngik02bbjynezc0xdewv8zjhqxwjqzfc1hq0a8azqg58db9/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 
 <body>
@@ -31,10 +29,10 @@
                         <?php if (isset($isConnected) && $isConnected) : ?>
                             <?php if (isset($role) && $role == "admin") : ?>
                                 <li><a href="/dashboard" class="button" id="login-button">Admin panel</a></li>
-                            <?php else: ?>
+                            <?php else : ?>
                                 <li><a href="/" class="button" id="login-button">My account</a></li>
                             <?php endif; ?>
-                                <li><a href="/logout" class="button" id="login-button">Logout</a></li>
+                            <li><a href="/logout" class="button" id="login-button">Logout</a></li>
                         <?php else : ?>
                             <li><a href="/login" class="button" id="login-button">Sign In</a></li>
                             <li><a href="/register" class="button" id="register-button">Sign Up</a></li>
@@ -58,7 +56,7 @@
             <div id="front-footer-compagny">
                 <h2>COMPAGNY NAME</h2>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Iusto recusandae cumque asperiores fuga sapiente animi doloribus aut autem, 
+                    Iusto recusandae cumque asperiores fuga sapiente animi doloribus aut autem,
                     quos architecto illo exercitationem quo assumenda officia, beatae amet? Error, aliquam harum.
                 </p>
             </div>
@@ -75,7 +73,7 @@
             </div>
             <div id="front-footer-link">
                 <h2>LINKS</h2>
-                <nav> 
+                <nav>
                     <ul>
                         <li><a href="#">My account</a></li>
                         <li><a href="#">Become an Affiliate</a></li>
