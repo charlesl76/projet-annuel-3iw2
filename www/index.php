@@ -69,6 +69,7 @@ if (count($uri_explode) > 2) {
 }
 
 if (empty($routes[$uri]) || empty($routes[$uri]["controller"]) || empty($routes[$uri]["action"]) || empty($routes[$uri]["role"])) {
+    http_response_code(404);
     header('Location: /404');
     die();
 }
