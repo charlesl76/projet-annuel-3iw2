@@ -34,13 +34,7 @@ if (!file_exists($routeFile)) {
 
 $routes = yaml_parse_file($routeFile);
 
-// Permet de récupérer les paramètres d'une requête
-// todo: rendre ça plus générique
 $uri_explode = explode("/", $uri);
-
-// À REGLER : POUR LE MOMENT, ON NE PEUT PAS AVOIR DE PARAMÈTRES DANS L'URI RESETPASSWORD
-// localhost/r/{token} ne fonctionne pas
-// J'ai tenté un fix avec elseif (preg_match("/\d/i", $uri_explode[3]) mais ne fonctionne pas
 
 if (count($uri_explode) > 2) {
     if (preg_match("/\d/i", $uri_explode[2])) {
@@ -57,16 +51,13 @@ if (count($uri_explode) > 2) {
             if (isset($uri_explode[3])) $uri = "/" . $uri_explode[1] . "/".$uri_explode[2] . "/{{$param}}";
             $params = [$param => $uri_explode[3]];
 
-        } else {
-//            $param = "id";
-//            if (isset($uri_explode[3])) $uri = "/" . $uri_explode[1] . "/{{$param}}/" . $uri_explode[2];
-//            $params = [$param => $uri_explode[3]];
         }
     }
 }
 
 if (empty($routes[$uri]) || empty($routes[$uri]["controller"]) || empty($routes[$uri]["action"]) || empty($routes[$uri]["role"])) {
-    die("Page 404");
+    header('Location: /404');
+    die();
 }
 
 $controller = ucfirst(strtolower($routes[$uri]["controller"]));
@@ -103,7 +94,7 @@ switch (($routes[$uri]["role"])) {
     case 'logout':
         // the user must be not connected
         if ($session->ensureUserConnected()) {
-            echo "Vous devez d'abord vous <a href='/logout'>déconnecter</a>."; die;
+            echo "You must be <a href='/logout'>disconnected</a>."; die;
         }
         break;
 }

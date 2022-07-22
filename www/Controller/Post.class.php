@@ -33,10 +33,8 @@ class Post
     {
         $page = new PostModel();
         $pagesList = $page->getAllPages();
-        print_r($pagesList);
         $view = new View("display-posts", "front");
         $final_url = $view->dynamicNav();
-
         $view->assign("pages", $pagesList);
         $view->assign("post_type", "page");
         $view->assign("view", $view);
@@ -201,7 +199,6 @@ class Post
             }
         } elseif (!empty($_POST) && $_POST['input'] == "tag") {
             $result = $validator::checkPost($tag->getFormTags($tag), $_POST);
-            print_r($result);
             if (empty($result)) {
                 switch ($_POST["type"]):
                     case "add":

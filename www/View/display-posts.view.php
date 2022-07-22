@@ -1,6 +1,8 @@
-<h1>Listes des <?= $post_type ?>s</h1>
+<h1>Liste des <?= $post_type ?>s</h1>
 
-<table>
+<div class="listPosts">
+
+    <h1>Pages List</h1>
 
     <?php if ($post_type == "page") : ?>
         <?php foreach ($pages as $page) : ?>
@@ -8,19 +10,26 @@
                 <td><a href="/post/<?= $page->getId() ?>"><?php echo $page->getTitle(); ?></a></td>
                 <td><?php echo $page->getContent(); ?> </td>
             </tr>
+        <?php endforeach; ?>
 
+        <?php foreach ($pages as $page) : ?>
+            <article class="listArticles">
+                <a href="/post/<?= $page['id'] ?>"><?php echo $page['title']; ?></a>
+                <?php echo $page['content']; ?>
+            </article>
         <?php endforeach; ?>
 
     <?php elseif ($post_type == "article") : ?>
-        <ul>
-            <?php foreach ($articles as $post) : ?>
-                <li>
-                    <h3><a href="/post/<?= $post->getId() ?>"><?= $post->getTitle() ?></a></h3>
-                    <p><?= $post->getContent() ?></p>
-                    <?php $this->includePartial("display-comments", [$post]); ?>
-                </li>
-            <?php endforeach; ?>
-        </ul>
+        <h1>Articles List</h1>
+
+        <?php foreach ($articles as $article) : ?>
+            <article class="listArticles">
+                <h1><a href="/post/<?= $article->getId() ?>"><?= $article->getTitle() ?></a></h1>
+                <p><?= $article->getContent() ?></p>
+            </article>
+
+        <?php endforeach; ?>
+
     <?php endif ?>
-</table>
-                
+
+</div>

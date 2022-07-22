@@ -24,15 +24,15 @@ class Comment
                 $comment = $comment->setId($_POST['id']);
                 if ($session->getUserId() === $comment->getAuthor()) {
                     $comment->deleteComment($_POST['id']);
-                    echo "Votre commentaire a bien été supprimé.";
+                    echo "Your comment has been deleted.";
                     header("refresh: 1; url=/post/" . $post->getId());
-                } else echo "Vous n'êtes pas l'auteur du commentaire";
+                } else echo "You are not the author.";
             } else {
                 $validator = new Validator();
                 $result = $validator::checkForm($form, $_POST);
                 if (empty($result)) {
                     $comment->createComment($_POST, $post);
-                    echo "Votre commentaire a bien été publié. Il va maintenant être vérifié par un modérateur.";
+                    echo "Your comment has been published. It will now be checked by a moderator.";
                     header("refresh: 1; url=/front-articles");
                 }
             }

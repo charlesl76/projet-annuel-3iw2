@@ -1,3 +1,4 @@
+<div class="forget-password">
 <?php if (!isset($id)) : ?>
     <div class="container-forget-password">
         <img src="<?= $final_url ?>./dist/lock_password.svg" alt="forgot-password">
@@ -22,3 +23,5 @@
         Your account does not exist, is not activated or is blocked. <a href="mailto:admin@sported.site">Please contact the administrator</a>.
     </p>
 <?php endif; ?>
+
+</div>

@@ -1,4 +1,4 @@
-<h1>Tableau de bord</h1>
+<h1>Dashboard</h1>
 
 <div class="dashboard">
     <div class="recap">
@@ -22,7 +22,6 @@
                 <span class="recap-text"><a href="/tags"><?= count($tags) ?> categories</a></span>
             </div>
         </div>
-
     </div>
 </div>
 

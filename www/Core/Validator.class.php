@@ -16,25 +16,25 @@ class Validator extends BaseSQL
         });
 
         if (count($data) != count($config["inputs"])) {
-            $result[] = "Formulaire modifié par user";
+            $result[] = "Form modified by user";
         }
         foreach ($config["inputs"] as $name => $input) {
 
             if (!isset($data[$name])) {
-                $result[] = "Il manque des champs";
+                $result[] = "Missing fields";
             }
             if (!empty($input["required"]) && empty($data[$name])) {
-                $result[] = "Vous avez supprimé l'attribut required";
+                $result[] = "You have removed the required attribute";
             }
 
             if ($input["type"] == "password" && !self::checkPassword($data[$name])) {
-                $result[] = "Le mot de passe n'est pas assez fort";
+                $result[] = "The password is not strong enough";
             } else if ($input["type"] == "email"  && !self::checkEmail($data[$name])) {
                 $result[] = "Email incorrect";
             }
 
             if ($input["type"] == "checkbox" && empty($data[$name])) {
-                $result[] = "Vous devez accepter les CGU";
+                $result[] = "You must accept the CGU";
             } else if ($input["type"] == "checkbox" && !empty($data[$name])) {
                 // var_dump($data[$name]);
             } else if ($input["type"] == "select" && !empty($data[$name])) {
