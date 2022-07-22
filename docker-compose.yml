@@ -22,8 +22,7 @@ services:
     environment:
       MYSQL_DATABASE: sported
       MYSQL_ROOT_PASSWORD: password
-      #MYSQL_USER: root
-      MYSQL_PASSWORD: password
+      # MYSQL_USER: root
     volumes:
       - ./db_data:/var/lib/mysql
     restart: always
@@ -37,6 +36,3 @@ services:
       - 8888:80
     environment:
         - PMA_ARBITRARY=1
-
-      
-      

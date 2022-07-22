@@ -10,12 +10,10 @@ Looking to build your own sport-themed website? Sported is made for you! This in
 
 ## Authors
 
-- Charles LEFEBVRE [@charlesl76](https://www.github.com/charlesl76)
-- Yassine BEKIOUI [@twiney94](https://www.github.com/twiney94)
-- Dounia HARAG[@douniaharag](https://www.github.com/douniaharag)
-- Alexis LIN [@linalexis](https://www.github.com/linalexis)
-- Aya FGAIER [@ayafgaier23](https://www.github.com/ayafgaier23)
-
+- [@charlesl76](https://www.github.com/charlesl76)
+- [@twiney94](https://www.github.com/twiney94)
+- [@linalexis](https://www.github.com/linalexis)
+- [@douniaharag](https://www.github.com/douniaharag)
 
 
 ## Support
