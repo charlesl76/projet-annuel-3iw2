@@ -233,8 +233,12 @@ class Comment extends BaseSQL
 
     public function updateComment($data)
     {
+        $session = new Session();
+        $this->id = $data['id'];
         $this->post = $data['post_parent'];
         $this->author = $this->getAuthor();
+        $this->approved_by = $session->getUserId();
+        $this->status = (int)$data['status'];
         $datetime = new \DateTime();
         $this->published_date = $datetime->format('Y-m-d H:i:s');
         $this->content = $data['content'];
@@ -348,6 +352,7 @@ class Comment extends BaseSQL
     {
         $post = new Post();
         $articles = $post->getAllArticles();
+        $selected = $comment->getPost();
         $i = 1;
 
         $articleList[0] = [
@@ -356,6 +361,9 @@ class Comment extends BaseSQL
         ];
 
         foreach($articles as $article) {
+            if($article->getId() == $selected) {
+                $articleList[$i]["selected"] = true;
+            }
             $articleList[$i]['id'] = $article->getId();
             $articleList[$i]['title'] = $article->getTitle();
             $i++;

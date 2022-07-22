@@ -78,10 +78,10 @@ class Post extends BaseSQL
         return $articles;
     }
 
-    public function getTagById($params)
+    public function showTag()
     {
-        $this->tag = parent::findByColumn(["title"], ["id" => $params]);
-        return $this->tag;
+        $post_parent_id = parent::findByColumn(["title"], ["id" => $this->post_parent]);
+        return $post_parent_id['title'];
     }
 
     public function getAllTags()

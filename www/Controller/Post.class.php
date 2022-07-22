@@ -207,7 +207,6 @@ class Post
                         header('location: /tags');
                         break;
                     case "update":
-                        print_r($_POST);
                         $tag->updateTag($_POST);
                         unset($_POST);
                         header('location: /tags');

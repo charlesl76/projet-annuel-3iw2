@@ -3,7 +3,6 @@
 session_start();
 
 if (isset($_POST["email"])) {
-    var_dump($_POST);
     $user["email"] = $_POST["email"];
     $user["password"] = $_POST["password"];
     registerSuperAdmin($user);

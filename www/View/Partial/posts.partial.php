@@ -33,7 +33,7 @@ $type = $uri[1];
             <tr>
                 <td><a href="<?= $entry->getPost_type() . 's/' . $entry->getId() . '">' . $entry->getTitle() ?></a></td>
                     <td><?= $entry->showAuthor() ?></td>
-                    <?= $entry->getPost_type() == "article" ? "<td>" . $entry->getPost_parent() . "</td>" : "" ?>
+                    <?= $entry->getPost_type() == "article" ? "<td>" . $entry->showTag() . "</td>" : "" ?>
                     <?= $entry->getPost_type() == "article" ? "<td>" . $entry->getComment_count() . "</td>" : "" ?>
                     <td>
                         <span><?php
