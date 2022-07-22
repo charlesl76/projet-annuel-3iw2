@@ -23,14 +23,14 @@ abstract class BaseSQL
         //Faudra intégrer le singleton
         try {
             //Connexion à la base de données
-            $this->pdo = new \PDO(DBDRIVER . ":host=" . DBHOST . ";port=" . DBPORT . ";dbname=" . DBNAME, DBUSER, DBPWD);
+            $this->pdo = new \PDO(DB_DRIVER . ":host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME, DB_USER, DB_PWD);
             $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (\Exception $e) {
             die("Erreur SQL" . $e->getMessage());
         }
 
         $classExploded = explode("\\", get_called_class());
-        $this->table = DBPREFIXE . strtolower(end($classExploded));
+        $this->table = DB_PREFIXE . "_" . strtolower(end($classExploded));
     }
 
     /**
@@ -92,7 +92,7 @@ abstract class BaseSQL
         }
 
         if (!is_null($opt_table)) {
-            $sql = "SELECT * FROM " . DBPREFIXE . strtolower($opt_table) . " WHERE " . (implode(" AND ", $where));
+            $sql = "SELECT * FROM " . DB_PREFIXE . strtolower($opt_table) . " WHERE " . (implode(" AND ", $where));
         } else {
             $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
         }

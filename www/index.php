@@ -4,10 +4,18 @@ namespace App;
 
 session_start();
 
+require "conf.inc.php";
+
+$install_complete = defined("INSTALL");
+
+if ($install_complete == false) {
+    include_once "activate.php";
+    die;
+}
+
 use App\Model\Session as UserSession;
 use MongoDB\BSON\Regex;
 
-require "conf.inc.php";
 
 
 function myAutoloader($class)
@@ -32,7 +40,13 @@ if (!file_exists($routeFile)) {
     die("Le fichier " . $routeFile . " n'existe pas");
 }
 
-$routes = yaml_parse_file($routeFile);
+$yaml_load = extension_loaded('yaml');
+
+if ($yaml_load == false) {
+    die("The PECL extension is not installed, please refer to the <a href=\"https://www.php.net/manual/fr/install.pecl.php\">PHP doc for installation</a>.");
+} else {
+    $routes = yaml_parse_file($routeFile);
+}
 
 $uri_explode = explode("/", $uri);
 
@@ -48,9 +62,8 @@ if (count($uri_explode) > 2) {
         if (strlen($uri_explode[3]) === 64) {
             // token
             $param = "token";
-            if (isset($uri_explode[3])) $uri = "/" . $uri_explode[1] . "/".$uri_explode[2] . "/{{$param}}";
+            if (isset($uri_explode[3])) $uri = "/" . $uri_explode[1] . "/" . $uri_explode[2] . "/{{$param}}";
             $params = [$param => $uri_explode[3]];
-
         }
     }
 }

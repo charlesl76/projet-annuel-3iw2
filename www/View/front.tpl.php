@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Yoursite | Admin</title>
+    <title><?= SITE_NAME ?></title>
     <link rel="stylesheet" href="<?= $final_url ?>./dist/main.css">
     <meta name="description" content="ceci est la description de ma page">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
