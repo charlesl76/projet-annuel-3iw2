@@ -29,11 +29,11 @@ class User
             if ($data !== false && !isset($data['error'])) {
                 $body = "
                 <div class=\"container\">
-                    <h1>Réinitialisation de votre mot de passe</h1>
-                    <p>Hello " . $data["username"] . ", pour réinitialiser votre mot de passe, cliquez sur le lien ci-dessous.</p>
-                    <p><a href=\"http://" . $_SERVER['SERVER_NAME'] . "/forgot-password/r/" . $data['token'] . "\">Réinitialiser votre mot de passe</a></p>
+                    <h1>Reset your password</h1>
+                    <p>Hello " . $data["username"] . ", to reset your password, click on the link below.</p>
+                    <p><a href=\"http://" . $_SERVER['SERVER_NAME'] . "/forgot-password/r/" . $data['token'] . "\">Reset you password</a></p>
                     
-                    <p>Si vous n'avez pas demandé la réinitialisation de votre mot de passe, veuillez ignorer cet e-mail.</p>
+                    <p>If you have not requested a password reset, please ignore this email.</p>
                     <p class=\"signature\">Sported</p>      
                 </div>
     
@@ -66,7 +66,7 @@ class User
                 </style>
     
                 ";
-                $mail->sendMail($data["email"], "[Sported] Reinitialisation de votre mot de passe", $body);
+                $mail->sendMail($data["email"], "[Sported] Reset your password", $body);
                 header("location: /forgot-password/1");
             } else {
                 echo $data['error'];
@@ -104,8 +104,8 @@ class User
                         if ($validator->changePassword(
                             $params['token'], $_POST['oldPassword'], $_POST['newPassword'], $_POST['newPasswordConfirm'])
                         ) {
-                            echo "Votre mot de passe a bien été modifié.";
-                        } else echo 'Veuillez vérifier à nouveau les informations saisies.';
+                            echo "Your password has been changed.";
+                        } else echo 'Please double check the information you have entered.';
                     }
 
                     $view = new View("resetpassword", "front");
@@ -131,6 +131,7 @@ class User
         // fonction pour supprimer le token
         $session = new UserSession();
         $session->erase();
+        header("refresh: 2; url=/");
     }
 
     public function register()
@@ -159,9 +160,9 @@ class User
                 $mail = new Mail();
                 $body = "
                 <div class=\"container\">
-                    <h1>Véréfication de votre adresse e-mail</h1>
-                    <p>Hello " . $user->getUsername() . ", veuillez cliquer sur ce lien pour vérifier votre compte.</p>
-                    <p><a href=\"http://" . $_SERVER['SERVER_NAME'] . "/register/r/" . $user->getToken() . "\">Vérifier mon compte</a></p>
+                    <h1>Verification of your e-mail address</h1>
+                    <p>Hello " . $user->getUsername() . ", please click on this link to verify your account.</p>
+                    <p><a href=\"http://" . $_SERVER['SERVER_NAME'] . "/register/r/" . $user->getToken() . "\">Verify my account</a></p>
                 </div>
     
                 <style>
@@ -193,8 +194,8 @@ class User
                 </style>
     
                 ";
-                $mail->sendMail($user->getEmail(), "Veuillez verifier votre adresse e-mail", $body);
-                echo "Vous êtes maintenant inscrit. Merci de vérifier vos mails afin de valider votre compte.";
+                $mail->sendMail($user->getEmail(), "Please check your e-mail addressl", $body);
+                echo "You are now registered. Please check your email to validate your account.";
             }
         }
 
@@ -226,12 +227,18 @@ class User
                         $session->setUserId($user_data['id']);
                         $session->save();
                         $_SESSION['Authorization'] = 'Bearer '.$session->getToken();
-                        echo "Vous êtes maintenant connecté.";
+                        echo "You are now logged in. You will be redirect.";
+// Ajout de la redirection après loggin                        
+                        // if($session->getUser()->getRole() === "user" ){
+                        //      header("refresh: 2; url=/");
+                        //  } elseif($session->getUser()->getRole() === "admin"){
+                        //      header("refresh: 2; url=/dashboard");
+                        //  }
                         http_response_code(201);
                     } catch (Exception $e) {
                         echo $e;
                     }
-                } else echo "Identifiants incorrects.";
+                } else echo "Wrong credentials.";
             } else {
                 $view = new View("login", "front-login");
                 $view->assign("getFormLogin", $getFormLogin);
@@ -258,12 +265,12 @@ class User
                 $user->__set('pwd_token',$token);
                 $user->save();
                 $name = $user->__get('last_name');
-                $body="Bonjour $name !<br><br> Vous avez demandé à réinitialiser votre mot de passe. 
-                 Changez votre mot de passe en cliquant sur le lien ci-dessous :. ". Helper::host() ."changer_mot_de_passe?t=$token\"<br><BT></BT>";
+                $body="Bonjour $name !<br><br> You have requested to reset your password. 
+                Change your password by clicking on the link below:. ". Helper::host() ."changer_mot_de_passe?t=$token\"<br><BT></BT>";
                 Helper::sendMail($user->__get('email'),"Changement de mot de passe",$body);
 
             }else{
-                 $_SESSION['alert']['danger'][] = "L'adresse mail n'a pas été trouvé";
+                 $_SESSION['alert']['danger'][] = "The email address was not found";
             }
         }
     }

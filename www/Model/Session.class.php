@@ -9,11 +9,11 @@ use DateTime;
 class Session extends BaseSQL
 {
 
-    protected $id;
-    protected $token;
-    protected $user_id;
-    protected $user;
-    protected $expiration_date;
+    public $id;
+    public $token;
+    public $user_id;
+    public $user;
+    public $expiration_date;
 
     public function __construct()
     {
@@ -65,6 +65,7 @@ class Session extends BaseSQL
     public function setUserId($user_id): void
     {
         $this->user_id = $user_id;
+        // $this->setUser($this->findUserById($user_id));
     }
 
     /**

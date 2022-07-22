@@ -35,7 +35,6 @@ class Post
         $pagesList = $page->getAllPages();
         $view = new View("display-posts", "front");
         $final_url = $view->dynamicNav();
-
         $view->assign("pages", $pagesList);
         $view->assign("post_type", "page");
         $view->assign("view", $view);

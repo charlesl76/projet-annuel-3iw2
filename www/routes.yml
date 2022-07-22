@@ -191,3 +191,4 @@
 /404:
   controller: general
   action: error404
+  role: all

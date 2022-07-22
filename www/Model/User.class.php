@@ -7,20 +7,20 @@ use App\Core\BaseSQL;
 class User extends BaseSQL
 {
 
-    protected $id = null;
-    protected $email;
-    protected $password;
-    protected $username;
-    protected $first_name;
-    protected $last_name;
-    protected $role;
-    protected $status = null;
-    protected $token = null;
-    protected $birth;
-    protected $gender;
-    protected $registered_at;
-	protected $updated_at;
-	protected $activated;
+    public $id = null;
+    public $email;
+    public $password;
+    public $username;
+    public $first_name;
+    public $last_name;
+    public $role;
+    public $status = null;
+    public $token = null;
+    public $birth;
+    public $gender;
+    public $registered_at;
+	public $updated_at;
+	public $activated;
 
     public function __construct()
     {
@@ -240,98 +240,100 @@ class User extends BaseSQL
             "config" => [
                 "method" => "POST",
                 "action" => "",
-                "submit" => "S'inscrire"
+                "id" => "formRegister",
+                "class" => "formRegister",
+                "submit" => "Sign up"
             ],
             "inputs" => [
                 "username" => [
                     "type" => "text",
-                    "placeholder" => "Votre nom d'utilisateur",
+                    "placeholder" => "Username",
                     "id" => "usernameRegister",
-                    "class" => "usernameRegister",
+                    "class" => "form-input",
                     "required" => true,
-                    "error" => "Nom d'utilisateur incorrect",
+                    "error" => "Incorrect username",
                     "unicity" => true,
-                    "errorUnicity" => "Nom d'utilisateur déjà utilisé",
+                    "errorUnicity" => "Username already used.",
                 ],
                 "email" => [
                     "type" => "email",
-                    "placeholder" => "Votre email",
+                    "placeholder" => "Email",
                     "id" => "emailRegister",
-                    "class" => "inputRegister",
+                    "class" => "form-input",
                     "required" => true,
-                    "error" => "Email incorrect",
+                    "error" => "Incorrect email",
                     "unicity" => true,
-                    "errorUnicity" => "Email existe déjà en bdd",
+                    "errorUnicity" => "Email already used",
                 ],
                 "password" => [
                     "type" => "password",
-                    "placeholder" => "Votre mot de passe",
+                    "placeholder" => "Password",
                     "id" => "pwdRegister",
-                    "class" => "inputRegister",
+                    "class" => "form-input",
                     "required" => true,
-                    "error" => "Votre mot de passe doit faire entre 8 et 16 et contenir des chiffres et des lettres",
+                    "error" => "Your password must contain 8 to 16 and must have numbers and letters.",
                 ],
                 "passwordConfirm" => [
                     "type" => "password",
-                    "placeholder" => "Confirmation ...",
+                    "placeholder" => "Password confirmation",
                     "id" => "pwdConfirmRegister",
-                    "class" => "inputRegister",
+                    "class" => "form-input",
                     "required" => true,
                     "confirm" => "password",
-                    "error" => "Votre mot de passe de confirmation ne correspond pas",
+                    "error" => "Your confirmation password does not match.",
                 ],
                 "firstname" => [
                     "type" => "text",
-                    "placeholder" => "Prénom ...",
+                    "placeholder" => "Firstname",
                     "id" => "firstnameRegister",
-                    "class" => "inputRegister",
+                    "class" => "form-input",
                     "min" => 2,
                     "max" => 50,
-                    "error" => "Votre prénom n'est pas correct",
+                    "error" => "Firstname incorrect",
                 ],
                 "lastname" => [
                     "type" => "text",
-                    "placeholder" => "Nom ...",
+                    "placeholder" => "Lastname",
                     "id" => "lastnameRegister",
-                    "class" => "inputRegister",
+                    "class" => "form-input",
                     "min" => 2,
                     "max" => 100,
-                    "error" => "Votre nom n'est pas correct",
+                    "error" => "Last name incorrect",
                 ],
-                "cgu" => [
-                    "type" => "checkbox",
-                    "placeholder" => "Acceptez-vous les CGU",
-                    "name" => "cgu",
-                    "id" => "cgu",
-                    "class" => "cgu",
-                    "required" => "true",
-                    "error" => "Merci d'accepter les CGU afin de continuer",
-                ],
-                "select" => [
-                    "type" => "select",
-                    "placeholder" => "Sélectionnez votre pays",
-                    "name" => "country",
-                    "id" => "countryRegister",
-                    "class" => "countryRegister",
-                    "countries" => [
-                        0 => [
-                            "name" => "France",
-                            "id" => "fr"
-                        ],
-                        1 => [
-                            "name" => "United Kingdom",
-                            "id" => "uk"
-                        ],
-                        2 => [
-                            "name" => "Brazil",
-                            "id" => "br"
-                        ],
-                        3 => [
-                            "name" => "United States of America",
-                            "id" => "usa"
-                        ],
-                    ],
-                ]
+                // "cgu" => [
+                //     "type" => "checkbox",
+                //     "placeholder" => "Acceptez-vous les CGU",
+                //     "name" => "cgu",
+                //     "id" => "cgu",
+                //     "class" => "cgu",
+                //     "required" => "true",
+                //     "error" => "Merci d'accepter les CGU afin de continuer",
+                // ],
+                // "select" => [
+                //     "type" => "select",
+                //     "placeholder" => "Sélectionnez votre pays",
+                //     "name" => "country",
+                //     "id" => "countryRegister",
+                //     "class" => "countryRegister",
+                //     "countries" => [
+                //         0 => [
+                //             "name" => "France",
+                //             "id" => "fr"
+                //         ],
+                //         1 => [
+                //             "name" => "United Kingdom",
+                //             "id" => "uk"
+                //         ],
+                //         2 => [
+                //             "name" => "Brazil",
+                //             "id" => "br"
+                //         ],
+                //         3 => [
+                //             "name" => "United States of America",
+                //             "id" => "usa"
+                //         ],
+                //     ],
+                // ]
 //            "config"=>[
 //                "method"=>"POST",
 //                "action"=>"",
@@ -401,26 +403,28 @@ class User extends BaseSQL
             "config" => [
                 "method" => "POST",
                 "action" => "",
-                "submit" => "Se connecter"
+                "id" => "formLogin",
+                "class" => "formLogin",
+                "submit" => "Sign In"
             ],
             "inputs" => [
                 "username" => [
                     "type" => "text",
-                    "placeholder" => "Votre nom d'utilisateur",
+                    "placeholder" => "Username",
                     "id" => "usernameLogin",
-                    "class" => "usernameLogin",
+                    "class" => "form-input",
                     "required" => true,
-                    "error" => "Nom d'utilisateur incorrect",
+                    "error" => "Incorrect username",
                     "unicity" => true,
-                    "errorUnicity" => "Nom d'utilisateur déjà utilisé",
+                    "errorUnicity" => "Username already used.",
                 ],
                 "password" => [
                     "type" => "password",
-                    "placeholder" => "Votre mot de passe",
+                    "placeholder" => "Password",
                     "id" => "pwdLogin",
-                    "class" => "inputLogin",
+                    "class" => "form-input",
                     "required" => true,
-                    "error" => "Votre mot de passe doit faire entre 8 et 16 et contenir des chiffres et des lettres",
+                    "error" => "Your password must contain 8 to 16 and must have numbers and letters.",
                 ],
             ]
 
@@ -444,7 +448,7 @@ class User extends BaseSQL
                 ],
                 "username" => [
                     "type" => "text",
-                    "placeholder" => "Nom d'utilisateur",
+                    "placeholder" => "Username",
                     "id" => "username",
                     "class" => "username",
                     "min" => 2,
@@ -455,7 +459,7 @@ class User extends BaseSQL
                 ],
                 "firstname" => [
                     "type" => "text",
-                    "placeholder" => "Prénom",
+                    "placeholder" => "Firstname",
                     "id" => "firstname",
                     "class" => "firstname",
                     "min" => 2,
@@ -465,7 +469,7 @@ class User extends BaseSQL
                 ],
                 "lastname" => [
                     "type" => "text",
-                    "placeholder" => "Nom",
+                    "placeholder" => "Lastname",
                     "id" => "lastname",
                     "class" => "firstname",
                     "min" => 2,
@@ -512,28 +516,28 @@ class User extends BaseSQL
             "inputs" => [
                 "oldPassword" => [
                     "type" => "password",
-                    "placeholder" => "Votre ancien mot de passe",
+                    "placeholder" => "Your old password",
                     "id" => "oldPassword",
                     "class" => "oldPassword",
                     "required" => true,
-                    "error" => "Votre mot de passe doit faire entre 8 et 16 et contenir des chiffres et des lettres",
+                    "error" => "Your password must contain 8 to 16 and must have numbers and letters.",
                 ],
                 "newPassword" => [
                     "type" => "password",
-                    "placeholder" => "Votre nouveau mot de passe",
+                    "placeholder" => "Your new password",
                     "id" => "newPassword",
                     "class" => "newPassword",
                     "required" => true,
-                    "error" => "Votre mot de passe doit faire entre 8 et 16 et contenir des chiffres et des lettres",
+                    "error" => "Your password must contain 8 to 16 and must have numbers and letters.",
                 ],
                 "newPasswordConfirm" => [
                     "type" => "password",
-                    "placeholder" => "Confirmation de votre nouveau mot de passe",
+                    "placeholder" => "Confirmation of your new password.",
                     "id" => "newPasswordConfirm",
                     "class" => "newPasswordConfirm",
                     "required" => true,
                     "confirm" => "password",
-                    "error" => "Votre mot de passe de confirmation ne correspond pas",
+                    "error" => "Your confirmation password does not match",
                 ],
             ]
 
