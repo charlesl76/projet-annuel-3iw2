@@ -131,17 +131,13 @@ class User
         // fonction pour supprimer le token
         $session = new UserSession();
         $session->erase();
+        header("refresh: 2; url=/");
     }
 
     public function register()
     {
         $user = new UserModel();
         $session = new UserSession();
-        if ($session->ensureUserConnected()) {
-//            $view = new View("dashboard", "back");
-//            $view->assign("user", $session->getUser());
-            header("Location: /dashboard");
-        }
 
         $getFormRegister = $user->getFormRegister();
 
@@ -194,14 +190,14 @@ class User
     
                 ";
                 $mail->sendMail($user->getEmail(), "Veuillez verifier votre adresse e-mail", $body);
-                echo "Vous êtes maintenant inscrit. Merci de vérifier vos mails afin de valider votre compte.";
+                echo "You are now registered. Please check your email to validate your account. ";
+                header("refresh: 3; url=/login");
             }
+        } else {
+            $view = new View("register", "front-login");
+            $view->assign("user", $user);
+            $view->assign("getFormRegister", $getFormRegister);
         }
-
-        $view = new View("register", "front-login");
-        $view->assign("user", $user);
-        $view->assign("getFormRegister", $getFormRegister);
-
     }
 
 
@@ -227,6 +223,7 @@ class User
                         $session->save();
                         $_SESSION['Authorization'] = 'Bearer '.$session->getToken();
                         echo "Vous êtes maintenant connecté.";
+                        header("refresh: 1; url=/");
                         http_response_code(201);
                     } catch (Exception $e) {
                         echo $e;
@@ -283,7 +280,8 @@ class User
             $user->setLastName($_POST['lastname']);
             $user->setRole($_POST['role']);
             $user->save();
-            header("Location: /users/" . $user->getId());
+            echo "The user has been updated";
+            header("refresh: 1; url=/users");
         }
     }
 
@@ -302,7 +300,7 @@ class User
     public function delete()
     {
         $user = new UserModel();
-        $user->deleteOne();
+        $user->deleteOne($user->getId());
 
         header("Location: /users");
     }
