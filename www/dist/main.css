@@ -5,7 +5,7 @@ html,
 body {
   height: 100%;
   margin: 0;
-  background-color: #F2F2F2;
+  background-color: #f2f2f2;
   font-family: "Roboto", sans-serif;
   color: #000;
 }
@@ -88,16 +88,19 @@ nav.main > a {
 
 nav.main > a > img.link {
   user-select: none;
-  filter: invert(95%) sepia(0%) saturate(1346%) hue-rotate(142deg) brightness(90%) contrast(86%);
+  filter: invert(95%) sepia(0%) saturate(1346%) hue-rotate(142deg)
+    brightness(90%) contrast(86%);
 }
 
 nav.main > a > img.link:hover {
-  filter: invert(87%) sepia(100%) saturate(34%) hue-rotate(149deg) brightness(113%) contrast(109%);
+  filter: invert(87%) sepia(100%) saturate(34%) hue-rotate(149deg)
+    brightness(113%) contrast(109%);
 }
 
 nav.main > a > img.link--active {
   user-select: none;
-  filter: invert(87%) sepia(100%) saturate(34%) hue-rotate(149deg) brightness(113%) contrast(109%);
+  filter: invert(87%) sepia(100%) saturate(34%) hue-rotate(149deg)
+    brightness(113%) contrast(109%);
 }
 
 .bg--blue {
@@ -122,7 +125,7 @@ nav.main > a > img.link--active {
   height: auto;
   width: 40vw;
   padding: 2rem;
-  background-color: #FFF;
+  background-color: #fff;
   border-radius: 30px;
   box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.25);
 }
@@ -149,7 +152,7 @@ nav.main > a > img.link--active {
 }
 
 .main-card > .half > .link {
-  color: #A5A5A5;
+  color: #a5a5a5;
   text-decoration: none;
   font-weight: bold;
   font-size: 12px;
@@ -173,12 +176,12 @@ nav.main > a > img.link--active {
   outline: none;
 }
 
-.main-card > .half > form > input[type]:not([type=submit]) {
-  border: 2px solid #A5A5A5;
+.main-card > .half > form > input[type]:not([type="submit"]) {
+  border: 2px solid #a5a5a5;
 }
 
 .main-card > .half > form > input.cta {
-  color: #FFF;
+  color: #fff;
   border: none;
   font-weight: 500;
   text-transform: uppercase;
@@ -252,7 +255,7 @@ nav.main > a > img.link--active {
   width: 25%;
   box-shadow: 0px 10px 20px rgba(222, 222, 222, 0.3);
   border-radius: 0px 0px 4px 4px;
-  background-color: #FFF;
+  background-color: #fff;
 }
 
 .content > .grid > .grid-line .card--header {
@@ -262,7 +265,20 @@ nav.main > a > img.link--active {
   height: 77%;
   width: 100%;
   background-color: #fff;
-  background-image: linear-gradient(45deg, #A3B1B1 25%, transparent 25%, transparent 75%, #A3B1B1 75%), linear-gradient(45deg, #A3B1B1 25%, transparent 25%, transparent 75%, #A3B1B1 75%);
+  background-image: linear-gradient(
+      45deg,
+      #a3b1b1 25%,
+      transparent 25%,
+      transparent 75%,
+      #a3b1b1 75%
+    ),
+    linear-gradient(
+      45deg,
+      #a3b1b1 25%,
+      transparent 25%,
+      transparent 75%,
+      #a3b1b1 75%
+    );
   background-size: 20px 20px;
   background-position: 0 0, 10px 10px;
   border-radius: 4px 4px 0px 0px;
@@ -295,13 +311,13 @@ nav.main > a > img.link--active {
   padding: 4px;
   font-weight: bold;
   color: #686868;
-  background: #CBCBCB;
+  background: #cbcbcb;
   border-radius: 4px;
 }
 
 .content > .grid > .grid-line .card--footer > .details {
   font-weight: bold;
-  color: #CBCBCB;
+  color: #cbcbcb;
 }
 
 .content .actions-cta {
@@ -313,9 +329,9 @@ nav.main > a > img.link--active {
 .button {
   display: inline-block;
   padding: 1em 2em;
-  color: #FFF;
+  color: #fff;
   text-transform: uppercase;
-  background-color: #AAA;
+  background-color: #aaa;
   border: none;
   transition: background-color 0.3s;
   cursor: pointer;
@@ -355,7 +371,7 @@ nav.main > a > img.link--active {
 }
 
 .cta {
-  background-color: #AAA;
+  background-color: #aaa;
   border-radius: 4px;
   border: none;
   font-weight: bold;
@@ -386,7 +402,7 @@ nav.main > a > img.link--active {
 }
 
 .cta.danger {
-  background: #FF7171;
+  background: #ff7171;
 }
 
 .cta.danger:disabled {
@@ -394,7 +410,7 @@ nav.main > a > img.link--active {
 }
 
 .cta.danger:hover:enabled {
-  background: #C50303;
+  background: #c50303;
 }
 
 .cta.little {
@@ -434,7 +450,7 @@ nav.main > a > img.link--active {
 
 .banner--text > div p {
   margin: auto;
-  color: #FFF;
+  color: #fff;
   font-weight: 700;
   font-size: 2.25rem;
   max-width: 75%;
@@ -567,7 +583,7 @@ section .content {
   width: auto;
   height: auto;
   margin: 48px;
-  background-color: #E9E6E6;
+  background-color: #e9e6e6;
 }
 
 footer .footer-content {
@@ -576,18 +592,18 @@ footer .footer-content {
 }
 
 footer .footer-content h2 {
-  color: #FFF;
+  color: #fff;
 }
 
 footer .footer-content a {
-  color: #FFF;
+  color: #fff;
   text-decoration: none;
   margin-bottom: 7px;
   display: block;
 }
 
 footer .footer-content p {
-  color: #FFF;
+  color: #fff;
   margin: 0;
   margin-bottom: 10px;
 }
@@ -644,7 +660,7 @@ footer .footer-content .footer-contact ul li a img {
 
 footer .footer-copyright {
   background-color: #0077c2;
-  color: #FFF;
+  color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -695,7 +711,7 @@ footer .footer-copyright {
 }
 
 .front-main--register #formRegister input {
-  border: 2px solid #A5A5A5;
+  border: 2px solid #a5a5a5;
   border-radius: 30px;
   height: 1.875rem;
   width: 13rem;
@@ -709,8 +725,8 @@ footer .footer-copyright {
   height: auto;
 }
 
-.front-main--register #formRegister input[type=submit] {
-  background-image: linear-gradient(to right, #80D6FF, #0077C2);
+.front-main--register #formRegister input[type="submit"] {
+  background-image: linear-gradient(to right, #80d6ff, #0077c2);
   border: none;
   height: 40px;
   width: 208px;
@@ -725,7 +741,7 @@ footer .footer-copyright {
   justify-content: center;
   align-items: center;
   width: 60vw;
-  border: 1px solid #A5A5A5;
+  border: 1px solid #a5a5a5;
   padding: 2.75rem 2.75rem;
   border-radius: 30px;
   box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.25);
@@ -757,7 +773,7 @@ footer .footer-copyright {
 }
 
 .front-main .login-main-card .half-card #formLogin input {
-  border: 2px solid #A5A5A5;
+  border: 2px solid #a5a5a5;
   border-radius: 30px;
   height: 1.4375rem;
   width: 13rem;
@@ -765,8 +781,8 @@ footer .footer-copyright {
   padding: 0 0.625rem;
 }
 
-.front-main .login-main-card .half-card #formLogin input[type=submit] {
-  background-image: linear-gradient(to right, #80D6FF, #0077C2);
+.front-main .login-main-card .half-card #formLogin input[type="submit"] {
+  background-image: linear-gradient(to right, #80d6ff, #0077c2);
   border: none;
   height: 33px;
   width: 208px;
@@ -778,9 +794,13 @@ footer .footer-copyright {
   flex-direction: column;
 }
 
-.front-main .login-main-card .half-card .form-nav-account .form-nav-account-link {
+.front-main
+  .login-main-card
+  .half-card
+  .form-nav-account
+  .form-nav-account-link {
   text-decoration: none;
-  color: #A5A5A5;
+  color: #a5a5a5;
   margin-bottom: 0.5rem;
 }
 
@@ -825,7 +845,7 @@ footer .footer-copyright {
     justify-content: center;
     width: 40%;
     height: 100vh;
-    background-color: #80D6FF;
+    background-color: #80d6ff;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -856,7 +876,7 @@ footer .footer-copyright {
 }
 .button {
   display: inline-block;
-  background-color: #42A5F5;
+  background-color: #42a5f5;
   width: 128px;
   height: 32px;
   padding: 0.3rem 0.5rem;
@@ -869,7 +889,7 @@ footer .footer-copyright {
   flex-direction: row;
   height: 96px;
   position: relative;
-  background-color: #0077C2;
+  background-color: #0077c2;
 }
 
 #front-header .header-container {
@@ -902,12 +922,12 @@ footer .footer-copyright {
 }
 
 #front-header .header-container #front-color #front-color-green {
-  background-color: #9CCC65;
+  background-color: #9ccc65;
   margin-right: 0.625rem;
 }
 
 #front-header .header-container #front-color #front-color-blue {
-  background-color: #42A5F5;
+  background-color: #42a5f5;
 }
 
 #front-header .header-container nav {
@@ -916,7 +936,7 @@ footer .footer-copyright {
   left: 100%;
   width: 100%;
   height: 100vh;
-  background-color: #0077C2;
+  background-color: #0077c2;
   transition: left 1s;
 }
 
@@ -991,7 +1011,10 @@ footer .footer-copyright {
     justify-content: center;
     align-items: center;
   }
-  #front-header .header-container #front-header-nav-container #front-header-site-nav {
+  #front-header
+    .header-container
+    #front-header-nav-container
+    #front-header-site-nav {
     position: static;
     width: 100%;
     height: auto;
@@ -999,12 +1022,21 @@ footer .footer-copyright {
     transition: none;
     margin-right: 1.4375rem;
   }
-  #front-header .header-container #front-header-nav-container #front-header-site-nav ul {
+  #front-header
+    .header-container
+    #front-header-nav-container
+    #front-header-site-nav
+    ul {
     flex-direction: row;
     justify-content: flex-end;
     width: 100%;
   }
-  #front-header .header-container #front-header-nav-container #front-header-site-nav ul li {
+  #front-header
+    .header-container
+    #front-header-nav-container
+    #front-header-site-nav
+    ul
+    li {
     margin-bottom: 0;
     margin-left: 1.25rem;
   }
@@ -1042,7 +1074,7 @@ main .front-main #front-index-hero-banner {
 main .front-main #front-section2 {
   margin: 3rem;
   padding: 1.25rem;
-  background-color: #E9E6E6;
+  background-color: #e9e6e6;
 }
 
 main .front-main #front-section2 p {
@@ -1052,7 +1084,7 @@ main .front-main #front-section2 p {
 #front-footer {
   display: flex;
   flex-direction: column;
-  background-color: #42A5F5;
+  background-color: #42a5f5;
   padding: 1rem;
 }
 
@@ -1085,7 +1117,7 @@ main .front-main #front-section2 p {
 }
 
 #front-footer #footer-copyright {
-  background-color: #0077C2;
+  background-color: #0077c2;
 }
 
 @media screen and (min-width: 750px) {
@@ -1123,7 +1155,7 @@ main .front-main #front-section2 p {
 
 .title404 > h1 {
   font-size: 12rem;
-  color: #0077C2;
+  color: #0077c2;
   font-weight: bold;
 }
 
@@ -1171,7 +1203,12 @@ main #article-details .article-card {
 main #article-details .article-card .article-details {
   padding: 0;
 }
-main #article-details .article-card .article-details #article-content #meta-data {
+main
+  #article-details
+  .article-card
+  .article-details
+  #article-content
+  #meta-data {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -1196,6 +1233,22 @@ main #article-details .article-card .article-details ul {
 }
 main #article-details .article-card .article-details div h1 {
   font-size: 30px;
+}
+
+.header-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.fix {
+  margin-right: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 
 /*# sourceMappingURL=main.css.map */
