@@ -8,7 +8,7 @@ if (isset($_POST["email"])) {
     $user["password"] = $_POST["password"];
     registerSuperAdmin($user);
     addCompleteRegistration();
-    header("location: /");
+    header("location: ./");
 
 } else {
     // get prefix

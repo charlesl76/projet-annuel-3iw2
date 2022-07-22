@@ -40,7 +40,13 @@ if (!file_exists($routeFile)) {
     die("Le fichier " . $routeFile . " n'existe pas");
 }
 
-$routes = yaml_parse_file($routeFile);
+$yaml_load = extension_loaded('yaml');
+
+if ($yaml_load == false) {
+    die("The PECL extension is not installed, please refer to the <a href=\"https://www.php.net/manual/fr/install.pecl.php\">PHP doc for installation</a>.");
+} else {
+    $routes = yaml_parse_file($routeFile);
+}
 
 // Permet de récupérer les paramètres d'une requête
 // todo: rendre ça plus générique
