@@ -123,7 +123,7 @@ function checkDatabaseName(string $db_name): bool
 function checkHost(string $db_host, int $db_port): bool
 {
 
-    if (filter_var($db_host, FILTER_VALIDATE_IP) == true || $db_host == "database") {
+    if (filter_var($db_host, FILTER_VALIDATE_IP) == true || $db_host == "localhost" || $db_host == "database") {
         if ($db_port <= 0 || $db_port > 65535) {
             return false;
         } else {
