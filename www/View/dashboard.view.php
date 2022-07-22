@@ -1,9 +1,8 @@
-<h1>Tableau de bord</h1>
-<h2>Bonjour <?= $user->getFirstName() ?> <?= $user->getLastName() ?></h2>
+<h1>Dashboard</h1>
 
 <div class="dashboard">
     <div class="recap">
-        <h2 id="recap-highlight">Welcome <?= $user->getUsername() ?></h2>
+        <h2 id="recap-highlight">Welcome <?= $user->getUsername(). ' '.$user->getLastName()?></h2>
         <span>The site actually contains :</span>
         <div class="grid">
             <div class="articles-recap w-50">
@@ -16,14 +15,13 @@
             </div>
             <div class="comments-recap w-50">
                 <span id="logo-comments" class="icon-recap"></span>
-                <span class="recap-text"><a href="/comments"><?= count($comments) ?> commentaires</a></span>
+                <span class="recap-text"><a href="/comments"><?= count($comments) ?> comments</a></span>
             </div>
             <div class="tags-recap w-50">
                 <span id="logo-tags" class="icon-recap"></span>
-                <span class="recap-text"><a href="/tags"><?= count($tags) ?> tags</a></span>
+                <span class="recap-text"><a href="/tags"><?= count($tags) ?> categories</a></span>
             </div>
         </div>
-
     </div>
 </div>
 

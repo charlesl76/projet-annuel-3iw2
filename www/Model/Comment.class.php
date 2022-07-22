@@ -8,6 +8,12 @@ use DateTime;
 class Comment extends BaseSQL
 {
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setAuthor();
+    }
+
     public $id;
     public $post;
     public $author;
@@ -214,11 +220,10 @@ class Comment extends BaseSQL
         ];
     }
 
-    public function createComment($data, $post)
+    public function createComment($data, $post = null)
     {
-        $session = new Session();
-        $this->post = $post->getId();
-        $this->author = $session->getUserId();
+        $this->post = $post !== null ? $post->getId() : $data['post_parent'];
+        $this->author = $this->getAuthor();
         $datetime = new \DateTime();
         $this->published_date = $datetime->format('Y-m-d H:i:s');
         $this->content = $data['content'];
@@ -228,10 +233,10 @@ class Comment extends BaseSQL
 
     public function updateComment($data)
     {
-        print_r($data);
-        $session = new Session();
-        $this->post = $data['post'];
-        $this->author = $session->getUserId();
+        $this->post = $data['post_parent'];
+        $this->author = $this->getAuthor();
+        $datetime = new \DateTime();
+        $this->published_date = $datetime->format('Y-m-d H:i:s');
         $this->content = $data['content'];
 
         $this->save();
@@ -247,12 +252,27 @@ class Comment extends BaseSQL
         return parent::findAll('Comment');
     }
 
-    public function getFormComments()
+    public function getFormComments(Comment $comment)
     {
+        $post = new Post();
+        $articles = $post->getAllArticles();
+        $i = 1;
+
+        $articleList[0] = [
+            'id' => "0",
+            'title' => "No post parent",
+        ];
+
+        foreach($articles as $article) {
+            $articleList[$i]['id'] = $article->getId();
+            $articleList[$i]['title'] = $article->getTitle();
+            $i++;
+        }
+
         return [
             "config" => [
                 "method" => "POST",
-                "action" => "comment",
+                "action" => "comment-check",
                 "submit" => "Create and publish",
             ],
             "inputs" => [
@@ -276,11 +296,12 @@ class Comment extends BaseSQL
                 ],
                 "author" => [
                     "type" => "text",
-                    "placeholder" => "Author name",
                     "id" => "author",
                     "class" => "inputAuthor",
+                    "placeholder" => "Author",
                     "required" => true,
                     "disabled" => true,
+                    "value" => $comment->showAuthor(),
                     "error" => "Author name is required",
                     "unicity" => false
                 ],
@@ -304,6 +325,13 @@ class Comment extends BaseSQL
                         ]
                     ],
                 ],
+                "post_parent" => [
+                    "type" => "select",
+                    "placeholder" => "Post parent",
+                    "id" => "post_parent",
+                    "class" => "inputPost",
+                    "post_parent" => $articleList,
+                ],
                 "content" => [
                     "type" => "textarea",
                     "id" => "textPage",
@@ -318,6 +346,21 @@ class Comment extends BaseSQL
 
     public function getFormUpdateComments(Comment $comment)
     {
+        $post = new Post();
+        $articles = $post->getAllArticles();
+        $i = 1;
+
+        $articleList[0] = [
+            'id' => "0",
+            'title' => "No post parent",
+        ];
+
+        foreach($articles as $article) {
+            $articleList[$i]['id'] = $article->getId();
+            $articleList[$i]['title'] = $article->getTitle();
+            $i++;
+        }
+
         return [
             "config" => [
                 "method" => "POST",
@@ -355,14 +398,14 @@ class Comment extends BaseSQL
                 ],
                 "author" => [
                     "type" => "text",
-                    "placeholder" => "Author name",
                     "id" => "author",
                     "class" => "inputAuthor",
-                    "error" => "Author name is required",
-                    "unicity" => false,
+                    "placeholder" => "Author",
                     "required" => true,
                     "disabled" => true,
                     "value" => $comment->showAuthor(),
+                    "error" => "Author name is required",
+                    "unicity" => false
                 ],
                 "status" => [
                     "type" => "select",
@@ -384,6 +427,13 @@ class Comment extends BaseSQL
                             "name" => "Commentaire désaprouvé"
                         ]
                     ],
+                ],
+                "post_parent" => [
+                    "type" => "select",
+                    "placeholder" => "Post parent",
+                    "id" => "post_parent",
+                    "class" => "inputPost",
+                    "post_parent" => $articleList,
                 ],
                 "content" => [
                     "type" => "textarea",

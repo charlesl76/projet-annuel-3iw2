@@ -24,16 +24,16 @@ class Comment
                 $comment = $comment->setId($_POST['id']);
                 if ($session->getUserId() === $comment->getAuthor()) {
                     $comment->deleteComment($_POST['id']);
-                    echo "Votre commentaire a bien été supprimé.";
-                    header("refresh: 2; url=/post/" . $post->getId());
-                } else echo "Vous n'êtes pas l'auteur du commentaire";
+                    echo "Your comment has been deleted.";
+                    header("refresh: 1; url=/post/" . $post->getId());
+                } else echo "You are not the author.";
             } else {
                 $validator = new Validator();
                 $result = $validator::checkForm($form, $_POST);
                 if (empty($result)) {
                     $comment->createComment($_POST, $post);
-                    echo "Votre commentaire a bien été publié. Il va maintenant être vérifié par un modérateur.";
-                    header("refresh: 2; url=/front-articles");
+                    echo "Your comment has been published. It will now be checked by a moderator.";
+                    header("refresh: 1; url=/front-articles");
                 }
             }
         } else {
@@ -82,24 +82,26 @@ class Comment
         $validator = new Validator();
 
         if (!empty($_POST)) {
-            $result = $validator::checkForm($comment->getFormComments(), $_POST);
-            print_r($_POST);
+            $result = $validator::checkPost($comment->getFormComments($comment), $_POST);
             if (empty($result)) {
                 switch ($_POST["type"]):
                     case "add":
-                        $comment->createComment($_POST, 1); // post 1 par défaut : à rendre dynamique
+                        $comment->createComment($_POST);
+                        echo "Your comment has been added.";
+                        header("refresh: 1; url=/comments");
                         unset($_POST);
-                        header('location: /comments');
                         break;
                     case "update":
                         $comment->updateComment($_POST);
+                        echo "The comment has been updated.";
+                        header("refresh: 1; url=/comments");
                         unset($_POST);
-                        header('location: /comments');
                         break;
                     case "delete":
-                        $comment->deleteComment($comment);
+                        $comment->deleteComment($comment->getId());
+                        echo "The comment has been deleted.";
+                        header("refresh: 1; url=/comments");
                         unset($_POST);
-                        header('location: /comments');
                         break;
                 endswitch;
             } else {

@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use App\Core\BaseSQL;
+use App\Model\Session;
 use DateTime;
 
 class Post extends BaseSQL
@@ -446,12 +447,12 @@ class Post extends BaseSQL
         ];
 
         foreach($tags as $tag) {
-            if($tag["id"] == $selected) {
+            if($tag->getId() == $selected) {
                 $tagList[$i]["selected"] = true;
             }
-            $tagList[$i]["id"] = $tag['id'];
-            $tagList[$i]["name"] = $tag['title'];
-            $i = $i + 1;
+            $tagList[$i]["id"] = $tag->getId();
+            $tagList[$i]["name"] = $tag->getTitle();;
+            $i++;
         }
 
         return [

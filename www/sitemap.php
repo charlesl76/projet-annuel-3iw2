@@ -2,14 +2,16 @@
 
 namespace App;
 
+session_start();
 
 require_once "conf.inc.php";
 require_once "Core/BaseSQL.class.php";
 require_once "Model/Post.class.php";
+require_once "Model/User.class.php";
+require_once "Model/Session.class.php";
 
 use App\Core\BaseSQL;
 use App\Model\Post;
-use App\PDO;
 use DateTime;
 
 Header('Content-type: text/xml');

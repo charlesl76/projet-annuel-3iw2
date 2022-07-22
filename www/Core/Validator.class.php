@@ -16,25 +16,25 @@ class Validator extends BaseSQL
         });
 
         if (count($data) != count($config["inputs"])) {
-            $result[] = "Formulaire modifié par user";
+            $result[] = "Form modified by user";
         }
         foreach ($config["inputs"] as $name => $input) {
 
             if (!isset($data[$name])) {
-                $result[] = "Il manque des champs";
+                $result[] = "Missing fields";
             }
             if (!empty($input["required"]) && empty($data[$name])) {
-                $result[] = "Vous avez supprimé l'attribut required";
+                $result[] = "You have removed the required attribute";
             }
 
             if ($input["type"] == "password" && !self::checkPassword($data[$name])) {
-                $result[] = "Le mot de passe n'est pas assez fort";
+                $result[] = "The password is not strong enough";
             } else if ($input["type"] == "email"  && !self::checkEmail($data[$name])) {
                 $result[] = "Email incorrect";
             }
 
             if ($input["type"] == "checkbox" && empty($data[$name])) {
-                $result[] = "Vous devez accepter les CGU";
+                $result[] = "You must accept the CGU";
             } else if ($input["type"] == "checkbox" && !empty($data[$name])) {
                 // var_dump($data[$name]);
             } else if ($input["type"] == "select" && !empty($data[$name])) {
@@ -74,7 +74,6 @@ class Validator extends BaseSQL
                     break;
             endswitch;
         } elseif (!empty($data["input"]) && $data["input"] == "article") {
-            var_dump($data);
             switch ($data["type"]):
                 case "add":
                     if (!isset($data["title"]) || empty($data["title"])) {
@@ -118,6 +117,28 @@ class Validator extends BaseSQL
                     }
                     if (!isset($data["content"]) || empty($data["content"])) {
                         $result["input"] = "Do not forget to put an image in the form";
+                    }
+                    break;
+                case "delete":
+                    return $result;
+                    break;
+            endswitch;
+        } elseif (!empty($data["input"]) && $data["input"] == "comment") {
+            switch ($data["type"]):
+                case "add":
+                    if (!isset($data["content"]) || empty($data["content"])) {
+                        $result["input"] = "Do not forget to fill the content in the form";
+                    }
+                    if (!isset($data["post_parent"]) || empty($data["post_parent"])) {
+                        $result["input"] = "Do not forget to put a post parent on the comment";
+                    }
+                    break;
+                case "update":
+                    if (!isset($data["content"]) || empty($data["content"])) {
+                        $result["input"] = "Do not forget to fill the content in the form";
+                    }
+                    if (!isset($data["post_parent"]) || empty($data["post_parent"])) {
+                        $result["input"] = "Do not forget to put a post parent on the comment";
                     }
                     break;
                 case "delete":

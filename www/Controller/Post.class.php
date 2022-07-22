@@ -35,7 +35,6 @@ class Post
         $pagesList = $page->getAllPages();
         $view = new View("display-posts", "front");
         $final_url = $view->dynamicNav();
-
         $view->assign("pages", $pagesList);
         $view->assign("post_type", "page");
         $view->assign("view", $view);
@@ -171,16 +170,14 @@ class Post
                         header('location: /pages');
                         break;
                     case "delete":
-                        $page->deletePage($page);
+                        $page->deletePage($page->getId());
                         unset($_POST);
                         header('location: /pages');
                         break;
                 endswitch;
             }
         } elseif (!empty($_POST) && $_POST['input'] == "article") {
-            var_dump($article);
             $result = $validator::checkPost($article->getFormArticles($article), $_POST);
-            print_r($result);
             if (empty($result)) {
                 switch ($_POST["type"]):
                     case "add":
@@ -194,7 +191,7 @@ class Post
                         header('location: /articles');
                         break;
                     case "delete":
-                        $article->deleteArticle($article);
+                        $article->deleteArticle($article->getId());
                         unset($_POST);
                         header('location: /articles');
                         break;
@@ -202,7 +199,6 @@ class Post
             }
         } elseif (!empty($_POST) && $_POST['input'] == "tag") {
             $result = $validator::checkPost($tag->getFormTags($tag), $_POST);
-            print_r($result);
             if (empty($result)) {
                 switch ($_POST["type"]):
                     case "add":
@@ -217,7 +213,7 @@ class Post
                         header('location: /tags');
                         break;
                     case "delete":
-                        $tag->deleteTag($tag);
+                        $tag->deleteTag($tag->getId());
                         unset($_POST);
                         header('location: /tags');
                         break;

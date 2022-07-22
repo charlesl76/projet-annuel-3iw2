@@ -9,11 +9,11 @@ use DateTime;
 class Session extends BaseSQL
 {
 
-    protected $id;
-    protected $token;
-    protected $user_id;
-    protected $user;
-    protected $expiration_date;
+    public $id;
+    public $token;
+    public $user_id;
+    public $user;
+    public $expiration_date;
 
     public function __construct()
     {
@@ -65,6 +65,7 @@ class Session extends BaseSQL
     public function setUserId($user_id): void
     {
         $this->user_id = $user_id;
+        // $this->setUser($this->findUserById($user_id));
     }
 
     /**
@@ -83,10 +84,7 @@ class Session extends BaseSQL
         $this->expiration_date = $expirationDate;
     }
 
-    /**
-     * @return User
-     */
-    public function getUser(): User
+    public function getUser()
     {
         return $this->user;
     }
@@ -141,7 +139,7 @@ class Session extends BaseSQL
             $this->expiration_date = NULL;
             session_unset();
             session_destroy();
-            echo "Vous êtes maintenant déconnecté.";
+            echo "You are now logged out.";
         } else header("Location: /login");
     }
 }

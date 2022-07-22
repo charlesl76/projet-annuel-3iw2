@@ -117,25 +117,12 @@ nav.main > a > img.link--active {
   height: calc(100% - 80px);
 }
 
-.container-forget-password {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.form-group-fp {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
-
 .main-card {
   display: flex;
   height: auto;
   width: 40vw;
   padding: 2rem;
-  background-color: #fff;
+  background-color: #FFF;
   border-radius: 30px;
   box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.25);
 }
@@ -260,6 +247,7 @@ nav.main > a > img.link--active {
   box-sizing: border-box;
   align-items: center;
   justify-content: center;
+  height: 208px;
   height: 100%;
   width: 25%;
   box-shadow: 0px 10px 20px rgba(222, 222, 222, 0.3);
@@ -325,9 +313,9 @@ nav.main > a > img.link--active {
 .button {
   display: inline-block;
   padding: 1em 2em;
-  color: #fff;
+  color: #FFF;
   text-transform: uppercase;
-  background-color: #aaa;
+  background-color: #AAA;
   border: none;
   transition: background-color 0.3s;
   cursor: pointer;
@@ -367,12 +355,13 @@ nav.main > a > img.link--active {
 }
 
 .cta {
-  background-color: #aaa;
+  background-color: #AAA;
   border-radius: 4px;
   border: none;
   font-weight: bold;
   font-size: 14px;
   color: white;
+  border: none;
   border-radius: 4px;
   display: flex;
   gap: 6px;
@@ -655,7 +644,7 @@ footer .footer-content .footer-contact ul li a img {
 
 footer .footer-copyright {
   background-color: #0077c2;
-  color: #fff;
+  color: #FFF;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -675,6 +664,7 @@ footer .footer-copyright {
   background-repeat: no-repeat;
   background-position: center;
 }
+
 .front-main--register {
   display: flex;
   flex-direction: column;
@@ -683,22 +673,27 @@ footer .footer-copyright {
   height: 100vh;
   background-color: rgb(238, 238, 250);
 }
+
 .front-main--register aside {
   left: -100px;
 }
+
 .front-main--register aside > div {
   display: none;
 }
+
 .front-main--register #register-section > h1 {
   padding-bottom: 3.125rem;
   padding-top: -rem(25);
 }
+
 .front-main--register #formRegister {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
+
 .front-main--register #formRegister input {
   border: 2px solid #A5A5A5;
   border-radius: 30px;
@@ -708,10 +703,12 @@ footer .footer-copyright {
   padding: 0 0.625rem;
   width: 18.75rem;
 }
+
 .front-main--register #formRegister #cgu {
   width: 1rem;
   height: auto;
 }
+
 .front-main--register #formRegister input[type=submit] {
   background-image: linear-gradient(to right, #80D6FF, #0077C2);
   border: none;
@@ -721,6 +718,7 @@ footer .footer-copyright {
   margin-top: 1.875rem;
   padding: 0;
 }
+
 .front-main .login-main-card {
   display: flex;
   flex-direction: row;
@@ -733,26 +731,31 @@ footer .footer-copyright {
   box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.25);
   background-color: white;
 }
+
 .front-main .login-main-card .half-card {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
+
 .front-main .login-main-card .half-card.ad {
   display: none;
 }
+
 .front-main .login-main-card .half-card > img {
   margin-bottom: 1.875rem;
   height: 140px;
   width: auto;
 }
+
 .front-main .login-main-card .half-card #formLogin {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
+
 .front-main .login-main-card .half-card #formLogin input {
   border: 2px solid #A5A5A5;
   border-radius: 30px;
@@ -761,6 +764,7 @@ footer .footer-copyright {
   margin-bottom: 1.25rem;
   padding: 0 0.625rem;
 }
+
 .front-main .login-main-card .half-card #formLogin input[type=submit] {
   background-image: linear-gradient(to right, #80D6FF, #0077C2);
   border: none;
@@ -768,10 +772,12 @@ footer .footer-copyright {
   width: 208px;
   color: white;
 }
+
 .front-main .login-main-card .half-card .form-nav-account {
   display: flex;
   flex-direction: column;
 }
+
 .front-main .login-main-card .half-card .form-nav-account .form-nav-account-link {
   text-decoration: none;
   color: #A5A5A5;
@@ -865,6 +871,7 @@ footer .footer-copyright {
   position: relative;
   background-color: #0077C2;
 }
+
 #front-header .header-container {
   display: flex;
   flex-direction: row;
@@ -872,16 +879,19 @@ footer .footer-copyright {
   justify-content: space-between;
   width: 100%;
 }
+
 #front-header .header-container #front-header-nav-container {
   display: flex;
   flex-direction: row;
 }
+
 #front-header .header-container #front-color {
   display: flex;
   flex-direction: row;
   margin-right: 1.4375rem;
   justify-content: space-between;
 }
+
 #front-header .header-container #front-color button {
   display: block;
   height: 1.4375rem;
@@ -890,13 +900,16 @@ footer .footer-copyright {
   cursor: pointer;
   border-radius: 15px;
 }
+
 #front-header .header-container #front-color #front-color-green {
   background-color: #9CCC65;
   margin-right: 0.625rem;
 }
+
 #front-header .header-container #front-color #front-color-blue {
   background-color: #42A5F5;
 }
+
 #front-header .header-container nav {
   position: fixed;
   top: 0;
@@ -906,13 +919,16 @@ footer .footer-copyright {
   background-color: #0077C2;
   transition: left 1s;
 }
+
 #front-header .header-container nav.open {
   left: 0px;
 }
+
 #front-header .header-container nav #front-header-site-nav {
   display: flex;
   flex-direction: column;
 }
+
 #front-header .header-container nav ul {
   display: flex;
   flex-direction: column;
@@ -921,22 +937,27 @@ footer .footer-copyright {
   justify-content: center;
   padding: 0;
 }
+
 #front-header .header-container nav ul li {
   margin-bottom: 2em;
   list-style: none;
 }
+
 #front-header .header-container nav ul li a {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 #front-header .header-container nav ul:nth-child(5) {
   justify-content: flex-end;
 }
+
 #front-header .header-container nav ul a {
   text-decoration: none;
   color: white;
 }
+
 #front-header .header-container #menu-button {
   display: block;
   border: none;
@@ -950,6 +971,7 @@ footer .footer-copyright {
   margin-right: 1.4375rem;
   background-color: transparent;
 }
+
 #front-header .header-container > a {
   display: flex;
   flex-direction: row;
@@ -959,6 +981,7 @@ footer .footer-copyright {
   text-decoration: none;
   color: white;
 }
+
 #front-header .header-container > a > h1 {
   padding: 0 10px;
 }
@@ -1008,17 +1031,20 @@ main .front-main {
   background-repeat: no-repeat;
   background-position: center;
 }
+
 main .front-main #front-index-hero-banner {
   width: 100%;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
 }
+
 main .front-main #front-section2 {
   margin: 3rem;
   padding: 1.25rem;
   background-color: #E9E6E6;
 }
+
 main .front-main #front-section2 p {
   line-height: 1.875rem;
 }
@@ -1029,28 +1055,35 @@ main .front-main #front-section2 p {
   background-color: #42A5F5;
   padding: 1rem;
 }
+
 #front-footer h2 {
   color: white;
 }
+
 #front-footer p {
   color: white;
   padding-left: 20px;
   line-height: 1.5;
 }
+
 #front-footer nav ul {
   list-style: none;
   padding-left: 20px;
 }
+
 #front-footer nav ul li {
   padding: 0.5rem 0;
 }
+
 #front-footer nav ul a {
   text-decoration: none;
   color: white;
 }
+
 #front-footer nav ul img {
   padding-right: 10px;
 }
+
 #front-footer #footer-copyright {
   background-color: #0077C2;
 }
@@ -1079,7 +1112,6 @@ main .front-main #front-section2 p {
     padding-bottom: 1.25rem;
   }
 }
-
 .container-error {
   position: relative;
   display: flex;
@@ -1093,6 +1125,77 @@ main .front-main #front-section2 p {
   font-size: 12rem;
   color: #0077C2;
   font-weight: bold;
+}
+
+/*# sourceMappingURL=main.css.map */
+main {
+  min-height: 100vh;
+}
+main .forget-password {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+main .forget-password .container-forget-password {
+  margin-top: 50px;
+}
+main .forget-password .container-forget-password form > div {
+  margin-bottom: 18px;
+}
+main .listPosts {
+  margin: 30px;
+}
+main .listPosts .listArticles {
+  margin-top: 50px;
+}
+main .listPosts .listArticles > h1 {
+  font-size: 30px;
+}
+main .listPosts .listArticles p {
+  font-size: 12px;
+}
+main #article-details {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+main #article-details .article-card {
+  padding: 30px;
+  background-color: #ececec;
+  border-radius: 10px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+main #article-details .article-card .article-details {
+  padding: 0;
+}
+main #article-details .article-card .article-details #article-content #meta-data {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+main #article-details .article-card .article-details > h1 {
+  font-size: 30px;
+}
+main #article-details .article-card .article-details p {
+  font-size: 10px;
+}
+main #article-details .article-card .article-details pre {
+  font-size: 15px;
+}
+main #article-details .article-card .article-details h2 {
+  font-size: 12px;
+}
+main #article-details .article-card .article-details h3 {
+  font-style: italic;
+}
+main #article-details .article-card .article-details ul {
+  list-style: none;
+}
+main #article-details .article-card .article-details div h1 {
+  font-size: 30px;
 }
 
 /*# sourceMappingURL=main.css.map */

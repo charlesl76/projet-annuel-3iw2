@@ -2,6 +2,8 @@
 
 namespace App\Core;
 
+use App\Model\Session as SessionModel;
+
 class View
 {
     private $view;
@@ -11,6 +13,7 @@ class View
     public function __construct($view, $template = "front")
     {
         $this->setView($view);
+        $this->iniateSession();
         $this->data["final_url"] = $this->dynamicNav();
         $this->setTemplate($template);
     }
@@ -57,6 +60,13 @@ class View
             die("partial " . $name . " 404");
         }
         include "View/Partial/" . $name . ".partial.php";
+    }
+
+    public function iniateSession()
+    {
+        $session = new SessionModel();
+        $this->data['isConnected'] = (bool)$session->ensureUserConnected();
+        if ($session->getUser()) $this->data['role'] = $session->getUser()->getRole();
     }
 
     public function __toString(): string

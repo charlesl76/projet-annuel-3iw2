@@ -142,6 +142,11 @@
   controller: post
   action: postCheck
   role: admin
+
+/comment-check:
+  controller: comment
+  action: commentCheck
+  role: admin
   
 /users:
   controller: admin
@@ -191,3 +196,4 @@
 /404:
   controller: general
   action: error404
+  role: all

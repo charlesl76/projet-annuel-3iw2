@@ -34,6 +34,7 @@
                     <td><form action="/comments/<?= $comment->getId() ?>/delete" method="post" onsubmit="return confirm('Are you sure you want to delete this post, this action is unreversible?');">
                         <input type="hidden" name="id" value="<?= $comment->getId() ?>">
                         <input type="hidden" name="type" value="delete">
+                        <input type="hidden" name="input" value="comment">
                         <input type="submit" value="Delete">
                     </form>
                 </td>
