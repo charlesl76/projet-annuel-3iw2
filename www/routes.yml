@@ -1,27 +1,198 @@
 /:
   controller: general
   action: home
+  role: all
 
 /me-contacter:
   controller: general
   action: contact
+  role: all
 
 /login:
   controller: user
   action: login
+  role: logout
+
+/forgot-password:
+  controller: user
+  action: forgotPassword
+  role: all
+
+/forgot-password/{id}:
+  controller: user
+  action: mailSent
+  role: all
+
+/forgot-password/r/{token}:
+  controller: user
+  action: tokenCheck
+  role: all
 
 /logout:
   controller: user
   action: logout
+  role: user
 
 /register:
   controller: user
   action: register
+  role: logout
+
+/register/r/{token}:
+  controller: user
+  action: tokenCheck
+  role: all
 
 /dashboard:
   controller: admin
   action: dashboard
+  role: admin
 
 /testmail:
   controller: mail
   action: mail
+  role: all
+
+# Posts
+## Pages
+/pages:
+  controller: post
+  action: pages
+  role: admin
+
+/pages/{id}:
+  controller: post
+  action: showPage
+  role: admin
+
+/pages/{id}/update:
+  controller: post
+  action: postCheck
+  role: admin
+
+/pages/{id}/delete:
+  controller: post
+  action: postCheck
+  role: admin
+
+## Comments
+/comments:
+  controller: comment
+  action: comments
+  role: admin
+
+/comments/{id}:
+  controller: comment
+  action: showComment
+  role: admin
+
+/comments/{id}/update:
+  controller: comment
+  action: commentCheck
+  role: admin
+
+/comments/{id}/delete:
+  controller: comment
+  action: commentCheck
+  role: admin
+
+## Articles
+/articles:
+  controller: post
+  action: articles
+  role: admin
+
+/articles/{id}:
+  controller: post
+  action: showArticle
+  role: admin
+
+/articles/{id}/update:
+  controller: post
+  action: postCheck
+  role: admin
+
+/articles/{id}/delete:
+  controller: post
+  action: postCheck
+  role: admin
+
+  ## Tags
+/tags:
+  controller: post
+  action: tags
+  role: admin
+
+/tags/{id}:
+  controller: post
+  action: showTag
+  role: admin
+
+/tags/{id}/update:
+  controller: post
+  action: postCheck
+  role: admin
+
+/tags/{id}/delete:
+  controller: post
+  action: postCheck
+  role: admin
+
+/post-check:
+  controller: post
+  action: postCheck
+  role: admin
+
+/comment-check:
+  controller: comment
+  action: commentCheck
+  role: admin
+  
+/users:
+  controller: admin
+  action: getUserList
+  role: admin
+
+/users/{id}:
+  controller: user
+  action: show
+  role: admin
+
+/users/{id}/delete:
+  controller: user
+  action: delete
+  role: admin
+
+/users/{id}/update:
+  controller: user
+  action: update
+  role: admin
+
+/front-pages:
+  controller: post
+  action: getPagesListFront
+  role: all
+
+/front-articles:
+  controller: post
+  action: getArticlesListFront
+  role: all
+
+/post/{id}:
+  controller: post
+  action: getOnePostFront
+  role: all
+
+/post/{id}/comment:
+  controller: comment
+  action: commentPost
+  role: user
+
+/post/{id}/comment/delete:
+  controller: comment
+  action: commentPost
+  role: user
+
+/404:
+  controller: general
+  action: error404

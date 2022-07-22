@@ -2,6 +2,8 @@
 
 namespace App\Core;
 
+use App\Model\Comment;
+use App\Model\Post;
 use App\Model\User;
 use App\Model\User as UserModel;
 use DateInterval;
@@ -18,15 +20,13 @@ abstract class BaseSQL
 
     public function __construct()
     {
-
         try {
-            $this->pdo = Db::connect();
+            //Connexion à la base de données
+            $this->pdo = new \PDO(DBDRIVER . ":host=" . DBHOST . ";port=" . DBPORT . ";dbname=" . DBNAME, DBUSER, DBPWD);
+            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (\Exception $e) {
-            $error = $e->getMessage();
-          //Logger::wErrorLog("Error with DB Connection, $error");
-            die("Erreur SQL : " . $error);
+            die("Erreur SQL" . $e->getMessage());
         }
-       
         $classExploded = explode("\\", get_called_class());
         $this->table = DBPREFIXE . strtolower(end($classExploded));
     }
@@ -37,7 +37,8 @@ abstract class BaseSQL
     public function setId($id)
     {
         $sql = "SELECT * FROM " . $this->table . " WHERE id=:id ";
-        $queryPrepared = $this->pdo->prepare($sql, ['id' => $id]);
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute(["id" => $id]);
         return $queryPrepared->fetchObject(get_called_class());
         
     }
@@ -64,31 +65,31 @@ abstract class BaseSQL
         $this->pdo->prepare($sql, $columns);
     }
 
-
-    public function findAll()
+    public function findAll(?string $class = '')
     {
         $sql = "SELECT * FROM " . $this->table;
 
         $queryPrepared = $this->pdo->prepare($sql);
-        /*$queryPrepared = $this->pdo->prepare($sql);
-        $queryPrepared->execute();*/
+        $queryPrepared->execute();
 
+        if ($class !== '') return $queryPrepared->fetchAll(PDO::FETCH_CLASS, get_called_class());
         return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function findAllBy(array $params, string $opt_table = null): array
+    public function findAllBy(array $params, string $opt_table = null, ?string $class = '')
     {
         foreach ($params as $key => $value) {
             $where[] = $key . "=:" . $key;
         }
+
         if (!is_null($opt_table)) {
             $sql = "SELECT * FROM " . DBPREFIXE . strtolower($opt_table) . " WHERE " . (implode(" AND ", $where));
         } else {
             $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
         }
-        // echo $sql;
-        // return true;
-        $queryPrepared = $this->pdo->prepare($sql, $params);
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute($params);
+        if ($class !== '') return $queryPrepared->fetchAll(PDO::FETCH_CLASS, get_called_class());
         return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -99,7 +100,8 @@ abstract class BaseSQL
         }
 
         $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
-        $queryPrepared = $this->pdo->prepare($sql, $params);
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute($params);
         $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
         return empty($data) ? [] : $data;
     }
@@ -118,30 +120,52 @@ abstract class BaseSQL
         }
 
         $sql = "SELECT " . implode(",", $select) . " FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
-        $queryPrepared = $this->pdo->prepare($sql, $params);
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute($params);
         $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+        return empty($data) ? [] : $data;
+    }
+
+    public function findAllByColumn(array $columns, array $params): array
+    {
+        $select = $columns;
+
+        foreach ($params as $key => $value) {
+            if (strstr($key, 'date')) {
+                # date comparaison
+                $where[] = $key . ">:" . $key;
+            } else {
+                $where[] = $key . "=:" . $key;
+            }
+        }
+
+        $sql = "SELECT " . implode(",", $select) . " FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute($params);
+        $data = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
         return empty($data) ? ["user" => false] : $data;
     }
 
     public function findUserById(string $id) {
         $sql = 'SELECT id, username, email, first_name, last_name, role, registered_at, updated_at, activated, gender, blocked, blocked_until, birth FROM oklm_user WHERE id = ?';
         $params = [$id];
-        $queryPrepared = $this->pdo->prepare($sql, $params);
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute($params);
         return $queryPrepared->fetchObject(User::class);
     }
 
-    public function deleteOne()
+    public function deleteOne(?int $id): bool
     {
-        if (isset($_POST['id']) && !empty($_POST['id'])) {
+        $id = !empty($_POST['id']) ? strip_tags($_POST['id']) : strip_tags($id);
 
-            $id = strip_tags($_POST['id']);
+        $sql = "DELETE FROM `" . $this->table . "` WHERE `id`=:id";
 
-            $sql = "DELETE FROM `" . $this->table . "` WHERE `id`=:id";
-            $queryPrepared = $this->pdo->prepare($sql, ['id' => $id]);
-            $queryPrepared->bindValue(':id', $id, PDO::PARAM_INT);
+        $queryPrepared = $this->pdo->prepare($sql);
 
-            return true;
-        }
+        $queryPrepared->bindValue(':id', $id, PDO::PARAM_INT);
+        $queryPrepared->execute(['id' => $id]);
+
+        return true;
     }
 
     public function verifieMailUnique()
@@ -166,7 +190,6 @@ abstract class BaseSQL
         return $this->table;
     }
 
-
     public function setTable(string $table): void
     {
         $this->table = $table;
@@ -181,4 +204,5 @@ abstract class BaseSQL
     {
         return $this->findByColumn(["id", "token", "user_id", "expiration_date"], ["token" => $token, "expiration_date" => " NOW()"]);
     }
+
 }
