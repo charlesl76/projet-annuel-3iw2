@@ -92,7 +92,7 @@ abstract class BaseSQL
         }
 
         if (!is_null($opt_table)) {
-            $sql = "SELECT * FROM " . DB_PREFIXE . strtolower($opt_table) . " WHERE " . (implode(" AND ", $where));
+            $sql = "SELECT * FROM " . DB_PREFIXE . "_" . strtolower($opt_table) . " WHERE " . (implode(" AND ", $where));
         } else {
             $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
         }
@@ -156,7 +156,7 @@ abstract class BaseSQL
     }
 
     public function findUserById(string $id) {
-        $sql = 'SELECT id, username, email, first_name, last_name, role, registered_at, updated_at, activated, gender, blocked, blocked_until, birth FROM oklm_user WHERE id = ?';
+        $sql = 'SELECT id, username, email, first_name, last_name, role, registered_at, updated_at, activated, gender, blocked, blocked_until, birth FROM ' . DB_PREFIXE . "_user" . ' WHERE id = ?';
         $params = [$id];
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($params);

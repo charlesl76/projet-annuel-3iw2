@@ -9,7 +9,6 @@ if (isset($_POST["email"])) {
     registerSuperAdmin($user);
     addCompleteRegistration();
     header("location: ./");
-
 } else {
     // get prefix
     $site_name = $_POST["site_name"];
@@ -96,6 +95,13 @@ function registerDatabase(array $database)
             `comment_parent` int(11) DEFAULT NULL
           ) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
 
+        $sql .= "ALTER TABLE $db_name.$db_table
+                ADD PRIMARY KEY (`id`);";
+        
+        $sql .= "ALTER TABLE $db_name.$db_table
+                    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+                COMMIT;";
+
         // Icons table
         $db_table = $database["db_prefix"] . '_icon';
         $sql .= "CREATE TABLE $db_name.$db_table (
@@ -151,6 +157,13 @@ function registerDatabase(array $database)
           (43, 'olympic-sports', 'weightlifting', 'SVG'),
           (44, 'olympic-sports', 'wrestling', 'SVG');";
 
+        $sql .= "ALTER TABLE $db_name.$db_table
+        ADD PRIMARY KEY (`id`);";
+
+        $sql .= "ALTER TABLE $db_name.$db_table
+        MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Icon ID', AUTO_INCREMENT=45;
+        COMMIT;";
+
         $db_table = $database["db_prefix"] . '_post';
         $sql .= "CREATE TABLE $db_name.$db_table (
             `id` int(11) NOT NULL,
@@ -168,6 +181,13 @@ function registerDatabase(array $database)
             `comment_count` mediumint(9) DEFAULT '0'
           ) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
 
+        $sql .= "ALTER TABLE $db_name.$db_table
+                ADD PRIMARY KEY (`id`);";
+
+        $sql .= "ALTER TABLE $db_name.$db_table
+                MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+                COMMIT;";
+
         $db_table = $database["db_prefix"] . '_session';
         $sql .= "CREATE TABLE $db_name.$db_table (
             `id` int(10) NOT NULL,
@@ -175,6 +195,14 @@ function registerDatabase(array $database)
             `user_id` int(11) DEFAULT NULL,
             `expiration_date` datetime NOT NULL
           ) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+
+        $sql .= "ALTER TABLE $db_name.$db_table
+        ADD PRIMARY KEY (`id`),
+        ADD UNIQUE KEY `token` (`token`);";
+
+        $sql .= "ALTER TABLE $db_name.$db_table
+        MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+        COMMIT;";
 
         $db_table = $database["db_prefix"] . '_user';
         $sql .= "CREATE TABLE $db_name.$db_table (
