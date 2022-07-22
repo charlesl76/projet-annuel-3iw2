@@ -74,7 +74,6 @@ class Validator extends BaseSQL
                     break;
             endswitch;
         } elseif (!empty($data["input"]) && $data["input"] == "article") {
-            var_dump($data);
             switch ($data["type"]):
                 case "add":
                     if (!isset($data["title"]) || empty($data["title"])) {
@@ -118,6 +117,28 @@ class Validator extends BaseSQL
                     }
                     if (!isset($data["content"]) || empty($data["content"])) {
                         $result["input"] = "Do not forget to put an image in the form";
+                    }
+                    break;
+                case "delete":
+                    return $result;
+                    break;
+            endswitch;
+        } elseif (!empty($data["input"]) && $data["input"] == "comment") {
+            switch ($data["type"]):
+                case "add":
+                    if (!isset($data["content"]) || empty($data["content"])) {
+                        $result["input"] = "Do not forget to fill the content in the form";
+                    }
+                    if (!isset($data["post_parent"]) || empty($data["post_parent"])) {
+                        $result["input"] = "Do not forget to put a post parent on the comment";
+                    }
+                    break;
+                case "update":
+                    if (!isset($data["content"]) || empty($data["content"])) {
+                        $result["input"] = "Do not forget to fill the content in the form";
+                    }
+                    if (!isset($data["post_parent"]) || empty($data["post_parent"])) {
+                        $result["input"] = "Do not forget to put a post parent on the comment";
                     }
                     break;
                 case "delete":

@@ -33,6 +33,7 @@ class Post
     {
         $page = new PostModel();
         $pagesList = $page->getAllPages();
+        print_r($pagesList);
         $view = new View("display-posts", "front");
         $final_url = $view->dynamicNav();
 
@@ -171,16 +172,14 @@ class Post
                         header('location: /pages');
                         break;
                     case "delete":
-                        $page->deletePage($page);
+                        $page->deletePage($page->getId());
                         unset($_POST);
                         header('location: /pages');
                         break;
                 endswitch;
             }
         } elseif (!empty($_POST) && $_POST['input'] == "article") {
-            var_dump($article);
             $result = $validator::checkPost($article->getFormArticles($article), $_POST);
-            print_r($result);
             if (empty($result)) {
                 switch ($_POST["type"]):
                     case "add":
@@ -194,7 +193,7 @@ class Post
                         header('location: /articles');
                         break;
                     case "delete":
-                        $article->deleteArticle($article);
+                        $article->deleteArticle($article->getId());
                         unset($_POST);
                         header('location: /articles');
                         break;
@@ -217,7 +216,7 @@ class Post
                         header('location: /tags');
                         break;
                     case "delete":
-                        $tag->deleteTag($tag);
+                        $tag->deleteTag($tag->getId());
                         unset($_POST);
                         header('location: /tags');
                         break;

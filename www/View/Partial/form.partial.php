@@ -1,31 +1,29 @@
 <form method="<?= $config["config"]["method"]??"POST" ?>" action="<?= $config["config"]["action"]??"" ?>" id="<?= $config["config"]["id"]??"" ?>" class="<?= $config["config"]["class"]??"" ?>"  >
     <?php foreach ($config["inputs"] as $name => $input) : ?>
 
-        <?php if ($input["type"] == "select" && !isset($input['images']) && !isset($input['parent'])) :
+        <?php if ($input["type"] == "select" && (isset($input["countries"])
+            || isset($input["roles"]) || isset($input["status"]))):
             if (isset($input["countries"])) :
                 $inputOptions = $input["countries"];
             elseif (isset($input["roles"])) :
                 $inputOptions = $input["roles"];
             elseif (isset($input["status"])) :
                 $inputOptions = $input["status"];
-            ?>
+            endif;
+        ?>
             <select name="<?= $name ?>" id="<?= $input["id"] ?>">
-                <?php for ($i = 0; $i < count($inputOptions); $i++) : ?>
-                    <option value="<?= $inputOptions[$i]["id"]; ?>"><?= $inputOptions[$i]["name"]; ?></option>
-                    <?php if (count($inputOptions) === $i) : ?>
+                <?php foreach ($inputOptions as $inputOption): ?>
+                    <option value="<?= $inputOption["id"]; ?>"><?= $inputOption["name"]; ?></option>
+                <?php endforeach; ?>
             </select>
-            <?php endif; endfor; endif;
+        <?php elseif ($input["type"] == "select" && isset($input["status"])) : ?>
+            <select name="<?= $name ?>" id="<?= $input["id"] ?>">
+                <?php foreach ($inputOptions as $inputOption): ?>
+                    <option value="<?= $inputOption["id"]; ?>"><?= $inputOption["name"]; ?></option>
+                <?php endforeach; ?>
+            </select>
 
-            elseif ($input["type"] == "select" && isset($input["status"])) : ?>
-    <select name="<?= $name ?>" id="<?= $input["id"] ?>">
-        <?php for ($i = -1; $i + 1 < count($input["status"]); $i++) : ?>
-            <option value="<?= $input["status"][$i]["id"]; ?>"><?= $input["status"][$i]["name"]; ?></option>
-            <?php if ($i === count($input["status"])) : ?>
-    </select>
-<?php endif;
-                endfor;
-
-            elseif ($input["type"] == "select" && isset($input["images"])) : ?>
+            <?php elseif ($input["type"] == "select" && isset($input["images"])) : ?>
 
 <select name="<?= $name ?>" id="<?= $input["id"] ?>">
 
@@ -81,20 +79,36 @@
     });
 </script>
 
-
-
-
 <?php
 
-            elseif ($input["type"] == "select" && isset($input["parent"])) : ?>
-            <select name="<?= $name ?>" id="<?= $input["id"] ?>">
-                <?php foreach ($input['parent'] as $tag): ?>
-                    <?php if(isset($tag["selected"])) : ?>
-                        <option value="<?= $$tag->getId(); ?>" selected><?= $tag->getName(); ?></option>
-                    <?php else: ?>
-                        <option value="<?= $tag["id"]; ?>"><?= $tag['name']; ?></option>
-                    <?php endif; endforeach; ?>
-            </select>
+            elseif ($input["type"] == "select" && (isset($input["parent"]) || isset($input["post_parent"]))) :
+            if (isset($input["parent"])) : ?>
+            <div>
+                <select name="<?= $name ?>" id="<?= $input["id"] ?>">
+                    <?php foreach ($input['parent'] as $tag): ?>
+                        <?php if(isset($tag['selected'])) : ?>
+                            <option value="<?= $tag['id']; ?>" selected><?= $tag['name']; ?></option>
+                        <?php else: ?>
+                            <option value="<?= $tag["id"]; ?>"><?= $tag['name']; ?></option>
+                        <?php endif;
+                    endforeach; ?>
+                </select>
+            </div>
+
+
+            <?php elseif (isset($input["post_parent"])) : ?>
+            <div>
+                <select name="<?= $name ?>" id="<?= $input["id"] ?>">
+                    <?php foreach ($input['post_parent'] as $article): ?>
+                        <?php if(isset($article['selected'])) : ?>
+                            <option value="<?= $article['id']; ?>" selected><?= $article['title']; ?></option>
+                        <?php else: ?>
+                            <option value="<?= $article["id"]; ?>"><?= $article['title']; ?></option>
+                        <?php endif;
+                    endforeach; ?>
+                </select>
+            </div>
+            <?php endif; ?>
 
             <?php elseif ($input["type"] == "textarea") : ?>
 <textarea name="<?= $name ?>" id="<?= $input["id"] ?>" class="<?= $input["class"] ?? "" ?>"></textarea>
@@ -130,19 +144,11 @@
 <?php endif;
                         endfor; ?>
 <?php endif; ?>
-<?php if ($input['roles']) : ?>
-    <?php for ($i = 0; $i < count($input['roles']); $i++) : ?>
-        <option value="<?= $input['roles'][$i]["id"]; ?>"><?= $input["roles"][$i]["name"]; ?> </option>
-        <?php if ($i === count($input["roles"])) : ?>
-</select>
-<?php endif;
-                        endfor; ?>
-<?php endif; ?>
 
 <?php endif; ?>
 <?php
             else : ?>
-    <input name="<?= $name ?>" id="<?= $input["id"] ?>" type="<?= $input["type"] ?>" class="<?= $input["class"] ?>" <?= !empty($input["value"]) ? " value=\"" . $input["value"] . "\" " : " " ?> placeholder="<?= $input["placeholder"] ?>" <?= (!empty($input["hidden"])) ? 'hidden="hidden"' : '' ?>  <?= (!empty($input["disabled"])) ? 'disabled' : '' ?> <?= (!empty($input["required"])) ? 'required="required"' : '' ?>>
+    <input name="<?= $name ?>" id="<?= $input["id"] ?>" type="<?= $input["type"] ?>" class="<?= $input["class"] ?>" <?= !empty($input["value"]) ? " value=\"" . $input["value"] . "\" " : " " ?> <?= (!empty($input["placeholder"]) ? 'placeholder="'.$input["placeholder"].'"' : ""); ?> <?= (!empty($input["hidden"])) ? 'hidden="hidden"' : '' ?>  <?= (!empty($input["disabled"])) ? 'disabled' : '' ?> <?= (!empty($input["required"])) ? 'required="required"' : '' ?>>
     <br>
 <?php endif;
         endforeach; ?>

@@ -83,10 +83,7 @@ class Session extends BaseSQL
         $this->expiration_date = $expirationDate;
     }
 
-    /**
-     * @return User
-     */
-    public function getUser(): User
+    public function getUser()
     {
         return $this->user;
     }

@@ -102,7 +102,9 @@ switch (($routes[$uri]["role"])) {
         break;
     case 'logout':
         // the user must be not connected
-        if ($session->ensureUserConnected()) echo "Vous devez d'abord vous <a href='/logout'>déconnecter</a>.";
+        if ($session->ensureUserConnected()) {
+            echo "Vous devez d'abord vous <a href='/logout'>déconnecter</a>."; die;
+        }
         break;
 }
 

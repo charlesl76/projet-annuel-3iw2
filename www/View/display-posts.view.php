@@ -1,12 +1,12 @@
-<h1>Listes des posts</h1>
+<h1>Listes des <?= $post_type ?>s</h1>
 
 <table>
 
     <?php if ($post_type == "page") : ?>
         <?php foreach ($pages as $page) : ?>
             <tr>
-                <td><a href="/post/<?= $page['id'] ?>"><?php echo $page['title']; ?></a></td>
-                <td><?php echo $page['content']; ?> </td>
+                <td><a href="/post/<?= $page->getId() ?>"><?php echo $page->getTitle(); ?></a></td>
+                <td><?php echo $page->getContent(); ?> </td>
             </tr>
 
         <?php endforeach; ?>

@@ -6,7 +6,7 @@ if ((isset($_POST['action']))) :
     switch ($_POST['action']):
         case 'create':
             $this->create = 'create';
-            $this->includePartial("form", $comment->getFormComments());
+            $this->includePartial("form", $comment->getFormComments($comment));
             break;
         case 'delete':
         case 'update':
