@@ -20,17 +20,17 @@ abstract class BaseSQL
 
     public function __construct()
     {
-        //Faudra intégrer le singleton
-        try {
-            //Connexion à la base de données
-            $this->pdo = new \PDO(DB_DRIVER . ":host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME, DB_USER, DB_PWD);
-            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        } catch (\Exception $e) {
-            die("Erreur SQL" . $e->getMessage());
-        }
 
+        try {
+            $this->pdo = Db::connect();
+        } catch (\Exception $e) {
+            $error = $e->getMessage();
+            Logger::writeLog("Error with DB Connection, $error");
+            die("Erreur SQL : " . $error);
+        }
+       
         $classExploded = explode("\\", get_called_class());
-        $this->table = DB_PREFIXE . "_" . strtolower(end($classExploded));
+        $this->table = DBPREFIXE . strtolower(end($classExploded));
     }
 
     /**
@@ -39,9 +39,9 @@ abstract class BaseSQL
     public function setId($id)
     {
         $sql = "SELECT * FROM " . $this->table . " WHERE id=:id ";
-        $queryPrepared = $this->pdo->prepare($sql);
-        $queryPrepared->execute(["id" => $id]);
+        $queryPrepared = $this->pdo->prepare($sql, ['id' => $id]);
         return $queryPrepared->fetchObject(get_called_class());
+        
     }
 
 
@@ -64,22 +64,15 @@ abstract class BaseSQL
                     VALUES (:" . implode(",:", array_keys($columns)) . ")";
         }
 
-        $statement = $this->pdo->prepare($sql);
-        if ($statement) {
-            $success = $statement->execute($columns);
-            if ($success) {
-                return $this->pdo->lastInsertId();
-            }
-        }
-        return null;
+        $this->pdo->prepare($sql, $columns);
+     
     }
 
     public function findAll(?string $class = '')
     {
         $sql = "SELECT * FROM " . $this->table;
 
-        $queryPrepared = $this->pdo->prepare($sql);
-        $queryPrepared->execute();
+       $queryPrepared = $this->pdo->prepare($sql);
 
         if ($class !== '') return $queryPrepared->fetchAll(PDO::FETCH_CLASS, get_called_class());
         return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
@@ -109,8 +102,7 @@ abstract class BaseSQL
         }
 
         $sql = "SELECT * FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
-        $queryPrepared = $this->pdo->prepare($sql);
-        $queryPrepared->execute($params);
+        $$queryPrepared = $this->pdo->prepare($sql, $params);
         $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
         return empty($data) ? [] : $data;
     }
@@ -129,8 +121,7 @@ abstract class BaseSQL
         }
 
         $sql = "SELECT " . implode(",", $select) . " FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
-        $queryPrepared = $this->pdo->prepare($sql);
-        $queryPrepared->execute($params);
+       $queryPrepared = $this->pdo->prepare($sql, $params);
         $data = $queryPrepared->fetch(PDO::FETCH_ASSOC);
         return empty($data) ? [] : $data;
     }
@@ -149,8 +140,7 @@ abstract class BaseSQL
         }
 
         $sql = "SELECT " . implode(",", $select) . " FROM " . $this->table . " WHERE " . (implode(" AND ", $where));
-        $queryPrepared = $this->pdo->prepare($sql);
-        $queryPrepared->execute($params);
+        $queryPrepared = $this->pdo->prepare($sql, $params);
         $data = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
         return empty($data) ? ["user" => false] : $data;
     }
@@ -158,23 +148,22 @@ abstract class BaseSQL
     public function findUserById(string $id) {
         $sql = 'SELECT id, username, email, first_name, last_name, role, registered_at, updated_at, activated, gender, blocked, blocked_until, birth FROM ' . DB_PREFIXE . "_user" . ' WHERE id = ?';
         $params = [$id];
-        $queryPrepared = $this->pdo->prepare($sql);
-        $queryPrepared->execute($params);
+        $queryPrepared = $this->pdo->prepare($sql, $params);
         return $queryPrepared->fetchObject(User::class);
     }
 
-    public function deleteOne(?int $id): bool
+    public function deleteOne()
     {
-        $id = !empty($_POST['id']) ? strip_tags($_POST['id']) : strip_tags($id);
+        if (isset($_POST['id']) && !empty($_POST['id'])) {
 
-        $sql = "DELETE FROM `" . $this->table . "` WHERE `id`=:id";
+            $id = strip_tags($_POST['id']);
 
-        $queryPrepared = $this->pdo->prepare($sql);
+            $sql = "DELETE FROM `" . $this->table . "` WHERE `id`=:id";
+            $queryPrepared = $this->pdo->prepare($sql, ['id' => $id]);
+            $queryPrepared->bindValue(':id', $id, PDO::PARAM_INT);
 
-        $queryPrepared->bindValue(':id', $id, PDO::PARAM_INT);
-        $queryPrepared->execute(['id' => $id]);
-
-        return true;
+            return true;
+        }
     }
 
     public function verifieMailUnique()

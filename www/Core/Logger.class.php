@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Core;
+
 /**
  * Logger class
  * Singleton using lazy instantiation
@@ -7,10 +9,11 @@
 class Logger
 {
     private static $instance = NULL;
-    private $logs;
 
-    private function __construct() {
-        $logs = array();
+    public function __construct()
+    {
+        /** */
+
     }
 
     /**
@@ -18,30 +21,20 @@ class Logger
      * @return Logger instance
      * @access public
      */
-    public function getInstance() {
-        if(self::$instance === NULL) {
-            self::$instance = fopen('./error.log', 'a');
+    public static function getInstance() 
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = fopen('./logs.log', 'a');
         }
         return self::$instance;
     }
 
+    public static function writeLog(string $message)
+    {
+        $currentTime = date('[Y/m/d, H:i:s]');
 
-    /**
-     * Adds a message to the log
-     * @param String $message Message to be logged
-     * @access public
-     */
-    public function log($message) {
-        $this->logs[] = $message;
-    }
-
-    /**
-     * Returns array of logs
-     * @return array Array of log messages
-     * @access public
-     */
-    public function get_logs() {
-        return $this->logs;
+        $instance = self::getInstance();
+        fwrite($instance, "[$currentTime]: $message\n");
     }
 
     public function __destruct()
@@ -50,12 +43,5 @@ class Logger
         fclose($instance);
     }
 
-    public static function wErrorLog(string $message)
-    {
-        $currentTime = date('[Y/m/d, H:i:s]');
-
-        $instance = self::getInstance();
-        fwrite($instance, "[$currentTime]: $message\n");
-    }
 
 };
