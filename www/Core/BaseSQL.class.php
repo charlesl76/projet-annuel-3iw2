@@ -20,7 +20,6 @@ abstract class BaseSQL
 
     public function __construct()
     {
-        //Faudra intégrer le singleton
         try {
             //Connexion à la base de données
             $this->pdo = new \PDO(DBDRIVER . ":host=" . DBHOST . ";port=" . DBPORT . ";dbname=" . DBNAME, DBUSER, DBPWD);
@@ -28,7 +27,6 @@ abstract class BaseSQL
         } catch (\Exception $e) {
             die("Erreur SQL" . $e->getMessage());
         }
-
         $classExploded = explode("\\", get_called_class());
         $this->table = DBPREFIXE . strtolower(end($classExploded));
     }
@@ -42,6 +40,7 @@ abstract class BaseSQL
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute(["id" => $id]);
         return $queryPrepared->fetchObject(get_called_class());
+        
     }
 
 
@@ -53,7 +52,6 @@ abstract class BaseSQL
         $columns = array_diff_key($columns, $varsToExclude);
         $columns = array_filter($columns);
 
-
         if (!is_null($this->getId())) {
             foreach ($columns as $key => $value) {
                 $setUpdate[] = $key . "=:" . $key;
@@ -61,17 +59,10 @@ abstract class BaseSQL
             $sql = "UPDATE " . $this->table . " SET " . implode(",", $setUpdate) . " WHERE id=" . $this->getId();
         } else {
             $sql = "INSERT INTO " . $this->table . " (" . implode(",", array_keys($columns)) . ")
-                    VALUES (:" . implode(",:", array_keys($columns)) . ")";
+            VALUES (:" . implode(",:", array_keys($columns)) . ")";
         }
 
-        $statement = $this->pdo->prepare($sql);
-        if ($statement) {
-            $success = $statement->execute($columns);
-            if ($success) {
-                return $this->pdo->lastInsertId();
-            }
-        }
-        return null;
+        $this->pdo->prepare($sql, $columns);
     }
 
     public function findAll(?string $class = '')
